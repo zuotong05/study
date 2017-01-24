@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-init-method="init" default-destroy-method="destroy"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+  http://www.springframework.org/schema/beans/spring-beans-4.1.xsd  ">
+
+	<!-- 线程执行器配置，用于任务注册 -->
+	<bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 <property name="corePoolSize" value="10" />
+	 <property name="maxPoolSize" value="100" />
+	 <property name="queueCapacity" value="500" />
+	</bean>
+	<!-- 要调用的工作类 -->
+	<bean id="quartzJobService" class="com.xiaoma.common.quartz.QuartzInitService"></bean>
+	
+	
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" /><!-- 调用的类 -->
+		</property>
+		<property name="targetMethod">
+			<value>initData</value><!-- 调用类中的方法 -->
+		</property>
+	</bean>
+	<!-- 定义触发时间 -->
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="jobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 1 ? * *</value> <!-- 每天凌晨 1点调用 -->
+		</property>
+	</bean>
+	
+	
+	<!-- 每小时检查 超过12小时 没确认的 需求 -->
+	<bean id="checkReqOut" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>updateReqOut</value>		<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="checkReqOutTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="checkReqOut" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 */1 * * ?</value>	<!-- 每过1个小时轮询一次-->
+		</property>
+	</bean>
+	
+	
+	<!-- 每小时获取app的ticket -->
+	<bean id="updateTicket" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>updateTicket</value>		<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="updateTicketTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="updateTicket" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 */1 * * ?</value>	<!-- 每过1个小时轮询一次-->
+		</property>
+	</bean>
+	
+	
+	<!-- 每小时检查 已完成 的 需求 -->
+	<bean id="checkReqDone" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>updateReqDone</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="checkReqDoneTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="checkReqDone" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 45 * * * ?</value>	<!-- 每个小时第45分钟 -->
+		</property>
+	</bean>
+	
+	<!-- 每天定时给 潜在用户且还未注册的用户发短信 -->
+	<bean id="potUserSendMsg" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>potUserSendMsg</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="potUserSendMsgTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="potUserSendMsg" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 0 17 ? * *</value> <!-- 每天 17点调用 -->
+		</property>
+	</bean>
+	
+	<!-- 每天更新已过期需求 -->
+	<bean id="updateReqDateOut" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>updateReqDateOut</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="updateReqDateOutTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="updateReqDateOut" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 0 7 ? * *</value> <!-- 每天 7点调用 -->
+		</property>
+	</bean>
+	
+	
+	<!-- 每个小时 检查要上课的课程, 给学生推送消息 -->
+	<bean id="push4OneHour" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>push4OneHour</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="push4OneHourTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="push4OneHour" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 30 * * * ?</value>	<!-- 每个小时第30分钟 -->
+		</property>
+	</bean>
+	
+	
+	<!-- 每5分钟 给老师发 消息推送 -->
+	<bean id="pushMessage2Teac" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>pushMessage2Teac</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="pushMessage2TeacTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="pushMessage2Teac" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 */5 * * * ?</value>	<!-- 5分钟轮询一次-->
+		</property>
+	</bean>
+	<!-- 每10分钟获取退款申请的订单状态 -->
+	<bean id="wxRefund" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>wxRefundService</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="wxRefundTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="wxRefund" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 */10 * * * ?</value>	<!-- 5分钟轮询一次-->
+		</property>
+	</bean>
+	<!-- 818活动后，更新活动订单的状态  -->
+	<bean id="updateOrderInfo" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>updateOrderInfo818</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="updateOrderInfoTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="updateOrderInfo" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 2 0 19 8 ?</value>	<!-- 5分钟轮询一次-->
+		</property>
+	</bean>
+	<!-- 每10分钟扫描一下未验证的apple订单  -->
+	<bean id="updateVerifyApple" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="quartzJobService" />	<!-- 用到的service -->
+		</property>
+		<property name="targetMethod">
+			<value>updateVerify</value>	<!-- 用到的方法 -->
+		</property>
+	</bean>
+	<bean id="updateVerifyAppleTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	<!-- id修改,在下面总管处注册 -->
+		<property name="jobDetail">
+			<ref bean="updateVerifyApple" />		<!-- 改成上面的bean -->
+		</property>
+		<property name="cronExpression">
+			<value>0 */10 * * * ?</value>	<!-- 5分钟轮询一次-->
+		</property>
+	</bean>
+	
+	
+	<!-- 总管理类 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+				<ref bean="checkReqOutTrigger" /> <!-- 需求超时更新 -->
+				<ref bean="checkReqDoneTrigger" /> <!-- 需求完成更新 -->
+				<ref bean="updateTicketTrigger" /> <!-- 获取app的ticket -->
+				<!-- <ref bean="potUserSendMsgTrigger" />  给潜在用户发短信 -->
+				<ref bean="updateReqDateOutTrigger" /> <!-- 需求过期更新 -->
+				<ref bean="push4OneHourTrigger" /> <!-- 上课前一小时提醒 -->
+				<ref bean="wxRefundTrigger" /> <!-- 每10分钟获取退款申请的订单状态 -->
+				<ref bean="updateOrderInfoTrigger" /> <!-- 活动结束后解决订单信息 -->
+				<ref bean="updateVerifyAppleTrigger" /> <!-- 活动结束后解决订单信息 -->
+				<!-- <ref bean="pushMessage2TeacTrigger" />  消息通知 -->
+			</list>
+		</property>
+		<property name="taskExecutor" ref="executor" />
+	</bean>
+
+</beans>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.xiaoma.shop.model.User">
+
+	<resultMap id="result" type="com.xiaoma.shop.model.User">
+            <id property="id" column="id" jdbcType="INTEGER" />
+            <result property="username" column="username" jdbcType="VARCHAR" />
+            <result property="password" column="password" jdbcType="VARCHAR" />
+            <result property="name" column="name" jdbcType="VARCHAR" />
+            <result property="nickname" column="nickname" jdbcType="VARCHAR" />
+            <result property="gender" column="gender" jdbcType="NUMERIC" />
+            <result property="birthday" column="birthday" />
+            <result property="avatar" column="avatar" jdbcType="VARCHAR" />
+            <result property="phone" column="phone" jdbcType="VARCHAR" />
+            <result property="email" column="email" jdbcType="VARCHAR" />
+            <result property="isAdmin" column="is_admin" jdbcType="NUMERIC" />
+            <result property="locked" column="locked" jdbcType="NUMERIC" />
+            <result property="enabled" column="enabled" jdbcType="NUMERIC" />
+            <result property="createdBy" column="created_by" jdbcType="VARCHAR" />
+            <result property="createdDate" column="created_date" />
+            <result property="updatedBy" column="updated_by" jdbcType="VARCHAR" />
+            <result property="updatedDate" column="updated_date" />
+
+	</resultMap>
+
+	<sql id="base_field">
+		id,username,password,name,nickname,gender,birthday,avatar,phone,email,is_admin,locked,enabled,created_by,created_date,updated_by,updated_date
+	</sql>
+	
+	<sql id="other-condition">
+            <if test= "username != null and username != '' and username != 'null' ">	and username = #{username,jdbcType=VARCHAR }</if>
+            <if test= "password != null and password != '' and password != 'null' ">	and password = #{password,jdbcType=VARCHAR }</if>
+            <if test= "name != null and name != '' and name != 'null' ">	and name = #{name,jdbcType=VARCHAR }</if>
+            <if test= "nickname != null and nickname != '' and nickname != 'null' ">	and nickname = #{nickname,jdbcType=VARCHAR }</if>
+            <if test= "gender != null ">	and gender = #{gender,jdbcType=NUMERIC }</if>
+            <if test= "birthday != null ">	and birthday = #{birthday }</if>
+            <if test= "avatar != null and avatar != '' and avatar != 'null' ">	and avatar = #{avatar,jdbcType=VARCHAR }</if>
+            <if test= "phone != null and phone != '' and phone != 'null' ">	and phone = #{phone,jdbcType=VARCHAR }</if>
+            <if test= "email != null and email != '' and email != 'null' ">	and email = #{email,jdbcType=VARCHAR }</if>
+            <if test= "isAdmin != null ">	and is_admin = #{isAdmin,jdbcType=NUMERIC }</if>
+            <if test= "locked != null ">	and locked = #{locked,jdbcType=NUMERIC }</if>
+            <if test= "enabled != null ">	and enabled = #{enabled,jdbcType=NUMERIC }</if>
+            <if test= "createdBy != null and createdBy != '' and createdBy != 'null' ">	and created_by = #{createdBy,jdbcType=VARCHAR }</if>
+            <if test= "createdDate != null ">	and created_date = #{createdDate }</if>
+            <if test= "updatedBy != null and updatedBy != '' and updatedBy != 'null' ">	and updated_by = #{updatedBy,jdbcType=VARCHAR }</if>
+            <if test= "updatedDate != null ">	and updated_date = #{updatedDate }</if>
+
+ 	</sql>
+ 	
+ 	<sql id="like-condition">
+            <if test= "username != null and username != '' and username != 'null' ">	and username like "%"#{username}"%"</if>
+            <if test= "password != null and password != '' and password != 'null' ">	and password like "%"#{password}"%"</if>
+            <if test= "name != null and name != '' and name != 'null' ">	and name like "%"#{name}"%"</if>
+            <if test= "nickname != null and nickname != '' and nickname != 'null' ">	and nickname like "%"#{nickname}"%"</if>
+            <if test= "gender != null ">	and gender = #{gender,jdbcType=NUMERIC }</if>
+            <if test= "birthday != null ">	and birthday = #{birthday }</if>
+            <if test= "avatar != null and avatar != '' and avatar != 'null' ">	and avatar like "%"#{avatar}"%"</if>
+            <if test= "phone != null and phone != '' and phone != 'null' ">	and phone like "%"#{phone}"%"</if>
+            <if test= "email != null and email != '' and email != 'null' ">	and email like "%"#{email}"%"</if>
+            <if test= "isAdmin != null ">	and is_admin = #{isAdmin,jdbcType=NUMERIC }</if>
+            <if test= "locked != null ">	and locked = #{locked,jdbcType=NUMERIC }</if>
+            <if test= "enabled != null ">	and enabled = #{enabled,jdbcType=NUMERIC }</if>
+            <if test= "createdBy != null and createdBy != '' and createdBy != 'null' ">	and created_by like "%"#{createdBy}"%"</if>
+            <if test= "createdDate != null ">	and created_date = #{createdDate }</if>
+            <if test= "updatedBy != null and updatedBy != '' and updatedBy != 'null' ">	and updated_by like "%"#{updatedBy}"%"</if>
+            <if test= "updatedDate != null ">	and updated_date = #{updatedDate }</if>
+
+ 	</sql>
+	
+	<sql id="selectByMapSQL">
+		select
+		<include refid="base_field" />
+		from sys_users
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+		<if test="sortName != null and sortName != '' and sortName != 'null'">
+			order by ${sortName} ${sortBy}
+		</if>
+	</sql>
+	
+	<select id="selectByMap" resultMap="result" >
+		<include refid="selectByMapSQL" />
+	</select>
+	
+	<select id="selectCount" resultType="int" >
+		select count(*) from (
+			<include refid="selectByMapSQL" />
+		) AABBCC_
+	</select>
+	
+	<select id="selectPage" resultMap="result" >
+		<include refid="selectByMapSQL" />
+		 limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="select" resultMap="result" parameterType="java.lang.Integer">
+		select
+		<include refid="base_field" />
+		from sys_users  
+		<where>
+			<if test="_parameter != null">
+				id = #{id,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByIds" resultMap="result" >
+		select
+		<include refid="base_field" />
+		from sys_users  where id in (${_parameter})
+	</select>		
+
+	<insert id="insert" parameterType="com.xiaoma.shop.model.User" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_users( id,username,password,name,nickname,gender,birthday,avatar,phone,email,is_admin,locked,enabled,created_by,created_date,updated_by,updated_date ) values (#{id,jdbcType=INTEGER},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{nickname,jdbcType=VARCHAR},#{gender,jdbcType=NUMERIC},#{birthday},#{avatar,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{isAdmin,jdbcType=NUMERIC},#{locked,jdbcType=NUMERIC},#{enabled,jdbcType=NUMERIC},#{createdBy,jdbcType=VARCHAR},#{createdDate},#{updatedBy,jdbcType=VARCHAR},#{updatedDate} )
+	</insert>
+	
+	<insert id="insert4Selective" parameterType="com.xiaoma.shop.model.User" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_users(
+            <if test="username != null and username != '' "> 
+                username,
+            </if>
+            <if test="password != null and password != '' "> 
+                password,
+            </if>
+            <if test="name != null and name != '' "> 
+                name,
+            </if>
+            <if test="nickname != null and nickname != '' "> 
+                nickname,
+            </if>
+            <if test="gender != null "> 
+                gender,
+            </if>
+            <if test="birthday != null "> 
+                birthday,
+            </if>
+            <if test="avatar != null and avatar != '' "> 
+                avatar,
+            </if>
+            <if test="phone != null and phone != '' "> 
+                phone,
+            </if>
+            <if test="email != null and email != '' "> 
+                email,
+            </if>
+            <if test="isAdmin != null "> 
+                is_admin,
+            </if>
+            <if test="locked != null "> 
+                locked,
+            </if>
+            <if test="enabled != null "> 
+                enabled,
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                created_by,
+            </if>
+            <if test="createdDate != null "> 
+                created_date,
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                updated_by,
+            </if>
+            <if test="updatedDate != null "> 
+                updated_date,
+            </if>
+                id)values (
+            <if test="username != null and username != '' "> 
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != '' "> 
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null and name != '' "> 
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null and nickname != '' "> 
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null "> 
+                #{gender,jdbcType=NUMERIC},
+            </if>
+            <if test="birthday != null "> 
+                #{birthday},
+            </if>
+            <if test="avatar != null and avatar != '' "> 
+                #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != '' "> 
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != '' "> 
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="isAdmin != null "> 
+                #{isAdmin,jdbcType=NUMERIC},
+            </if>
+            <if test="locked != null "> 
+                #{locked,jdbcType=NUMERIC},
+            </if>
+            <if test="enabled != null "> 
+                #{enabled,jdbcType=NUMERIC},
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDate != null "> 
+                #{createdDate},
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDate != null "> 
+                #{updatedDate},
+            </if>
+            #{id,jdbcType=INTEGER})
+	</insert>
+
+	<update id="update" parameterType="com.xiaoma.shop.model.User">
+		update sys_users set username=#{username,jdbcType=VARCHAR},password=#{password,jdbcType=VARCHAR},name=#{name,jdbcType=VARCHAR},nickname=#{nickname,jdbcType=VARCHAR},gender=#{gender,jdbcType=NUMERIC},birthday=#{birthday},avatar=#{avatar,jdbcType=VARCHAR},phone=#{phone,jdbcType=VARCHAR},email=#{email,jdbcType=VARCHAR},is_admin=#{isAdmin,jdbcType=NUMERIC},locked=#{locked,jdbcType=NUMERIC},enabled=#{enabled,jdbcType=NUMERIC},created_by=#{createdBy,jdbcType=VARCHAR},created_date=#{createdDate},updated_by=#{updatedBy,jdbcType=VARCHAR},updated_date=#{updatedDate} where id=#{id,jdbcType=INTEGER}
+	</update>	
+	
+	<update id="update4Selective" parameterType="com.xiaoma.shop.model.User">
+		update sys_users
+        <set>
+            <if test="username != null and username != '' "> 
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != '' "> 
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null and name != '' "> 
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null and nickname != '' "> 
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null "> 
+                gender = #{gender,jdbcType=NUMERIC},
+            </if>
+            <if test="birthday != null "> 
+                birthday = #{birthday},
+            </if>
+            <if test="avatar != null and avatar != '' "> 
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != '' "> 
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != '' "> 
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="isAdmin != null "> 
+                is_admin = #{isAdmin,jdbcType=NUMERIC},
+            </if>
+            <if test="locked != null "> 
+                locked = #{locked,jdbcType=NUMERIC},
+            </if>
+            <if test="enabled != null "> 
+                enabled = #{enabled,jdbcType=NUMERIC},
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                created_by = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDate != null "> 
+                created_date = #{createdDate},
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                updated_by = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDate != null "> 
+                updated_date = #{updatedDate},
+            </if>
+        </set>
+         where id=#{id,jdbcType=INTEGER}
+	</update>	
+
+	<delete id="deleteByPrimaryKey">
+		delete from sys_users where id = #{id,jdbcType=INTEGER}
+	</delete>	
+
+	<delete id="delete" parameterType="com.xiaoma.shop.model.User">
+		delete from sys_users
+		<where>
+			<if test="id != null">
+				id = #{id,jdbcType=INTEGER}
+			</if>
+			<include refid="other-condition" />
+		</where>
+	</delete>	
+		
+</mapper>
+
