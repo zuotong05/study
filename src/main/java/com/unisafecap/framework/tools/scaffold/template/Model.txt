@@ -1,7 +1,7 @@
 package ${pkgPath};
 
 import java.io.Serializable;
-import com.unisafecap.framework.model.BaseModel;
+import com.unisafecap.framework.dao.model.BaseModel;
 
 
 /**

@@ -45,9 +45,19 @@ ${likeCondition}
 	</select>
 	
 	<select id="selectCount" resultType="int" >
-		select count(*) from (
-			<include refid="selectByMapSQL" />
-		) AABBCC_
+		select count(*) from ${tblName} 
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
 	</select>
 	
 	<select id="selectPage" resultMap="result" >
@@ -55,13 +65,13 @@ ${likeCondition}
 		 limit #{startRow},#{pageSize}
 	</select>
 	
-	<select id="select" resultMap="result" parameterType="java.lang.Integer">
+	<select id="select" resultMap="result" parameterType="java.lang.Long">
 		select
 		<include refid="base_field" />
 		from ${tblName}  
 		<where>
 			<if test="_parameter != null">
-				id = #{id,jdbcType=INTEGER}
+				id = #{id,jdbcType=BIGINT}
 			</if>
 		</where>
 	</select>
@@ -88,15 +98,24 @@ ${likeCondition}
 		${updateMapModel}
 	</update>	
 
-	<delete id="deleteByPrimaryKey">
-		delete from ${tblName} where id = #{id,jdbcType=INTEGER}
-	</delete>	
-
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ${tblName} where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
+        update ${tblName}        
+        update_time = now(),
+        set yn = 0,
+        version = version + 1
+        where id = #{id,jdbcType=BIGINT}
+        and yn = 1
+    </update>
+    
 	<delete id="delete" parameterType="${modelPath}">
 		delete from ${tblName}
 		<where>
 			<if test="id != null">
-				id = #{id,jdbcType=INTEGER}
+				id = #{id,jdbcType=BIGINT}
 			</if>
 			<include refid="other-condition" />
 		</where>

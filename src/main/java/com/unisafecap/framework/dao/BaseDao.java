@@ -68,6 +68,15 @@ public interface BaseDao<T> {
 	 * @return int
 	 */
 	public int delete(Serializable id);
+	
+	/**
+	 * 根据主键删除
+	 * 
+	 * @param id
+	 * @return int
+	 */
+	public int deleteLogical(Serializable id);
+
 
 	/**
 	 * 根据对象信息删除 例如,传入 对象 User, id=1,name=a , 则删除 id=1,name=a的记录 如果传入对象 User,name=a, 则删除 name=a的记录

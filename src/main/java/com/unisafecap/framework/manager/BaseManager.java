@@ -24,7 +24,7 @@ public abstract class BaseManager<T> {
 	 * @param id
 	 * @return
 	 */
-	public T get(Integer id) {
+	public T get(Long id) {
 		return getBaseDao().get(id);
 	}
 
@@ -74,8 +74,12 @@ public abstract class BaseManager<T> {
 	 * @param o
 	 * @return
 	 */
-	public int delete(Integer id) {
+	public int delete(Long id) {
 		return getBaseDao().delete(id);
+	}
+
+	public int deleteLogical(Long id) {
+		return getBaseDao().deleteLogical(id);
 	}
 
 	/**

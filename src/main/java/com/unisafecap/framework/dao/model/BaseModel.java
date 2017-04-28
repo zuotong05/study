@@ -50,6 +50,9 @@ public class BaseModel implements Serializable {
 	 */
 	private Long version;
 
+	/**
+	 * 是否有效
+	 */
 	private Integer yn;
 
 	public Long getId() {

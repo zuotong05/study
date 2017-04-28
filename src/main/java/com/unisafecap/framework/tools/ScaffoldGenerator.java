@@ -23,7 +23,7 @@ public class ScaffoldGenerator {
 //		generator1.execute();
 //		ScaffoldGen generator2 = new ScaffoldGen("mat", "Category", "资料分类", "yztf_mat_category");
 //		generator2.execute();
-		ScaffoldGen generator3 = new ScaffoldGen("shop", "Cat", "钱包明细", "cat");
+		ScaffoldGen generator3 = new ScaffoldGen("loan", "LoanUser", "个人用户信息", "loan_users");
 		generator3.execute();
 //		ScaffoldGen generator4 = new ScaffoldGen("mat", "Label", "资料标签", "yztf_mat_label");
 //		generator4.execute();

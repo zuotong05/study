@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class TableInfo {
 	private static final String ID = "id";
+	
 	private final String ENDL = "\n";
 	private final String TAB = "    ";
 	private final String TAB2 = TAB + TAB;
@@ -50,9 +51,9 @@ public class TableInfo {
 			columns = new ArrayList<ColumnInfo>();
 		if (!columns.contains(column)) {
 			columns.add(column);
-			String type = column.parseJavaType();
+			String javaType = column.getJavaType();
 			String name = column.parseFieldName();
-			addFiled(new FieldInfo(type, name, column.getComment()));
+			addFiled(new FieldInfo(javaType, name, column.getComment()));
 		}
 	}
 
@@ -119,8 +120,8 @@ public class TableInfo {
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
 			sb.append("#{" + col.parseFieldName());
-			if (!col.parseJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
-				sb.append(",jdbcType=" + col.parseJdbcType());
+			if (!col.getJavaType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
+				sb.append(",jdbcType=" + col.getJdbcType());
 			}
 			sb.append("}");
 			if (i + 1 != columns.size()) {
@@ -137,10 +138,10 @@ public class TableInfo {
 		ColumnInfo col = null;
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
-			if(col.parseJavaType().equals("String")){
-				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != '' \"> " + ENDL);
+			if(col.getJavaType().equals("String")){
+				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != ''\"> " + ENDL);
 			} else {
-				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null \"> " + ENDL);
+				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null\"> " + ENDL);
 				
 			}
 			sb.append(TAB4).append(col.getName()).append(",").append(ENDL);	
@@ -150,15 +151,15 @@ public class TableInfo {
 		sb.append(TAB4).append(primaryKey).append(")values (").append(ENDL);
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
-			if(col.parseJavaType().equals("String")){
-				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != '' \"> " + ENDL);
+			if(col.getJavaType().equals("String")){
+				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != ''\"> " + ENDL);
 			} else {
-				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null \"> " + ENDL);
+				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null\"> " + ENDL);
 				
 			}
 			sb.append(TAB4).append("#{" + col.parseFieldName());
-			if (!col.parseJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
-				sb.append(",jdbcType=" + col.parseJdbcType());
+			if (!col.getJavaType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
+				sb.append(",jdbcType=" + col.getJdbcType());
 			}
 			sb.append("},"+ ENDL);			
 			sb.append(TAB3 + "</if>" + ENDL);
@@ -174,8 +175,8 @@ public class TableInfo {
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
 			sb.append(col.getName() + "=#{" + col.parseFieldName());
-			if (!col.parseJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
-				sb.append(",jdbcType=" + col.parseJdbcType());
+			if (!col.getJavaType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
+				sb.append(",jdbcType=" + col.getJdbcType());
 			}
 			sb.append("}");
 			if (i + 1 != columns.size()) {
@@ -191,13 +192,13 @@ public class TableInfo {
 		sb.append(TAB3);
 		sb.append("<id property=\"id\"");
 		sb.append(" column=\"" + primaryKey + "\"");
-		sb.append(" jdbcType=\"INTEGER\" />");
+		sb.append(" jdbcType=\"BIGINT\" />");
 		sb.append(ENDL);
 		for (ColumnInfo col : columns) {
 			sb.append(TAB3);
 			sb.append("<result property=\"" + col.parseFieldName() + "\" column=\"" + col.getName() + "\"");
-			if (!col.parseJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
-				sb.append(" jdbcType=\"" + col.parseJdbcType() + "\"");
+			if (!col.getJavaType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
+				sb.append(" jdbcType=\"" + col.getJdbcType() + "\"");
 			}
 			sb.append(" />");
 			sb.append(ENDL);
@@ -209,15 +210,15 @@ public class TableInfo {
 		StringBuffer sb = new StringBuffer();
 		for (ColumnInfo col : columns) {
 			sb.append(TAB3);
-			if(col.parseJavaType().equals("String")){
-				sb.append("<if test= \"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != '' and " + col.parseFieldName() + " != 'null' \">");
+			if(col.getJavaType().equals("String")){
+				sb.append("<if test= \"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != ''\">");
 			} else {
-				sb.append("<if test= \"" + col.parseFieldName() + " != null \">");
+				sb.append("<if test= \"" + col.parseFieldName() + " != null\">");
 			}
 
 			sb.append("	and " + col.getName() + " = #{" + col.parseFieldName());
-			if (!col.parseJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
-				sb.append(",jdbcType=" + col.parseJdbcType());
+			if (!col.getJavaType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
+				sb.append(",jdbcType=" + col.getJdbcType());
 			}
 			sb.append(" }");
 			sb.append("</if>");
@@ -230,17 +231,17 @@ public class TableInfo {
 		StringBuffer sb = new StringBuffer();
 		for (ColumnInfo col : columns) {
 			sb.append(TAB3);
-			if(col.parseJavaType().equals("String")){		
-				sb.append("<if test= \"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != '' and " + col.parseFieldName() + " != 'null' \">");
+			if(col.getJavaType().equals("String")){		
+				sb.append("<if test= \"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != ''\">");
 			} else {
 				sb.append("<if test= \"" + col.parseFieldName() + " != null \">");
 			}
-			if(col.parseJavaType().equals("String")){
+			if(col.getJavaType().equals("String")){
 				sb.append("	and " + col.getName() + " like \"%\"#{" + col.parseFieldName() + "}\"%\"");
 			} else {
 				sb.append("	and " + col.getName() + " = #{" + col.parseFieldName());
-				if (!col.parseJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
-					sb.append(",jdbcType=" + col.parseJdbcType());
+				if (!col.getJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
+					sb.append(",jdbcType=" + col.getJdbcType());
 				}
 				sb.append(" }");
 			}
@@ -271,14 +272,14 @@ public class TableInfo {
 		ColumnInfo col = null;
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
-			if(col.parseJavaType().equals("String")){
-				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != '' \"> " + ENDL);
+			if(col.getJavaType().equals("String")){
+				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != ''\"> " + ENDL);
 			} else {
-				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null \"> " + ENDL);				
+				sb.append(TAB3 + "<if test=\"" + col.parseFieldName() + " != null\"> " + ENDL);				
 			}
 			sb.append(TAB4 + col.getName() + " = #{" + col.parseFieldName());
-			if (!col.parseJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
-				sb.append(",jdbcType=" + col.parseJdbcType());
+			if (!col.getJdbcType().equals("DATE")) {// date不使用jdbcType,用于保证年月日,时分秒可用
+				sb.append(",jdbcType=" + col.getJdbcType());
 			}
 			sb.append("}," + ENDL);
 			sb.append(TAB3 + "</if>" + ENDL);

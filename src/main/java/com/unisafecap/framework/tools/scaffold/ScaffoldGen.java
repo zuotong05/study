@@ -173,7 +173,7 @@ public class ScaffoldGen {
 				String comment = rs.getString("REMARKS");
 				ColumnInfo colInfo = new ColumnInfo(columnName, columnType, datasize, digits, nullable, comment);
 				log.info("DB column : " + colInfo);
-				log.info("Java field : " + colInfo.parseFieldName() + " / " + colInfo.parseJavaType());
+				log.info("Java field : " + colInfo.parseFieldName() + " / " + colInfo.getJavaType());
 				tableInfo.addColumn(colInfo);
 			}
 		}

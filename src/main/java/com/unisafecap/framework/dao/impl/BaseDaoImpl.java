@@ -30,6 +30,8 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	public static final String POSTFIX_UPDATE = ".update";
 	public static final String POSTFIX_UPDATE_SELECTIVE = ".update4Selective";
 	public static final String POSTFIX_DELETE_PK = ".deleteByPrimaryKey";
+	public static final String POSTFIX_DELETE_PK_LG = ".deleteByPrimaryKeyLogical";
+
 	public static final String POSTFIX_DELETE = ".delete";
 	public static final String POSTFIX_SELECT_MAP = ".selectByMap";
 	public static final String POSTFIX_SELECT_COUNT = ".selectCount";
@@ -96,6 +98,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	@Override
 	public int delete(Serializable id) {
 		return sqlSession.delete(sqlMapNamespace + POSTFIX_DELETE_PK, id);
+	}
+
+	@Override
+	public int deleteLogical(Serializable id) {
+		return sqlSession.update(sqlMapNamespace + POSTFIX_DELETE_PK_LG, id);
 	}
 
 	@Override

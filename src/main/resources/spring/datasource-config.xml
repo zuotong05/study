@@ -94,7 +94,7 @@
 
 	<!-- set class -->
 	<aop:config>
-	    <aop:pointcut id="managerOperation" expression="execution(* com.unisafecap.*.service.*Service.*(..)) or execution (* com.unisafecap.*.*.service.*Service.*(..))"/>
+	    <aop:pointcut id="managerOperation" expression="execution(* com.unisafecap.*.manager.*Manager.*(..)) or execution (* com.unisafecap.*.*.manager.*Manager.*(..))"/>
 	    <aop:advisor pointcut-ref="managerOperation" advice-ref="txAdvice"/>
     </aop:config>
 	

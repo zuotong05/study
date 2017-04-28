@@ -1,19 +1,29 @@
 package com.unisafecap.framework.tools.scaffold;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ColumnInfo {
+
+	public static Map<String, String> dbTypeToJdbcType = new HashMap<String, String>();
+
 	private String name;
-	private String type;
+	public String dbType;
+	public String jdbcType;
+	public String javaType;
 	private int size;
 	private int digits;
 	private boolean nullable;
 	private String comment;
 	private final WordsParser wordsParser;
 
-	public ColumnInfo(String name, String type, int size, int decimalDigits, int nullable,String comment) {
+	static {
+		dbTypeToJdbcType.put("int", "integer");
+	}
+
+	public ColumnInfo(String name, String dbType, int size, int decimalDigits, int nullable, String comment) {
 		this.name = name;
-		this.type = type;
+		this.dbType = dbType;
 		this.size = size;
 		this.digits = decimalDigits;
 		if (nullable == 1)
@@ -34,12 +44,26 @@ public class ColumnInfo {
 		this.name = name;
 	}
 
-	public String getType() {
-		return type;
+	public String getDbType() {
+		return dbType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setDbType(String dbType) {
+		this.dbType = dbType;
+	}
+
+	public String getJdbcType() {
+		jdbcType = dbTypeToJdbcType.get(dbType.toLowerCase());
+		return jdbcType == null ? dbType : jdbcType.toUpperCase();
+	}
+
+	public String getJavaType() {
+		javaType = TypeUtils.fromDbType2JavaType(dbType);
+		return javaType;
+	}
+
+	public WordsParser getWordsParser() {
+		return wordsParser;
 	}
 
 	public int getSize() {
@@ -74,45 +98,12 @@ public class ColumnInfo {
 		this.comment = comment;
 	}
 
-	public String parseJavaType() {
-		String jdbcType = StringUtils.upperCase(getType());
-		String result = "Integer";
-		if (jdbcType.contains("CHAR")||jdbcType.contains("TEXT")||jdbcType.contains("CLOB")) {
-			result = "String";
-		}		
-		if (jdbcType.contains("BIGINT")) {
-			result = "Long";
-		}
-		if (jdbcType.contains("DATE")||jdbcType.contains("TIMESTAMP")) {
-			result = "java.util.Date";
-		}
-		if (jdbcType.contains("DECIMAL") || getDigits() > 0) {
-			result = "java.math.BigDecimal";
-		}
-		return result;
-	}
-
-	public String parseJdbcType() {
-		String javaType = parseJavaType();
-		String result = "NUMERIC";
-		if ("String".equals(javaType)) {
-			result = "VARCHAR";
-		}
-		if (javaType.equalsIgnoreCase("int")) {
-			result = "INTEGER";
-		}
-		if (javaType.endsWith("Date")) {
-			result = "DATE";
-		}
-		return result;
-	}
-
 	public String parseFieldName() {
 		return wordsParser.parseWords(name);
 	}
 
 	@Override
 	public String toString() {
-		return name + " " + type + " " + size + " " + digits + " " + nullable+ " " + comment;
+		return name + " " + dbType + " " + size + " " + digits + " " + nullable + " " + comment;
 	}
 }
