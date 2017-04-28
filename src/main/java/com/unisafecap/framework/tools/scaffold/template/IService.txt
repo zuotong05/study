@@ -1,0 +1,72 @@
+package ${pkgPath};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.unisafecap.framework.manager.BaseManager;
+import com.unisafecap.framework.dao.BaseDao;
+import ${daoPath};
+import ${modelPath};
+
+/**
+ * <P>
+ * ${clzComment}接口定义
+ * </P>
+ * 
+ * @author ${clzAuthor}
+ * @since ${clzCreateDate}
+ * @version V1.0  
+ */
+
+public interface I${clzName}Service {
+	
+	/**
+	 *
+	 * @param ver 版本号,默认是1
+	 * @param systemId 系统标识
+	 * @param channel 来源渠道
+	 * @param jsonPara 参数json串
+     * @return
+     */
+	public Response<BooleanResult> create${clzName}(Integer ver, Integer systemId, EmRequestSource channel, String jsonPara);
+
+	/**
+	 *
+	 * @param ver 版本号,默认是1
+	 * @param systemId 系统标识
+	 * @param channel 来源渠道
+	 * @param jsonPara 参数json串
+     * @return
+     */
+	public Response<BooleanResult> delete${clzName}(Integer ver, Integer systemId, EmRequestSource channel, String jsonPara);
+
+	/**
+	 *
+	 * @param ver 版本号,默认是1
+	 * @param systemId 系统标识
+	 * @param channel 来源渠道
+	 * @param jsonPara 参数json串
+     * @return
+     */
+	public Response<BooleanResult> update${clzName}(Integer ver, Integer systemId, EmRequestSource channel, String jsonPara);
+
+	/**
+	 *
+	 * @param ver 版本号,默认是1
+	 * @param systemId 系统标识
+	 * @param channel 来源渠道
+	 * @param jsonPara 参数json串
+     * @return
+     */
+	public Response<TableLikeResult<FindCatResult>> find${clzName}(Integer ver, Integer systemId, EmRequestSource channel, String jsonPara);
+
+	/**
+	 *
+	 * @param ver 版本号,默认是1
+	 * @param systemId 系统标识
+	 * @param channel 来源渠道
+	 * @param jsonPara 参数json串
+     * @return
+     */
+	public Response<FindCatResult> find${clzName}ByID(Integer ver, Integer systemId, EmRequestSource channel, String jsonPara);
+}

@@ -1,0 +1,23 @@
+package ${pkgPath};
+
+import java.io.Serializable;
+import com.unisafecap.framework.model.BaseModel;
+
+
+/**
+ * <P>
+ * ${clzComment}
+ * </P>
+ *  
+ * @author ${clzAuthor}
+ * @since ${clzCreateDate}
+ * @version V1.0  
+ */
+public class ${clzName} extends BaseModel implements Serializable {
+${fieldsDeclareInfo}
+	public ${clzName}() {
+		super();
+	}
+	
+${fieldsGettersAndSettersInfo}
+}

@@ -1,0 +1,18 @@
+package ${pkgPath};
+
+import com.unisafecap.framework.dao.BaseDao;
+import ${modelPath};
+
+/**
+ * <P>
+ * ${clzComment}Dao
+ * </P> 
+ * 
+ * @author ${clzAuthor}
+ * @since ${clzCreateDate}
+ * @version V1.0  
+ */
+public interface ${clzName}Dao extends BaseDao<${clzName}>{
+
+}
+
