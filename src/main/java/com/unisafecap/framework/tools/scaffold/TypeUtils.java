@@ -46,6 +46,7 @@ public class TypeUtils {
         dbType2JavaType.put("text","String");    
         dbType2JavaType.put("bigint","Long");
         dbType2JavaType.put("tinyint","Integer");
+        dbType2JavaType.put("smallint","Integer");
         dbType2JavaType.put("int","Integer");
         dbType2JavaType.put("decimal","java.math.BigDecimal");
         dbType2JavaType.put("date","java.util.Date");

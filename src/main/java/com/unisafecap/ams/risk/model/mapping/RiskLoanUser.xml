@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.unisafecap.ams.risk.model.RiskLoanUser">
+
+	<resultMap id="result" type="com.unisafecap.ams.risk.model.RiskLoanUser">
+            <id property="id" column="id" jdbcType="BIGINT" />
+            <result property="loadApplyId" column="load_apply_id" jdbcType="BIGINT" />
+            <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
+            <result property="contractNo" column="contract_no" jdbcType="VARCHAR" />
+            <result property="customerName" column="customer_name" jdbcType="VARCHAR" />
+            <result property="certType" column="cert_type" jdbcType="VARCHAR" />
+            <result property="certId" column="cert_id" jdbcType="VARCHAR" />
+            <result property="handPhone" column="hand_phone" jdbcType="VARCHAR" />
+            <result property="phone" column="phone" jdbcType="VARCHAR" />
+            <result property="postalZip" column="postal_zip" jdbcType="VARCHAR" />
+            <result property="commAdd" column="comm_add" jdbcType="VARCHAR" />
+            <result property="email" column="email" jdbcType="VARCHAR" />
+            <result property="marriage" column="marriage" jdbcType="VARCHAR" />
+            <result property="eduexperience" column="eduexperience" jdbcType="VARCHAR" />
+            <result property="nativePlace" column="native_place" jdbcType="VARCHAR" />
+            <result property="nativePlaceAdd" column="native_place_add" jdbcType="VARCHAR" />
+            <result property="selfMonthIncome" column="self_month_income" jdbcType="DECIMAL" />
+            <result property="familyAdd" column="family_add" jdbcType="VARCHAR" />
+            <result property="familyZip" column="family_zip" jdbcType="VARCHAR" />
+            <result property="familyTel" column="family_tel" jdbcType="VARCHAR" />
+            <result property="peroccupation" column="peroccupation" jdbcType="VARCHAR" />
+            <result property="workCorp" column="work_corp" jdbcType="VARCHAR" />
+            <result property="unitKind" column="unit_kind" jdbcType="VARCHAR" />
+            <result property="workAdd" column="work_add" jdbcType="VARCHAR" />
+            <result property="workZip" column="work_zip" jdbcType="VARCHAR" />
+            <result property="workBeginDate" column="work_begin_date" jdbcType="VARCHAR" />
+            <result property="occupation" column="occupation" jdbcType="VARCHAR" />
+            <result property="position" column="position" jdbcType="VARCHAR" />
+            <result property="userNetAssets" column="user_net_assets" jdbcType="DECIMAL" />
+            <result property="userHouseBalue" column="user_house_balue" jdbcType="DECIMAL" />
+            <result property="userHouseArea" column="user_house_area" jdbcType="DECIMAL" />
+            <result property="realEstateType" column="real_estate_type" jdbcType="VARCHAR" />
+            <result property="remark1" column="remark1" jdbcType="VARCHAR" />
+            <result property="remark2" column="remark2" jdbcType="VARCHAR" />
+            <result property="remark3" column="remark3" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<sql id="base_field">
+		id,load_apply_id,trust_project_code,contract_no,customer_name,cert_type,cert_id,hand_phone,phone,postal_zip,comm_add,email,marriage,eduexperience,native_place,native_place_add,self_month_income,family_add,family_zip,family_tel,peroccupation,work_corp,unit_kind,work_add,work_zip,work_begin_date,occupation,position,user_net_assets,user_house_balue,user_house_area,real_estate_type,remark1,remark2,remark3
+	</sql>
+	
+	<sql id="other-condition">
+            <if test= "loadApplyId != null ">	and load_apply_id = #{loadApplyId,jdbcType=BIGINT }</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
+            <if test= "contractNo != null and contractNo != '' ">	and contract_no = #{contractNo,jdbcType=VARCHAR }</if>
+            <if test= "customerName != null and customerName != '' ">	and customer_name = #{customerName,jdbcType=VARCHAR }</if>
+            <if test= "certType != null and certType != '' ">	and cert_type = #{certType,jdbcType=VARCHAR }</if>
+            <if test= "certId != null and certId != '' ">	and cert_id = #{certId,jdbcType=VARCHAR }</if>
+            <if test= "handPhone != null and handPhone != '' ">	and hand_phone = #{handPhone,jdbcType=VARCHAR }</if>
+            <if test= "phone != null and phone != '' ">	and phone = #{phone,jdbcType=VARCHAR }</if>
+            <if test= "postalZip != null and postalZip != '' ">	and postal_zip = #{postalZip,jdbcType=VARCHAR }</if>
+            <if test= "commAdd != null and commAdd != '' ">	and comm_add = #{commAdd,jdbcType=VARCHAR }</if>
+            <if test= "email != null and email != '' ">	and email = #{email,jdbcType=VARCHAR }</if>
+            <if test= "marriage != null and marriage != '' ">	and marriage = #{marriage,jdbcType=VARCHAR }</if>
+            <if test= "eduexperience != null and eduexperience != '' ">	and eduexperience = #{eduexperience,jdbcType=VARCHAR }</if>
+            <if test= "nativePlace != null and nativePlace != '' ">	and native_place = #{nativePlace,jdbcType=VARCHAR }</if>
+            <if test= "nativePlaceAdd != null and nativePlaceAdd != '' ">	and native_place_add = #{nativePlaceAdd,jdbcType=VARCHAR }</if>
+            <if test= "selfMonthIncome != null ">	and self_month_income = #{selfMonthIncome,jdbcType=DECIMAL }</if>
+            <if test= "familyAdd != null and familyAdd != '' ">	and family_add = #{familyAdd,jdbcType=VARCHAR }</if>
+            <if test= "familyZip != null and familyZip != '' ">	and family_zip = #{familyZip,jdbcType=VARCHAR }</if>
+            <if test= "familyTel != null and familyTel != '' ">	and family_tel = #{familyTel,jdbcType=VARCHAR }</if>
+            <if test= "peroccupation != null and peroccupation != '' ">	and peroccupation = #{peroccupation,jdbcType=VARCHAR }</if>
+            <if test= "workCorp != null and workCorp != '' ">	and work_corp = #{workCorp,jdbcType=VARCHAR }</if>
+            <if test= "unitKind != null and unitKind != '' ">	and unit_kind = #{unitKind,jdbcType=VARCHAR }</if>
+            <if test= "workAdd != null and workAdd != '' ">	and work_add = #{workAdd,jdbcType=VARCHAR }</if>
+            <if test= "workZip != null and workZip != '' ">	and work_zip = #{workZip,jdbcType=VARCHAR }</if>
+            <if test= "workBeginDate != null and workBeginDate != '' ">	and work_begin_date = #{workBeginDate,jdbcType=VARCHAR }</if>
+            <if test= "occupation != null and occupation != '' ">	and occupation = #{occupation,jdbcType=VARCHAR }</if>
+            <if test= "position != null and position != '' ">	and position = #{position,jdbcType=VARCHAR }</if>
+            <if test= "userNetAssets != null ">	and user_net_assets = #{userNetAssets,jdbcType=DECIMAL }</if>
+            <if test= "userHouseBalue != null ">	and user_house_balue = #{userHouseBalue,jdbcType=DECIMAL }</if>
+            <if test= "userHouseArea != null ">	and user_house_area = #{userHouseArea,jdbcType=DECIMAL }</if>
+            <if test= "realEstateType != null and realEstateType != '' ">	and real_estate_type = #{realEstateType,jdbcType=VARCHAR }</if>
+            <if test= "remark1 != null and remark1 != '' ">	and remark1 = #{remark1,jdbcType=VARCHAR }</if>
+            <if test= "remark2 != null and remark2 != '' ">	and remark2 = #{remark2,jdbcType=VARCHAR }</if>
+            <if test= "remark3 != null and remark3 != '' ">	and remark3 = #{remark3,jdbcType=VARCHAR }</if>
+
+ 	</sql>
+ 	
+ 	<sql id="like-condition">
+            <if test= "loadApplyId != null ">	and load_apply_id = #{loadApplyId,jdbcType=BIGINT }</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
+            <if test= "contractNo != null and contractNo != '' ">	and contract_no like "%"#{contractNo}"%"</if>
+            <if test= "customerName != null and customerName != '' ">	and customer_name like "%"#{customerName}"%"</if>
+            <if test= "certType != null and certType != '' ">	and cert_type like "%"#{certType}"%"</if>
+            <if test= "certId != null and certId != '' ">	and cert_id like "%"#{certId}"%"</if>
+            <if test= "handPhone != null and handPhone != '' ">	and hand_phone like "%"#{handPhone}"%"</if>
+            <if test= "phone != null and phone != '' ">	and phone like "%"#{phone}"%"</if>
+            <if test= "postalZip != null and postalZip != '' ">	and postal_zip like "%"#{postalZip}"%"</if>
+            <if test= "commAdd != null and commAdd != '' ">	and comm_add like "%"#{commAdd}"%"</if>
+            <if test= "email != null and email != '' ">	and email like "%"#{email}"%"</if>
+            <if test= "marriage != null and marriage != '' ">	and marriage like "%"#{marriage}"%"</if>
+            <if test= "eduexperience != null and eduexperience != '' ">	and eduexperience like "%"#{eduexperience}"%"</if>
+            <if test= "nativePlace != null and nativePlace != '' ">	and native_place like "%"#{nativePlace}"%"</if>
+            <if test= "nativePlaceAdd != null and nativePlaceAdd != '' ">	and native_place_add like "%"#{nativePlaceAdd}"%"</if>
+            <if test= "selfMonthIncome != null ">	and self_month_income = #{selfMonthIncome,jdbcType=DECIMAL }</if>
+            <if test= "familyAdd != null and familyAdd != '' ">	and family_add like "%"#{familyAdd}"%"</if>
+            <if test= "familyZip != null and familyZip != '' ">	and family_zip like "%"#{familyZip}"%"</if>
+            <if test= "familyTel != null and familyTel != '' ">	and family_tel like "%"#{familyTel}"%"</if>
+            <if test= "peroccupation != null and peroccupation != '' ">	and peroccupation like "%"#{peroccupation}"%"</if>
+            <if test= "workCorp != null and workCorp != '' ">	and work_corp like "%"#{workCorp}"%"</if>
+            <if test= "unitKind != null and unitKind != '' ">	and unit_kind like "%"#{unitKind}"%"</if>
+            <if test= "workAdd != null and workAdd != '' ">	and work_add like "%"#{workAdd}"%"</if>
+            <if test= "workZip != null and workZip != '' ">	and work_zip like "%"#{workZip}"%"</if>
+            <if test= "workBeginDate != null and workBeginDate != '' ">	and work_begin_date like "%"#{workBeginDate}"%"</if>
+            <if test= "occupation != null and occupation != '' ">	and occupation like "%"#{occupation}"%"</if>
+            <if test= "position != null and position != '' ">	and position like "%"#{position}"%"</if>
+            <if test= "userNetAssets != null ">	and user_net_assets = #{userNetAssets,jdbcType=DECIMAL }</if>
+            <if test= "userHouseBalue != null ">	and user_house_balue = #{userHouseBalue,jdbcType=DECIMAL }</if>
+            <if test= "userHouseArea != null ">	and user_house_area = #{userHouseArea,jdbcType=DECIMAL }</if>
+            <if test= "realEstateType != null and realEstateType != '' ">	and real_estate_type like "%"#{realEstateType}"%"</if>
+            <if test= "remark1 != null and remark1 != '' ">	and remark1 like "%"#{remark1}"%"</if>
+            <if test= "remark2 != null and remark2 != '' ">	and remark2 like "%"#{remark2}"%"</if>
+            <if test= "remark3 != null and remark3 != '' ">	and remark3 like "%"#{remark3}"%"</if>
+
+ 	</sql>
+	
+	<sql id="selectByMapSQL">
+		select
+		<include refid="base_field" />
+		from risk_loan_user
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+		<if test="sortName != null and sortName != '' and sortName != 'null'">
+			order by ${sortName} ${sortBy}
+		</if>
+	</sql>
+	
+	<select id="selectByMap" resultMap="result" >
+		<include refid="selectByMapSQL" />
+	</select>
+	
+	<select id="selectCount" resultType="int" >
+		select count(*) from risk_loan_user 
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+	</select>
+	
+	<select id="selectPage" resultMap="result" >
+		<include refid="selectByMapSQL" />
+		 limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="select" resultMap="result" parameterType="java.lang.Long">
+		select
+		<include refid="base_field" />
+		from risk_loan_user  
+		<where>
+			<if test="_parameter != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByIds" resultMap="result" >
+		select
+		<include refid="base_field" />
+		from risk_loan_user  where id in (${_parameter})
+	</select>		
+
+	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_loan_user( id,load_apply_id,trust_project_code,contract_no,customer_name,cert_type,cert_id,hand_phone,phone,postal_zip,comm_add,email,marriage,eduexperience,native_place,native_place_add,self_month_income,family_add,family_zip,family_tel,peroccupation,work_corp,unit_kind,work_add,work_zip,work_begin_date,occupation,position,user_net_assets,user_house_balue,user_house_area,real_estate_type,remark1,remark2,remark3 ) values (#{id,jdbcType=BIGINT},#{loadApplyId,jdbcType=BIGINT},#{trustProjectCode,jdbcType=VARCHAR},#{contractNo,jdbcType=VARCHAR},#{customerName,jdbcType=VARCHAR},#{certType,jdbcType=VARCHAR},#{certId,jdbcType=VARCHAR},#{handPhone,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{postalZip,jdbcType=VARCHAR},#{commAdd,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{marriage,jdbcType=VARCHAR},#{eduexperience,jdbcType=VARCHAR},#{nativePlace,jdbcType=VARCHAR},#{nativePlaceAdd,jdbcType=VARCHAR},#{selfMonthIncome,jdbcType=DECIMAL},#{familyAdd,jdbcType=VARCHAR},#{familyZip,jdbcType=VARCHAR},#{familyTel,jdbcType=VARCHAR},#{peroccupation,jdbcType=VARCHAR},#{workCorp,jdbcType=VARCHAR},#{unitKind,jdbcType=VARCHAR},#{workAdd,jdbcType=VARCHAR},#{workZip,jdbcType=VARCHAR},#{workBeginDate,jdbcType=VARCHAR},#{occupation,jdbcType=VARCHAR},#{position,jdbcType=VARCHAR},#{userNetAssets,jdbcType=DECIMAL},#{userHouseBalue,jdbcType=DECIMAL},#{userHouseArea,jdbcType=DECIMAL},#{realEstateType,jdbcType=VARCHAR},#{remark1,jdbcType=VARCHAR},#{remark2,jdbcType=VARCHAR},#{remark3,jdbcType=VARCHAR} )
+	</insert>
+	
+	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_loan_user(
+            <if test="loadApplyId != null "> 
+                load_apply_id,
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code,
+            </if>
+            <if test="contractNo != null and contractNo != '' "> 
+                contract_no,
+            </if>
+            <if test="customerName != null and customerName != '' "> 
+                customer_name,
+            </if>
+            <if test="certType != null and certType != '' "> 
+                cert_type,
+            </if>
+            <if test="certId != null and certId != '' "> 
+                cert_id,
+            </if>
+            <if test="handPhone != null and handPhone != '' "> 
+                hand_phone,
+            </if>
+            <if test="phone != null and phone != '' "> 
+                phone,
+            </if>
+            <if test="postalZip != null and postalZip != '' "> 
+                postal_zip,
+            </if>
+            <if test="commAdd != null and commAdd != '' "> 
+                comm_add,
+            </if>
+            <if test="email != null and email != '' "> 
+                email,
+            </if>
+            <if test="marriage != null and marriage != '' "> 
+                marriage,
+            </if>
+            <if test="eduexperience != null and eduexperience != '' "> 
+                eduexperience,
+            </if>
+            <if test="nativePlace != null and nativePlace != '' "> 
+                native_place,
+            </if>
+            <if test="nativePlaceAdd != null and nativePlaceAdd != '' "> 
+                native_place_add,
+            </if>
+            <if test="selfMonthIncome != null "> 
+                self_month_income,
+            </if>
+            <if test="familyAdd != null and familyAdd != '' "> 
+                family_add,
+            </if>
+            <if test="familyZip != null and familyZip != '' "> 
+                family_zip,
+            </if>
+            <if test="familyTel != null and familyTel != '' "> 
+                family_tel,
+            </if>
+            <if test="peroccupation != null and peroccupation != '' "> 
+                peroccupation,
+            </if>
+            <if test="workCorp != null and workCorp != '' "> 
+                work_corp,
+            </if>
+            <if test="unitKind != null and unitKind != '' "> 
+                unit_kind,
+            </if>
+            <if test="workAdd != null and workAdd != '' "> 
+                work_add,
+            </if>
+            <if test="workZip != null and workZip != '' "> 
+                work_zip,
+            </if>
+            <if test="workBeginDate != null and workBeginDate != '' "> 
+                work_begin_date,
+            </if>
+            <if test="occupation != null and occupation != '' "> 
+                occupation,
+            </if>
+            <if test="position != null and position != '' "> 
+                position,
+            </if>
+            <if test="userNetAssets != null "> 
+                user_net_assets,
+            </if>
+            <if test="userHouseBalue != null "> 
+                user_house_balue,
+            </if>
+            <if test="userHouseArea != null "> 
+                user_house_area,
+            </if>
+            <if test="realEstateType != null and realEstateType != '' "> 
+                real_estate_type,
+            </if>
+            <if test="remark1 != null and remark1 != '' "> 
+                remark1,
+            </if>
+            <if test="remark2 != null and remark2 != '' "> 
+                remark2,
+            </if>
+            <if test="remark3 != null and remark3 != '' "> 
+                remark3,
+            </if>
+                id)values (
+            <if test="loadApplyId != null "> 
+                #{loadApplyId,jdbcType=BIGINT},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="contractNo != null and contractNo != '' "> 
+                #{contractNo,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null and customerName != '' "> 
+                #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="certType != null and certType != '' "> 
+                #{certType,jdbcType=VARCHAR},
+            </if>
+            <if test="certId != null and certId != '' "> 
+                #{certId,jdbcType=VARCHAR},
+            </if>
+            <if test="handPhone != null and handPhone != '' "> 
+                #{handPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != '' "> 
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="postalZip != null and postalZip != '' "> 
+                #{postalZip,jdbcType=VARCHAR},
+            </if>
+            <if test="commAdd != null and commAdd != '' "> 
+                #{commAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != '' "> 
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="marriage != null and marriage != '' "> 
+                #{marriage,jdbcType=VARCHAR},
+            </if>
+            <if test="eduexperience != null and eduexperience != '' "> 
+                #{eduexperience,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null and nativePlace != '' "> 
+                #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlaceAdd != null and nativePlaceAdd != '' "> 
+                #{nativePlaceAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="selfMonthIncome != null "> 
+                #{selfMonthIncome,jdbcType=DECIMAL},
+            </if>
+            <if test="familyAdd != null and familyAdd != '' "> 
+                #{familyAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="familyZip != null and familyZip != '' "> 
+                #{familyZip,jdbcType=VARCHAR},
+            </if>
+            <if test="familyTel != null and familyTel != '' "> 
+                #{familyTel,jdbcType=VARCHAR},
+            </if>
+            <if test="peroccupation != null and peroccupation != '' "> 
+                #{peroccupation,jdbcType=VARCHAR},
+            </if>
+            <if test="workCorp != null and workCorp != '' "> 
+                #{workCorp,jdbcType=VARCHAR},
+            </if>
+            <if test="unitKind != null and unitKind != '' "> 
+                #{unitKind,jdbcType=VARCHAR},
+            </if>
+            <if test="workAdd != null and workAdd != '' "> 
+                #{workAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="workZip != null and workZip != '' "> 
+                #{workZip,jdbcType=VARCHAR},
+            </if>
+            <if test="workBeginDate != null and workBeginDate != '' "> 
+                #{workBeginDate,jdbcType=VARCHAR},
+            </if>
+            <if test="occupation != null and occupation != '' "> 
+                #{occupation,jdbcType=VARCHAR},
+            </if>
+            <if test="position != null and position != '' "> 
+                #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="userNetAssets != null "> 
+                #{userNetAssets,jdbcType=DECIMAL},
+            </if>
+            <if test="userHouseBalue != null "> 
+                #{userHouseBalue,jdbcType=DECIMAL},
+            </if>
+            <if test="userHouseArea != null "> 
+                #{userHouseArea,jdbcType=DECIMAL},
+            </if>
+            <if test="realEstateType != null and realEstateType != '' "> 
+                #{realEstateType,jdbcType=VARCHAR},
+            </if>
+            <if test="remark1 != null and remark1 != '' "> 
+                #{remark1,jdbcType=VARCHAR},
+            </if>
+            <if test="remark2 != null and remark2 != '' "> 
+                #{remark2,jdbcType=VARCHAR},
+            </if>
+            <if test="remark3 != null and remark3 != '' "> 
+                #{remark3,jdbcType=VARCHAR},
+            </if>
+            #{id,jdbcType=BIGINT})
+	</insert>
+
+	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser">
+		update risk_loan_user set load_apply_id=#{loadApplyId,jdbcType=BIGINT},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},contract_no=#{contractNo,jdbcType=VARCHAR},customer_name=#{customerName,jdbcType=VARCHAR},cert_type=#{certType,jdbcType=VARCHAR},cert_id=#{certId,jdbcType=VARCHAR},hand_phone=#{handPhone,jdbcType=VARCHAR},phone=#{phone,jdbcType=VARCHAR},postal_zip=#{postalZip,jdbcType=VARCHAR},comm_add=#{commAdd,jdbcType=VARCHAR},email=#{email,jdbcType=VARCHAR},marriage=#{marriage,jdbcType=VARCHAR},eduexperience=#{eduexperience,jdbcType=VARCHAR},native_place=#{nativePlace,jdbcType=VARCHAR},native_place_add=#{nativePlaceAdd,jdbcType=VARCHAR},self_month_income=#{selfMonthIncome,jdbcType=DECIMAL},family_add=#{familyAdd,jdbcType=VARCHAR},family_zip=#{familyZip,jdbcType=VARCHAR},family_tel=#{familyTel,jdbcType=VARCHAR},peroccupation=#{peroccupation,jdbcType=VARCHAR},work_corp=#{workCorp,jdbcType=VARCHAR},unit_kind=#{unitKind,jdbcType=VARCHAR},work_add=#{workAdd,jdbcType=VARCHAR},work_zip=#{workZip,jdbcType=VARCHAR},work_begin_date=#{workBeginDate,jdbcType=VARCHAR},occupation=#{occupation,jdbcType=VARCHAR},position=#{position,jdbcType=VARCHAR},user_net_assets=#{userNetAssets,jdbcType=DECIMAL},user_house_balue=#{userHouseBalue,jdbcType=DECIMAL},user_house_area=#{userHouseArea,jdbcType=DECIMAL},real_estate_type=#{realEstateType,jdbcType=VARCHAR},remark1=#{remark1,jdbcType=VARCHAR},remark2=#{remark2,jdbcType=VARCHAR},remark3=#{remark3,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+	</update>	
+	
+	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser">
+		update risk_loan_user
+        <set>
+            <if test="loadApplyId != null "> 
+                load_apply_id = #{loadApplyId,jdbcType=BIGINT},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="contractNo != null and contractNo != '' "> 
+                contract_no = #{contractNo,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null and customerName != '' "> 
+                customer_name = #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="certType != null and certType != '' "> 
+                cert_type = #{certType,jdbcType=VARCHAR},
+            </if>
+            <if test="certId != null and certId != '' "> 
+                cert_id = #{certId,jdbcType=VARCHAR},
+            </if>
+            <if test="handPhone != null and handPhone != '' "> 
+                hand_phone = #{handPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != '' "> 
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="postalZip != null and postalZip != '' "> 
+                postal_zip = #{postalZip,jdbcType=VARCHAR},
+            </if>
+            <if test="commAdd != null and commAdd != '' "> 
+                comm_add = #{commAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != '' "> 
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="marriage != null and marriage != '' "> 
+                marriage = #{marriage,jdbcType=VARCHAR},
+            </if>
+            <if test="eduexperience != null and eduexperience != '' "> 
+                eduexperience = #{eduexperience,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null and nativePlace != '' "> 
+                native_place = #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlaceAdd != null and nativePlaceAdd != '' "> 
+                native_place_add = #{nativePlaceAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="selfMonthIncome != null "> 
+                self_month_income = #{selfMonthIncome,jdbcType=DECIMAL},
+            </if>
+            <if test="familyAdd != null and familyAdd != '' "> 
+                family_add = #{familyAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="familyZip != null and familyZip != '' "> 
+                family_zip = #{familyZip,jdbcType=VARCHAR},
+            </if>
+            <if test="familyTel != null and familyTel != '' "> 
+                family_tel = #{familyTel,jdbcType=VARCHAR},
+            </if>
+            <if test="peroccupation != null and peroccupation != '' "> 
+                peroccupation = #{peroccupation,jdbcType=VARCHAR},
+            </if>
+            <if test="workCorp != null and workCorp != '' "> 
+                work_corp = #{workCorp,jdbcType=VARCHAR},
+            </if>
+            <if test="unitKind != null and unitKind != '' "> 
+                unit_kind = #{unitKind,jdbcType=VARCHAR},
+            </if>
+            <if test="workAdd != null and workAdd != '' "> 
+                work_add = #{workAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="workZip != null and workZip != '' "> 
+                work_zip = #{workZip,jdbcType=VARCHAR},
+            </if>
+            <if test="workBeginDate != null and workBeginDate != '' "> 
+                work_begin_date = #{workBeginDate,jdbcType=VARCHAR},
+            </if>
+            <if test="occupation != null and occupation != '' "> 
+                occupation = #{occupation,jdbcType=VARCHAR},
+            </if>
+            <if test="position != null and position != '' "> 
+                position = #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="userNetAssets != null "> 
+                user_net_assets = #{userNetAssets,jdbcType=DECIMAL},
+            </if>
+            <if test="userHouseBalue != null "> 
+                user_house_balue = #{userHouseBalue,jdbcType=DECIMAL},
+            </if>
+            <if test="userHouseArea != null "> 
+                user_house_area = #{userHouseArea,jdbcType=DECIMAL},
+            </if>
+            <if test="realEstateType != null and realEstateType != '' "> 
+                real_estate_type = #{realEstateType,jdbcType=VARCHAR},
+            </if>
+            <if test="remark1 != null and remark1 != '' "> 
+                remark1 = #{remark1,jdbcType=VARCHAR},
+            </if>
+            <if test="remark2 != null and remark2 != '' "> 
+                remark2 = #{remark2,jdbcType=VARCHAR},
+            </if>
+            <if test="remark3 != null and remark3 != '' "> 
+                remark3 = #{remark3,jdbcType=VARCHAR},
+            </if>
+        </set>
+         where id=#{id,jdbcType=BIGINT}
+	</update>	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from risk_loan_user where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
+        update risk_loan_user        
+        update_time = now(),
+        set yn = 0,
+        version = version + 1
+        where id = #{id,jdbcType=BIGINT}
+        and yn = 1
+    </update>
+    
+	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser">
+		delete from risk_loan_user
+		<where>
+			<if test="id != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+			<include refid="other-condition" />
+		</where>
+	</delete>	
+		
+</mapper>
+

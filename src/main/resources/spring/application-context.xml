@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Repository and Service layers
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"> 
+
+
+    <import resource="spring-mybatis.xml"/>       
+	<!-- 获取spring上下文 的util类 -->
+	<bean id="springContextUtil" class="com.unisafecap.framework.common.utils.SpringContextUtil"/>
+	
+    <context:component-scan base-package="com.unisafecap">              
+    </context:component-scan>
+
+    <context:property-placeholder location="classpath:spring/jdbc.properties" system-properties-mode="OVERRIDE"/>
+
+  
+    <tx:annotation-driven/>
+
+</beans>

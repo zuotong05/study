@@ -15,13 +15,7 @@
   http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
   http://www.springframework.org/schema/tx 
   http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-	<!-- 自动扫描 -->
-	<context:component-scan base-package="com.unisafecap.*">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
 	
-	<!-- 获取spring上下文 的util类 -->
-	<bean id="springContextUtil" class="com.unisafecap.framework.common.utils.SpringContextHolder"/>
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -61,7 +55,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描mapping.xml文件 -->
-		<property name="mapperLocations" value="classpath*:com/unisafecap/**/model/mapping/*.xml"></property>
+		<property name="mapperLocations" value="classpath*:com/unisafecap/**/model/mapping/*.xml"></property>	
 	</bean>
 	
 	<!-- basedao使用 -->
@@ -88,6 +82,7 @@
 			<tx:method name="find*" read-only="true" />
 			<tx:method name="check*" read-only="true" />
 			<!-- other methods use the default transaction settings  -->
+					
 			<tx:method name="*" rollback-for="Exception"/>	<!-- all exception rollback -->
     	</tx:attributes>
     </tx:advice>

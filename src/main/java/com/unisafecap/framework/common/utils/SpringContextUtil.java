@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContextAware;
  * @since 2017年1月24日
  * @version V1.0 
  */
-public class SpringContextHolder implements ApplicationContextAware {
+public class SpringContextUtil implements ApplicationContextAware {
 
 	
 
@@ -25,7 +25,7 @@ public class SpringContextHolder implements ApplicationContextAware {
 	 * @param applicationContext
 	 */
 	public void setApplicationContext(ApplicationContext applicationContext) {
-		SpringContextHolder.applicationContext = applicationContext;
+		SpringContextUtil.applicationContext = applicationContext;
 	}
 
 	/**

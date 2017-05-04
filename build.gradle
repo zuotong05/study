@@ -157,12 +157,12 @@ dependencies {
 
     
      //spring json
-   // compile group: 'org.json', name: 'json', version: '20160212'
+   compile group: 'org.json', name: 'json', version: '20160212'
 
 
     // ====== common ======
     compile "commons-fileupload:commons-fileupload:$commonsFileuploadVersion"
-    //compile "com.alibaba:fastjson:$fastjsonVersion"
+    compile "com.alibaba:fastjson:$fastjsonVersion"
     compile "com.fasterxml.jackson.core:jackson-annotations:$codehausJacksonMapper2Version"
     compile "com.fasterxml.jackson.core:jackson-core:$codehausJacksonMapper2Version"
     compile "com.fasterxml.jackson.core:jackson-databind:$codehausJacksonMapper2Version"
