@@ -5,7 +5,7 @@ import com.unisafecap.framework.tools.scaffold.ScaffoldGen;
 public class ScaffoldGenerator {
 
 	public static void main(String[] args) {
-		ScaffoldGen generator = new ScaffoldGen("ams.risk", "RiskLoanApply", "贷款单信息", "risk_loan_apply");
+		ScaffoldGen generator = new ScaffoldGen("ams.risk", "RiskLoanDetail", "贷款单信息", "risk_loan_detail");
 		generator.execute();
 
 		generator = new ScaffoldGen("ams.risk", "RiskLoanUser", "个人用户信息", "risk_loan_user");

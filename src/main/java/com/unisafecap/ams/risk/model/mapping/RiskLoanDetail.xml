@@ -1,0 +1,874 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.unisafecap.ams.risk.model.RiskLoanDetail">
+
+	<resultMap id="result" type="com.unisafecap.ams.risk.model.RiskLoanDetail">
+            <id property="id" column="id" jdbcType="BIGINT" />
+            <result property="orgCode" column="org_code" jdbcType="VARCHAR" />
+            <result property="timestamp" column="timestamp" jdbcType="VARCHAR" />
+            <result property="outTradeNo" column="out_trade_no" jdbcType="VARCHAR" />
+            <result property="callbackUrl" column="callback_url" jdbcType="VARCHAR" />
+            <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
+            <result property="contractNo" column="contract_no" jdbcType="VARCHAR" />
+            <result property="applyAddress" column="apply_address" jdbcType="VARCHAR" />
+            <result property="sourceChannel" column="source_channel" jdbcType="VARCHAR" />
+            <result property="loanuse" column="loanuse" jdbcType="VARCHAR" />
+            <result property="contractSum" column="contract_sum" jdbcType="DECIMAL" />
+            <result property="actualSum" column="actual_sum" jdbcType="DECIMAL" />
+            <result property="currency" column="currency" jdbcType="VARCHAR" />
+            <result property="deadline" column="deadline" jdbcType="SMALLINT" />
+            <result property="repaymentAccountType" column="repayment_account_type" jdbcType="VARCHAR" />
+            <result property="repaymentAccountNo" column="repayment_account_no" jdbcType="VARCHAR" />
+            <result property="returnType" column="return_type" jdbcType="VARCHAR" />
+            <result property="withholdType" column="withhold_type" jdbcType="VARCHAR" />
+            <result property="withholdDateType" column="withHold_date_type" jdbcType="VARCHAR" />
+            <result property="withholdDate" column="withhold_date" jdbcType="VARCHAR" />
+            <result property="payMode" column="pay_mode" jdbcType="VARCHAR" />
+            <result property="loanType" column="loan_type" jdbcType="VARCHAR" />
+            <result property="borrowerType" column="borrower_type" jdbcType="VARCHAR" />
+            <result property="typeNo" column="type_no" jdbcType="VARCHAR" />
+            <result property="typeName" column="type_name" jdbcType="VARCHAR" />
+            <result property="operationFee" column="operation_fee" jdbcType="DECIMAL" />
+            <result property="operationFeeRate" column="operation_fee_rate" jdbcType="DECIMAL" />
+            <result property="businessRate" column="business_rate" jdbcType="DECIMAL" />
+            <result property="deditRate" column="dedit_rate" jdbcType="DECIMAL" />
+            <result property="lateChargeRate" column="late_charge_rate" jdbcType="DECIMAL" />
+            <result property="assureDays" column="assure_days" jdbcType="SMALLINT" />
+            <result property="serviceFee" column="service_fee" jdbcType="DECIMAL" />
+            <result property="serviceFeeRate" column="service_fee_rate" jdbcType="DECIMAL" />
+            <result property="assureFee" column="assure_fee" jdbcType="DECIMAL" />
+            <result property="assureFeeRate" column="assure_fee_rate" jdbcType="DECIMAL" />
+            <result property="bankCode" column="bank_code" jdbcType="VARCHAR" />
+            <result property="accountCity" column="account_city" jdbcType="VARCHAR" />
+            <result property="fee1" column="fee1" jdbcType="DECIMAL" />
+            <result property="fee2" column="fee2" jdbcType="DECIMAL" />
+            <result property="fee3" column="fee3" jdbcType="DECIMAL" />
+            <result property="fee4" column="fee4" jdbcType="DECIMAL" />
+            <result property="fee5" column="fee5" jdbcType="DECIMAL" />
+            <result property="transferFileName" column="transfer_file_name" jdbcType="VARCHAR" />
+            <result property="beginDate" column="begin_date" jdbcType="VARCHAR" />
+            <result property="endDate" column="end_date" jdbcType="VARCHAR" />
+            <result property="interestRateType" column="interest_rate_type" jdbcType="VARCHAR" />
+            <result property="putoutAccountType" column="putout_account_type" jdbcType="VARCHAR" />
+            <result property="putoutBankCode" column="putout_bank_code" jdbcType="VARCHAR" />
+            <result property="putoutAccountName" column="putout_account_name" jdbcType="VARCHAR" />
+            <result property="putoutAccountNo" column="putout_account_no" jdbcType="VARCHAR" />
+            <result property="putoutAccountBank" column="putout_account_bank" jdbcType="VARCHAR" />
+            <result property="putoutAccountProvince" column="putout_account_province" jdbcType="VARCHAR" />
+            <result property="putoutAccountCity" column="putout_account_city" jdbcType="VARCHAR" />
+            <result property="tradeNo" column="trade_no" jdbcType="VARCHAR" />
+            <result property="auditStatus" column="audit_status" jdbcType="VARCHAR" />
+            <result property="auditMessages" column="audit_messages" jdbcType="VARCHAR" />
+            <result property="sendStatus" column="send_status" jdbcType="VARCHAR" />
+            <result property="sendTime" column="send_time" />
+            <result property="createdTime" column="created_time" />
+            <result property="createdBy" column="created_by" jdbcType="VARCHAR" />
+            <result property="updatedTime" column="updated_time" />
+            <result property="updatedBy" column="updated_by" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<sql id="base_field">
+		id,org_code,timestamp,out_trade_no,callback_url,trust_project_code,contract_no,apply_address,source_channel,loanuse,contract_sum,actual_sum,currency,deadline,repayment_account_type,repayment_account_no,return_type,withhold_type,withHold_date_type,withhold_date,pay_mode,loan_type,borrower_type,type_no,type_name,operation_fee,operation_fee_rate,business_rate,dedit_rate,late_charge_rate,assure_days,service_fee,service_fee_rate,assure_fee,assure_fee_rate,bank_code,account_city,fee1,fee2,fee3,fee4,fee5,transfer_file_name,begin_date,end_date,interest_rate_type,putout_account_type,putout_bank_code,putout_account_name,putout_account_no,putout_account_bank,putout_account_province,putout_account_city,trade_no,audit_status,audit_messages,send_status,send_time,created_time,created_by,updated_time,updated_by
+	</sql>
+	
+	<sql id="other-condition">
+            <if test= "orgCode != null and orgCode != '' ">	and org_code = #{orgCode,jdbcType=VARCHAR }</if>
+            <if test= "timestamp != null and timestamp != '' ">	and timestamp = #{timestamp,jdbcType=VARCHAR }</if>
+            <if test= "outTradeNo != null and outTradeNo != '' ">	and out_trade_no = #{outTradeNo,jdbcType=VARCHAR }</if>
+            <if test= "callbackUrl != null and callbackUrl != '' ">	and callback_url = #{callbackUrl,jdbcType=VARCHAR }</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
+            <if test= "contractNo != null and contractNo != '' ">	and contract_no = #{contractNo,jdbcType=VARCHAR }</if>
+            <if test= "applyAddress != null and applyAddress != '' ">	and apply_address = #{applyAddress,jdbcType=VARCHAR }</if>
+            <if test= "sourceChannel != null and sourceChannel != '' ">	and source_channel = #{sourceChannel,jdbcType=VARCHAR }</if>
+            <if test= "loanuse != null and loanuse != '' ">	and loanuse = #{loanuse,jdbcType=VARCHAR }</if>
+            <if test= "contractSum != null ">	and contract_sum = #{contractSum,jdbcType=DECIMAL }</if>
+            <if test= "actualSum != null ">	and actual_sum = #{actualSum,jdbcType=DECIMAL }</if>
+            <if test= "currency != null and currency != '' ">	and currency = #{currency,jdbcType=VARCHAR }</if>
+            <if test= "deadline != null ">	and deadline = #{deadline,jdbcType=SMALLINT }</if>
+            <if test= "repaymentAccountType != null and repaymentAccountType != '' ">	and repayment_account_type = #{repaymentAccountType,jdbcType=VARCHAR }</if>
+            <if test= "repaymentAccountNo != null and repaymentAccountNo != '' ">	and repayment_account_no = #{repaymentAccountNo,jdbcType=VARCHAR }</if>
+            <if test= "returnType != null and returnType != '' ">	and return_type = #{returnType,jdbcType=VARCHAR }</if>
+            <if test= "withholdType != null and withholdType != '' ">	and withhold_type = #{withholdType,jdbcType=VARCHAR }</if>
+            <if test= "withholdDateType != null and withholdDateType != '' ">	and withHold_date_type = #{withholdDateType,jdbcType=VARCHAR }</if>
+            <if test= "withholdDate != null and withholdDate != '' ">	and withhold_date = #{withholdDate,jdbcType=VARCHAR }</if>
+            <if test= "payMode != null and payMode != '' ">	and pay_mode = #{payMode,jdbcType=VARCHAR }</if>
+            <if test= "loanType != null and loanType != '' ">	and loan_type = #{loanType,jdbcType=VARCHAR }</if>
+            <if test= "borrowerType != null and borrowerType != '' ">	and borrower_type = #{borrowerType,jdbcType=VARCHAR }</if>
+            <if test= "typeNo != null and typeNo != '' ">	and type_no = #{typeNo,jdbcType=VARCHAR }</if>
+            <if test= "typeName != null and typeName != '' ">	and type_name = #{typeName,jdbcType=VARCHAR }</if>
+            <if test= "operationFee != null ">	and operation_fee = #{operationFee,jdbcType=DECIMAL }</if>
+            <if test= "operationFeeRate != null ">	and operation_fee_rate = #{operationFeeRate,jdbcType=DECIMAL }</if>
+            <if test= "businessRate != null ">	and business_rate = #{businessRate,jdbcType=DECIMAL }</if>
+            <if test= "deditRate != null ">	and dedit_rate = #{deditRate,jdbcType=DECIMAL }</if>
+            <if test= "lateChargeRate != null ">	and late_charge_rate = #{lateChargeRate,jdbcType=DECIMAL }</if>
+            <if test= "assureDays != null ">	and assure_days = #{assureDays,jdbcType=SMALLINT }</if>
+            <if test= "serviceFee != null ">	and service_fee = #{serviceFee,jdbcType=DECIMAL }</if>
+            <if test= "serviceFeeRate != null ">	and service_fee_rate = #{serviceFeeRate,jdbcType=DECIMAL }</if>
+            <if test= "assureFee != null ">	and assure_fee = #{assureFee,jdbcType=DECIMAL }</if>
+            <if test= "assureFeeRate != null ">	and assure_fee_rate = #{assureFeeRate,jdbcType=DECIMAL }</if>
+            <if test= "bankCode != null and bankCode != '' ">	and bank_code = #{bankCode,jdbcType=VARCHAR }</if>
+            <if test= "accountCity != null and accountCity != '' ">	and account_city = #{accountCity,jdbcType=VARCHAR }</if>
+            <if test= "fee1 != null ">	and fee1 = #{fee1,jdbcType=DECIMAL }</if>
+            <if test= "fee2 != null ">	and fee2 = #{fee2,jdbcType=DECIMAL }</if>
+            <if test= "fee3 != null ">	and fee3 = #{fee3,jdbcType=DECIMAL }</if>
+            <if test= "fee4 != null ">	and fee4 = #{fee4,jdbcType=DECIMAL }</if>
+            <if test= "fee5 != null ">	and fee5 = #{fee5,jdbcType=DECIMAL }</if>
+            <if test= "transferFileName != null and transferFileName != '' ">	and transfer_file_name = #{transferFileName,jdbcType=VARCHAR }</if>
+            <if test= "beginDate != null and beginDate != '' ">	and begin_date = #{beginDate,jdbcType=VARCHAR }</if>
+            <if test= "endDate != null and endDate != '' ">	and end_date = #{endDate,jdbcType=VARCHAR }</if>
+            <if test= "interestRateType != null and interestRateType != '' ">	and interest_rate_type = #{interestRateType,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountType != null and putoutAccountType != '' ">	and putout_account_type = #{putoutAccountType,jdbcType=VARCHAR }</if>
+            <if test= "putoutBankCode != null and putoutBankCode != '' ">	and putout_bank_code = #{putoutBankCode,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountName != null and putoutAccountName != '' ">	and putout_account_name = #{putoutAccountName,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountNo != null and putoutAccountNo != '' ">	and putout_account_no = #{putoutAccountNo,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountBank != null and putoutAccountBank != '' ">	and putout_account_bank = #{putoutAccountBank,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountProvince != null and putoutAccountProvince != '' ">	and putout_account_province = #{putoutAccountProvince,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountCity != null and putoutAccountCity != '' ">	and putout_account_city = #{putoutAccountCity,jdbcType=VARCHAR }</if>
+            <if test= "tradeNo != null and tradeNo != '' ">	and trade_no = #{tradeNo,jdbcType=VARCHAR }</if>
+            <if test= "auditStatus != null and auditStatus != '' ">	and audit_status = #{auditStatus,jdbcType=VARCHAR }</if>
+            <if test= "auditMessages != null and auditMessages != '' ">	and audit_messages = #{auditMessages,jdbcType=VARCHAR }</if>
+            <if test= "sendStatus != null and sendStatus != '' ">	and send_status = #{sendStatus,jdbcType=VARCHAR }</if>
+            <if test= "sendTime != null ">	and send_time = #{sendTime }</if>
+            <if test= "createdTime != null ">	and created_time = #{createdTime }</if>
+            <if test= "createdBy != null and createdBy != '' ">	and created_by = #{createdBy,jdbcType=VARCHAR }</if>
+            <if test= "updatedTime != null ">	and updated_time = #{updatedTime }</if>
+            <if test= "updatedBy != null and updatedBy != '' ">	and updated_by = #{updatedBy,jdbcType=VARCHAR }</if>
+
+ 	</sql>
+ 	
+ 	<sql id="like-condition">
+            <if test= "orgCode != null and orgCode != '' ">	and org_code like "%"#{orgCode}"%"</if>
+            <if test= "timestamp != null and timestamp != '' ">	and timestamp like "%"#{timestamp}"%"</if>
+            <if test= "outTradeNo != null and outTradeNo != '' ">	and out_trade_no like "%"#{outTradeNo}"%"</if>
+            <if test= "callbackUrl != null and callbackUrl != '' ">	and callback_url like "%"#{callbackUrl}"%"</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
+            <if test= "contractNo != null and contractNo != '' ">	and contract_no like "%"#{contractNo}"%"</if>
+            <if test= "applyAddress != null and applyAddress != '' ">	and apply_address like "%"#{applyAddress}"%"</if>
+            <if test= "sourceChannel != null and sourceChannel != '' ">	and source_channel like "%"#{sourceChannel}"%"</if>
+            <if test= "loanuse != null and loanuse != '' ">	and loanuse like "%"#{loanuse}"%"</if>
+            <if test= "contractSum != null ">	and contract_sum = #{contractSum,jdbcType=DECIMAL }</if>
+            <if test= "actualSum != null ">	and actual_sum = #{actualSum,jdbcType=DECIMAL }</if>
+            <if test= "currency != null and currency != '' ">	and currency like "%"#{currency}"%"</if>
+            <if test= "deadline != null ">	and deadline = #{deadline,jdbcType=SMALLINT }</if>
+            <if test= "repaymentAccountType != null and repaymentAccountType != '' ">	and repayment_account_type like "%"#{repaymentAccountType}"%"</if>
+            <if test= "repaymentAccountNo != null and repaymentAccountNo != '' ">	and repayment_account_no like "%"#{repaymentAccountNo}"%"</if>
+            <if test= "returnType != null and returnType != '' ">	and return_type like "%"#{returnType}"%"</if>
+            <if test= "withholdType != null and withholdType != '' ">	and withhold_type like "%"#{withholdType}"%"</if>
+            <if test= "withholdDateType != null and withholdDateType != '' ">	and withHold_date_type like "%"#{withholdDateType}"%"</if>
+            <if test= "withholdDate != null and withholdDate != '' ">	and withhold_date like "%"#{withholdDate}"%"</if>
+            <if test= "payMode != null and payMode != '' ">	and pay_mode like "%"#{payMode}"%"</if>
+            <if test= "loanType != null and loanType != '' ">	and loan_type like "%"#{loanType}"%"</if>
+            <if test= "borrowerType != null and borrowerType != '' ">	and borrower_type like "%"#{borrowerType}"%"</if>
+            <if test= "typeNo != null and typeNo != '' ">	and type_no like "%"#{typeNo}"%"</if>
+            <if test= "typeName != null and typeName != '' ">	and type_name like "%"#{typeName}"%"</if>
+            <if test= "operationFee != null ">	and operation_fee = #{operationFee,jdbcType=DECIMAL }</if>
+            <if test= "operationFeeRate != null ">	and operation_fee_rate = #{operationFeeRate,jdbcType=DECIMAL }</if>
+            <if test= "businessRate != null ">	and business_rate = #{businessRate,jdbcType=DECIMAL }</if>
+            <if test= "deditRate != null ">	and dedit_rate = #{deditRate,jdbcType=DECIMAL }</if>
+            <if test= "lateChargeRate != null ">	and late_charge_rate = #{lateChargeRate,jdbcType=DECIMAL }</if>
+            <if test= "assureDays != null ">	and assure_days = #{assureDays,jdbcType=SMALLINT }</if>
+            <if test= "serviceFee != null ">	and service_fee = #{serviceFee,jdbcType=DECIMAL }</if>
+            <if test= "serviceFeeRate != null ">	and service_fee_rate = #{serviceFeeRate,jdbcType=DECIMAL }</if>
+            <if test= "assureFee != null ">	and assure_fee = #{assureFee,jdbcType=DECIMAL }</if>
+            <if test= "assureFeeRate != null ">	and assure_fee_rate = #{assureFeeRate,jdbcType=DECIMAL }</if>
+            <if test= "bankCode != null and bankCode != '' ">	and bank_code like "%"#{bankCode}"%"</if>
+            <if test= "accountCity != null and accountCity != '' ">	and account_city like "%"#{accountCity}"%"</if>
+            <if test= "fee1 != null ">	and fee1 = #{fee1,jdbcType=DECIMAL }</if>
+            <if test= "fee2 != null ">	and fee2 = #{fee2,jdbcType=DECIMAL }</if>
+            <if test= "fee3 != null ">	and fee3 = #{fee3,jdbcType=DECIMAL }</if>
+            <if test= "fee4 != null ">	and fee4 = #{fee4,jdbcType=DECIMAL }</if>
+            <if test= "fee5 != null ">	and fee5 = #{fee5,jdbcType=DECIMAL }</if>
+            <if test= "transferFileName != null and transferFileName != '' ">	and transfer_file_name like "%"#{transferFileName}"%"</if>
+            <if test= "beginDate != null and beginDate != '' ">	and begin_date like "%"#{beginDate}"%"</if>
+            <if test= "endDate != null and endDate != '' ">	and end_date like "%"#{endDate}"%"</if>
+            <if test= "interestRateType != null and interestRateType != '' ">	and interest_rate_type like "%"#{interestRateType}"%"</if>
+            <if test= "putoutAccountType != null and putoutAccountType != '' ">	and putout_account_type like "%"#{putoutAccountType}"%"</if>
+            <if test= "putoutBankCode != null and putoutBankCode != '' ">	and putout_bank_code like "%"#{putoutBankCode}"%"</if>
+            <if test= "putoutAccountName != null and putoutAccountName != '' ">	and putout_account_name like "%"#{putoutAccountName}"%"</if>
+            <if test= "putoutAccountNo != null and putoutAccountNo != '' ">	and putout_account_no like "%"#{putoutAccountNo}"%"</if>
+            <if test= "putoutAccountBank != null and putoutAccountBank != '' ">	and putout_account_bank like "%"#{putoutAccountBank}"%"</if>
+            <if test= "putoutAccountProvince != null and putoutAccountProvince != '' ">	and putout_account_province like "%"#{putoutAccountProvince}"%"</if>
+            <if test= "putoutAccountCity != null and putoutAccountCity != '' ">	and putout_account_city like "%"#{putoutAccountCity}"%"</if>
+            <if test= "tradeNo != null and tradeNo != '' ">	and trade_no like "%"#{tradeNo}"%"</if>
+            <if test= "auditStatus != null and auditStatus != '' ">	and audit_status like "%"#{auditStatus}"%"</if>
+            <if test= "auditMessages != null and auditMessages != '' ">	and audit_messages like "%"#{auditMessages}"%"</if>
+            <if test= "sendStatus != null and sendStatus != '' ">	and send_status like "%"#{sendStatus}"%"</if>
+            <if test= "sendTime != null ">	and send_time = #{sendTime,jdbcType=DATETIME }</if>
+            <if test= "createdTime != null ">	and created_time = #{createdTime,jdbcType=DATETIME }</if>
+            <if test= "createdBy != null and createdBy != '' ">	and created_by like "%"#{createdBy}"%"</if>
+            <if test= "updatedTime != null ">	and updated_time = #{updatedTime,jdbcType=DATETIME }</if>
+            <if test= "updatedBy != null and updatedBy != '' ">	and updated_by like "%"#{updatedBy}"%"</if>
+
+ 	</sql>
+	
+	<sql id="selectByMapSQL">
+		select
+		<include refid="base_field" />
+		from risk_loan_detail
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+		<if test="sortName != null and sortName != '' and sortName != 'null'">
+			order by ${sortName} ${sortBy}
+		</if>
+	</sql>
+	
+	<select id="selectByMap" resultMap="result" >
+		<include refid="selectByMapSQL" />
+	</select>
+	
+	<select id="selectCount" resultType="int" >
+		select count(*) from risk_loan_detail 
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+	</select>
+	
+	<select id="selectPage" resultMap="result" >
+		<include refid="selectByMapSQL" />
+		 limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="select" resultMap="result" parameterType="java.lang.Long">
+		select
+		<include refid="base_field" />
+		from risk_loan_detail  
+		<where>
+			<if test="_parameter != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByIds" resultMap="result" >
+		select
+		<include refid="base_field" />
+		from risk_loan_detail  where id in (${_parameter})
+	</select>	
+	
+	<select id="selectPartByMap" resultMap="result" >
+		select out_trade_no,trust_project_code,contract_no,trade_no,audit_status,audit_messages,send_status
+		from risk_loan_detail  
+		<where>
+	 	<if test= "outTradeNo != null and outTradeNo != '' ">	and out_trade_no = #{outTradeNo,jdbcType=VARCHAR }</if>
+		<if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
+         <if test= "contractNo != null and contractNo != '' ">	and contract_no = #{contractNo,jdbcType=VARCHAR }</if>
+          <if test= "sendStatus != null and sendStatus != '' ">	and send_status = #{sendStatus,jdbcType=VARCHAR }</if> 
+		</where>
+	</select>		
+
+	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskLoanDetail" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_loan_detail( id,org_code,timestamp,out_trade_no,callback_url,trust_project_code,contract_no,apply_address,source_channel,loanuse,contract_sum,actual_sum,currency,deadline,repayment_account_type,repayment_account_no,return_type,withhold_type,withHold_date_type,withhold_date,pay_mode,loan_type,borrower_type,type_no,type_name,operation_fee,operation_fee_rate,business_rate,dedit_rate,late_charge_rate,assure_days,service_fee,service_fee_rate,assure_fee,assure_fee_rate,bank_code,account_city,fee1,fee2,fee3,fee4,fee5,transfer_file_name,begin_date,end_date,interest_rate_type,putout_account_type,putout_bank_code,putout_account_name,putout_account_no,putout_account_bank,putout_account_province,putout_account_city,trade_no,audit_status,audit_messages,send_status,send_time,created_time,created_by,updated_time,updated_by ) values (#{id,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{timestamp,jdbcType=VARCHAR},#{outTradeNo,jdbcType=VARCHAR},#{callbackUrl,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{contractNo,jdbcType=VARCHAR},#{applyAddress,jdbcType=VARCHAR},#{sourceChannel,jdbcType=VARCHAR},#{loanuse,jdbcType=VARCHAR},#{contractSum,jdbcType=DECIMAL},#{actualSum,jdbcType=DECIMAL},#{currency,jdbcType=VARCHAR},#{deadline,jdbcType=SMALLINT},#{repaymentAccountType,jdbcType=VARCHAR},#{repaymentAccountNo,jdbcType=VARCHAR},#{returnType,jdbcType=VARCHAR},#{withholdType,jdbcType=VARCHAR},#{withholdDateType,jdbcType=VARCHAR},#{withholdDate,jdbcType=VARCHAR},#{payMode,jdbcType=VARCHAR},#{loanType,jdbcType=VARCHAR},#{borrowerType,jdbcType=VARCHAR},#{typeNo,jdbcType=VARCHAR},#{typeName,jdbcType=VARCHAR},#{operationFee,jdbcType=DECIMAL},#{operationFeeRate,jdbcType=DECIMAL},#{businessRate,jdbcType=DECIMAL},#{deditRate,jdbcType=DECIMAL},#{lateChargeRate,jdbcType=DECIMAL},#{assureDays,jdbcType=SMALLINT},#{serviceFee,jdbcType=DECIMAL},#{serviceFeeRate,jdbcType=DECIMAL},#{assureFee,jdbcType=DECIMAL},#{assureFeeRate,jdbcType=DECIMAL},#{bankCode,jdbcType=VARCHAR},#{accountCity,jdbcType=VARCHAR},#{fee1,jdbcType=DECIMAL},#{fee2,jdbcType=DECIMAL},#{fee3,jdbcType=DECIMAL},#{fee4,jdbcType=DECIMAL},#{fee5,jdbcType=DECIMAL},#{transferFileName,jdbcType=VARCHAR},#{beginDate,jdbcType=VARCHAR},#{endDate,jdbcType=VARCHAR},#{interestRateType,jdbcType=VARCHAR},#{putoutAccountType,jdbcType=VARCHAR},#{putoutBankCode,jdbcType=VARCHAR},#{putoutAccountName,jdbcType=VARCHAR},#{putoutAccountNo,jdbcType=VARCHAR},#{putoutAccountBank,jdbcType=VARCHAR},#{putoutAccountProvince,jdbcType=VARCHAR},#{putoutAccountCity,jdbcType=VARCHAR},#{tradeNo,jdbcType=VARCHAR},#{auditStatus,jdbcType=VARCHAR},#{auditMessages,jdbcType=VARCHAR},#{sendStatus,jdbcType=VARCHAR},#{sendTime},#{createdTime},#{createdBy,jdbcType=VARCHAR},#{updatedTime},#{updatedBy,jdbcType=VARCHAR} )
+	</insert>
+	
+	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanDetail" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_loan_detail(
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code,
+            </if>
+            <if test="timestamp != null and timestamp != '' "> 
+                timestamp,
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' "> 
+                out_trade_no,
+            </if>
+            <if test="callbackUrl != null and callbackUrl != '' "> 
+                callback_url,
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code,
+            </if>
+            <if test="contractNo != null and contractNo != '' "> 
+                contract_no,
+            </if>
+            <if test="applyAddress != null and applyAddress != '' "> 
+                apply_address,
+            </if>
+            <if test="sourceChannel != null and sourceChannel != '' "> 
+                source_channel,
+            </if>
+            <if test="loanuse != null and loanuse != '' "> 
+                loanuse,
+            </if>
+            <if test="contractSum != null "> 
+                contract_sum,
+            </if>
+            <if test="actualSum != null "> 
+                actual_sum,
+            </if>
+            <if test="currency != null and currency != '' "> 
+                currency,
+            </if>
+            <if test="deadline != null "> 
+                deadline,
+            </if>
+            <if test="repaymentAccountType != null and repaymentAccountType != '' "> 
+                repayment_account_type,
+            </if>
+            <if test="repaymentAccountNo != null and repaymentAccountNo != '' "> 
+                repayment_account_no,
+            </if>
+            <if test="returnType != null and returnType != '' "> 
+                return_type,
+            </if>
+            <if test="withholdType != null and withholdType != '' "> 
+                withhold_type,
+            </if>
+            <if test="withholdDateType != null and withholdDateType != '' "> 
+                withHold_date_type,
+            </if>
+            <if test="withholdDate != null and withholdDate != '' "> 
+                withhold_date,
+            </if>
+            <if test="payMode != null and payMode != '' "> 
+                pay_mode,
+            </if>
+            <if test="loanType != null and loanType != '' "> 
+                loan_type,
+            </if>
+            <if test="borrowerType != null and borrowerType != '' "> 
+                borrower_type,
+            </if>
+            <if test="typeNo != null and typeNo != '' "> 
+                type_no,
+            </if>
+            <if test="typeName != null and typeName != '' "> 
+                type_name,
+            </if>
+            <if test="operationFee != null "> 
+                operation_fee,
+            </if>
+            <if test="operationFeeRate != null "> 
+                operation_fee_rate,
+            </if>
+            <if test="businessRate != null "> 
+                business_rate,
+            </if>
+            <if test="deditRate != null "> 
+                dedit_rate,
+            </if>
+            <if test="lateChargeRate != null "> 
+                late_charge_rate,
+            </if>
+            <if test="assureDays != null "> 
+                assure_days,
+            </if>
+            <if test="serviceFee != null "> 
+                service_fee,
+            </if>
+            <if test="serviceFeeRate != null "> 
+                service_fee_rate,
+            </if>
+            <if test="assureFee != null "> 
+                assure_fee,
+            </if>
+            <if test="assureFeeRate != null "> 
+                assure_fee_rate,
+            </if>
+            <if test="bankCode != null and bankCode != '' "> 
+                bank_code,
+            </if>
+            <if test="accountCity != null and accountCity != '' "> 
+                account_city,
+            </if>
+            <if test="fee1 != null "> 
+                fee1,
+            </if>
+            <if test="fee2 != null "> 
+                fee2,
+            </if>
+            <if test="fee3 != null "> 
+                fee3,
+            </if>
+            <if test="fee4 != null "> 
+                fee4,
+            </if>
+            <if test="fee5 != null "> 
+                fee5,
+            </if>
+            <if test="transferFileName != null and transferFileName != '' "> 
+                transfer_file_name,
+            </if>
+            <if test="beginDate != null and beginDate != '' "> 
+                begin_date,
+            </if>
+            <if test="endDate != null and endDate != '' "> 
+                end_date,
+            </if>
+            <if test="interestRateType != null and interestRateType != '' "> 
+                interest_rate_type,
+            </if>
+            <if test="putoutAccountType != null and putoutAccountType != '' "> 
+                putout_account_type,
+            </if>
+            <if test="putoutBankCode != null and putoutBankCode != '' "> 
+                putout_bank_code,
+            </if>
+            <if test="putoutAccountName != null and putoutAccountName != '' "> 
+                putout_account_name,
+            </if>
+            <if test="putoutAccountNo != null and putoutAccountNo != '' "> 
+                putout_account_no,
+            </if>
+            <if test="putoutAccountBank != null and putoutAccountBank != '' "> 
+                putout_account_bank,
+            </if>
+            <if test="putoutAccountProvince != null and putoutAccountProvince != '' "> 
+                putout_account_province,
+            </if>
+            <if test="putoutAccountCity != null and putoutAccountCity != '' "> 
+                putout_account_city,
+            </if>
+            <if test="tradeNo != null and tradeNo != '' "> 
+                trade_no,
+            </if>
+            <if test="auditStatus != null and auditStatus != '' "> 
+                audit_status,
+            </if>
+            <if test="auditMessages != null and auditMessages != '' "> 
+                audit_messages,
+            </if>
+            <if test="sendStatus != null and sendStatus != '' "> 
+                send_status,
+            </if>
+            <if test="sendTime != null "> 
+                send_time,
+            </if>
+            <if test="createdTime != null "> 
+                created_time,
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                created_by,
+            </if>
+            <if test="updatedTime != null "> 
+                updated_time,
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                updated_by,
+            </if>
+                id)values (
+            <if test="orgCode != null and orgCode != '' "> 
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="timestamp != null and timestamp != '' "> 
+                #{timestamp,jdbcType=VARCHAR},
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' "> 
+                #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="callbackUrl != null and callbackUrl != '' "> 
+                #{callbackUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="contractNo != null and contractNo != '' "> 
+                #{contractNo,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAddress != null and applyAddress != '' "> 
+                #{applyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceChannel != null and sourceChannel != '' "> 
+                #{sourceChannel,jdbcType=VARCHAR},
+            </if>
+            <if test="loanuse != null and loanuse != '' "> 
+                #{loanuse,jdbcType=VARCHAR},
+            </if>
+            <if test="contractSum != null "> 
+                #{contractSum,jdbcType=DECIMAL},
+            </if>
+            <if test="actualSum != null "> 
+                #{actualSum,jdbcType=DECIMAL},
+            </if>
+            <if test="currency != null and currency != '' "> 
+                #{currency,jdbcType=VARCHAR},
+            </if>
+            <if test="deadline != null "> 
+                #{deadline,jdbcType=SMALLINT},
+            </if>
+            <if test="repaymentAccountType != null and repaymentAccountType != '' "> 
+                #{repaymentAccountType,jdbcType=VARCHAR},
+            </if>
+            <if test="repaymentAccountNo != null and repaymentAccountNo != '' "> 
+                #{repaymentAccountNo,jdbcType=VARCHAR},
+            </if>
+            <if test="returnType != null and returnType != '' "> 
+                #{returnType,jdbcType=VARCHAR},
+            </if>
+            <if test="withholdType != null and withholdType != '' "> 
+                #{withholdType,jdbcType=VARCHAR},
+            </if>
+            <if test="withholdDateType != null and withholdDateType != '' "> 
+                #{withholdDateType,jdbcType=VARCHAR},
+            </if>
+            <if test="withholdDate != null and withholdDate != '' "> 
+                #{withholdDate,jdbcType=VARCHAR},
+            </if>
+            <if test="payMode != null and payMode != '' "> 
+                #{payMode,jdbcType=VARCHAR},
+            </if>
+            <if test="loanType != null and loanType != '' "> 
+                #{loanType,jdbcType=VARCHAR},
+            </if>
+            <if test="borrowerType != null and borrowerType != '' "> 
+                #{borrowerType,jdbcType=VARCHAR},
+            </if>
+            <if test="typeNo != null and typeNo != '' "> 
+                #{typeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="typeName != null and typeName != '' "> 
+                #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="operationFee != null "> 
+                #{operationFee,jdbcType=DECIMAL},
+            </if>
+            <if test="operationFeeRate != null "> 
+                #{operationFeeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="businessRate != null "> 
+                #{businessRate,jdbcType=DECIMAL},
+            </if>
+            <if test="deditRate != null "> 
+                #{deditRate,jdbcType=DECIMAL},
+            </if>
+            <if test="lateChargeRate != null "> 
+                #{lateChargeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="assureDays != null "> 
+                #{assureDays,jdbcType=SMALLINT},
+            </if>
+            <if test="serviceFee != null "> 
+                #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFeeRate != null "> 
+                #{serviceFeeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="assureFee != null "> 
+                #{assureFee,jdbcType=DECIMAL},
+            </if>
+            <if test="assureFeeRate != null "> 
+                #{assureFeeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="bankCode != null and bankCode != '' "> 
+                #{bankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="accountCity != null and accountCity != '' "> 
+                #{accountCity,jdbcType=VARCHAR},
+            </if>
+            <if test="fee1 != null "> 
+                #{fee1,jdbcType=DECIMAL},
+            </if>
+            <if test="fee2 != null "> 
+                #{fee2,jdbcType=DECIMAL},
+            </if>
+            <if test="fee3 != null "> 
+                #{fee3,jdbcType=DECIMAL},
+            </if>
+            <if test="fee4 != null "> 
+                #{fee4,jdbcType=DECIMAL},
+            </if>
+            <if test="fee5 != null "> 
+                #{fee5,jdbcType=DECIMAL},
+            </if>
+            <if test="transferFileName != null and transferFileName != '' "> 
+                #{transferFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate != null and beginDate != '' "> 
+                #{beginDate,jdbcType=VARCHAR},
+            </if>
+            <if test="endDate != null and endDate != '' "> 
+                #{endDate,jdbcType=VARCHAR},
+            </if>
+            <if test="interestRateType != null and interestRateType != '' "> 
+                #{interestRateType,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountType != null and putoutAccountType != '' "> 
+                #{putoutAccountType,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutBankCode != null and putoutBankCode != '' "> 
+                #{putoutBankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountName != null and putoutAccountName != '' "> 
+                #{putoutAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountNo != null and putoutAccountNo != '' "> 
+                #{putoutAccountNo,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountBank != null and putoutAccountBank != '' "> 
+                #{putoutAccountBank,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountProvince != null and putoutAccountProvince != '' "> 
+                #{putoutAccountProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountCity != null and putoutAccountCity != '' "> 
+                #{putoutAccountCity,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeNo != null and tradeNo != '' "> 
+                #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null and auditStatus != '' "> 
+                #{auditStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="auditMessages != null and auditMessages != '' "> 
+                #{auditMessages,jdbcType=VARCHAR},
+            </if>
+            <if test="sendStatus != null and sendStatus != '' "> 
+                #{sendStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="sendTime != null "> 
+                #{sendTime},
+            </if>
+            <if test="createdTime != null "> 
+                #{createdTime},
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null "> 
+                #{updatedTime},
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            #{id,jdbcType=BIGINT})
+	</insert>
+
+	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskLoanDetail">
+		update risk_loan_detail set org_code=#{orgCode,jdbcType=VARCHAR},timestamp=#{timestamp,jdbcType=VARCHAR},out_trade_no=#{outTradeNo,jdbcType=VARCHAR},callback_url=#{callbackUrl,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},contract_no=#{contractNo,jdbcType=VARCHAR},apply_address=#{applyAddress,jdbcType=VARCHAR},source_channel=#{sourceChannel,jdbcType=VARCHAR},loanuse=#{loanuse,jdbcType=VARCHAR},contract_sum=#{contractSum,jdbcType=DECIMAL},actual_sum=#{actualSum,jdbcType=DECIMAL},currency=#{currency,jdbcType=VARCHAR},deadline=#{deadline,jdbcType=SMALLINT},repayment_account_type=#{repaymentAccountType,jdbcType=VARCHAR},repayment_account_no=#{repaymentAccountNo,jdbcType=VARCHAR},return_type=#{returnType,jdbcType=VARCHAR},withhold_type=#{withholdType,jdbcType=VARCHAR},withHold_date_type=#{withholdDateType,jdbcType=VARCHAR},withhold_date=#{withholdDate,jdbcType=VARCHAR},pay_mode=#{payMode,jdbcType=VARCHAR},loan_type=#{loanType,jdbcType=VARCHAR},borrower_type=#{borrowerType,jdbcType=VARCHAR},type_no=#{typeNo,jdbcType=VARCHAR},type_name=#{typeName,jdbcType=VARCHAR},operation_fee=#{operationFee,jdbcType=DECIMAL},operation_fee_rate=#{operationFeeRate,jdbcType=DECIMAL},business_rate=#{businessRate,jdbcType=DECIMAL},dedit_rate=#{deditRate,jdbcType=DECIMAL},late_charge_rate=#{lateChargeRate,jdbcType=DECIMAL},assure_days=#{assureDays,jdbcType=SMALLINT},service_fee=#{serviceFee,jdbcType=DECIMAL},service_fee_rate=#{serviceFeeRate,jdbcType=DECIMAL},assure_fee=#{assureFee,jdbcType=DECIMAL},assure_fee_rate=#{assureFeeRate,jdbcType=DECIMAL},bank_code=#{bankCode,jdbcType=VARCHAR},account_city=#{accountCity,jdbcType=VARCHAR},fee1=#{fee1,jdbcType=DECIMAL},fee2=#{fee2,jdbcType=DECIMAL},fee3=#{fee3,jdbcType=DECIMAL},fee4=#{fee4,jdbcType=DECIMAL},fee5=#{fee5,jdbcType=DECIMAL},transfer_file_name=#{transferFileName,jdbcType=VARCHAR},begin_date=#{beginDate,jdbcType=VARCHAR},end_date=#{endDate,jdbcType=VARCHAR},interest_rate_type=#{interestRateType,jdbcType=VARCHAR},putout_account_type=#{putoutAccountType,jdbcType=VARCHAR},putout_bank_code=#{putoutBankCode,jdbcType=VARCHAR},putout_account_name=#{putoutAccountName,jdbcType=VARCHAR},putout_account_no=#{putoutAccountNo,jdbcType=VARCHAR},putout_account_bank=#{putoutAccountBank,jdbcType=VARCHAR},putout_account_province=#{putoutAccountProvince,jdbcType=VARCHAR},putout_account_city=#{putoutAccountCity,jdbcType=VARCHAR},trade_no=#{tradeNo,jdbcType=VARCHAR},audit_status=#{auditStatus,jdbcType=VARCHAR},audit_messages=#{auditMessages,jdbcType=VARCHAR},send_status=#{sendStatus,jdbcType=VARCHAR},send_time=#{sendTime},created_time=#{createdTime},created_by=#{createdBy,jdbcType=VARCHAR},updated_time=#{updatedTime},updated_by=#{updatedBy,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+	</update>	
+	
+	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanDetail">
+		update risk_loan_detail
+        <set>
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="timestamp != null and timestamp != '' "> 
+                timestamp = #{timestamp,jdbcType=VARCHAR},
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' "> 
+                out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="callbackUrl != null and callbackUrl != '' "> 
+                callback_url = #{callbackUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="contractNo != null and contractNo != '' "> 
+                contract_no = #{contractNo,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAddress != null and applyAddress != '' "> 
+                apply_address = #{applyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceChannel != null and sourceChannel != '' "> 
+                source_channel = #{sourceChannel,jdbcType=VARCHAR},
+            </if>
+            <if test="loanuse != null and loanuse != '' "> 
+                loanuse = #{loanuse,jdbcType=VARCHAR},
+            </if>
+            <if test="contractSum != null "> 
+                contract_sum = #{contractSum,jdbcType=DECIMAL},
+            </if>
+            <if test="actualSum != null "> 
+                actual_sum = #{actualSum,jdbcType=DECIMAL},
+            </if>
+            <if test="currency != null and currency != '' "> 
+                currency = #{currency,jdbcType=VARCHAR},
+            </if>
+            <if test="deadline != null "> 
+                deadline = #{deadline,jdbcType=SMALLINT},
+            </if>
+            <if test="repaymentAccountType != null and repaymentAccountType != '' "> 
+                repayment_account_type = #{repaymentAccountType,jdbcType=VARCHAR},
+            </if>
+            <if test="repaymentAccountNo != null and repaymentAccountNo != '' "> 
+                repayment_account_no = #{repaymentAccountNo,jdbcType=VARCHAR},
+            </if>
+            <if test="returnType != null and returnType != '' "> 
+                return_type = #{returnType,jdbcType=VARCHAR},
+            </if>
+            <if test="withholdType != null and withholdType != '' "> 
+                withhold_type = #{withholdType,jdbcType=VARCHAR},
+            </if>
+            <if test="withholdDateType != null and withholdDateType != '' "> 
+                withHold_date_type = #{withholdDateType,jdbcType=VARCHAR},
+            </if>
+            <if test="withholdDate != null and withholdDate != '' "> 
+                withhold_date = #{withholdDate,jdbcType=VARCHAR},
+            </if>
+            <if test="payMode != null and payMode != '' "> 
+                pay_mode = #{payMode,jdbcType=VARCHAR},
+            </if>
+            <if test="loanType != null and loanType != '' "> 
+                loan_type = #{loanType,jdbcType=VARCHAR},
+            </if>
+            <if test="borrowerType != null and borrowerType != '' "> 
+                borrower_type = #{borrowerType,jdbcType=VARCHAR},
+            </if>
+            <if test="typeNo != null and typeNo != '' "> 
+                type_no = #{typeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="typeName != null and typeName != '' "> 
+                type_name = #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="operationFee != null "> 
+                operation_fee = #{operationFee,jdbcType=DECIMAL},
+            </if>
+            <if test="operationFeeRate != null "> 
+                operation_fee_rate = #{operationFeeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="businessRate != null "> 
+                business_rate = #{businessRate,jdbcType=DECIMAL},
+            </if>
+            <if test="deditRate != null "> 
+                dedit_rate = #{deditRate,jdbcType=DECIMAL},
+            </if>
+            <if test="lateChargeRate != null "> 
+                late_charge_rate = #{lateChargeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="assureDays != null "> 
+                assure_days = #{assureDays,jdbcType=SMALLINT},
+            </if>
+            <if test="serviceFee != null "> 
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFeeRate != null "> 
+                service_fee_rate = #{serviceFeeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="assureFee != null "> 
+                assure_fee = #{assureFee,jdbcType=DECIMAL},
+            </if>
+            <if test="assureFeeRate != null "> 
+                assure_fee_rate = #{assureFeeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="bankCode != null and bankCode != '' "> 
+                bank_code = #{bankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="accountCity != null and accountCity != '' "> 
+                account_city = #{accountCity,jdbcType=VARCHAR},
+            </if>
+            <if test="fee1 != null "> 
+                fee1 = #{fee1,jdbcType=DECIMAL},
+            </if>
+            <if test="fee2 != null "> 
+                fee2 = #{fee2,jdbcType=DECIMAL},
+            </if>
+            <if test="fee3 != null "> 
+                fee3 = #{fee3,jdbcType=DECIMAL},
+            </if>
+            <if test="fee4 != null "> 
+                fee4 = #{fee4,jdbcType=DECIMAL},
+            </if>
+            <if test="fee5 != null "> 
+                fee5 = #{fee5,jdbcType=DECIMAL},
+            </if>
+            <if test="transferFileName != null and transferFileName != '' "> 
+                transfer_file_name = #{transferFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate != null and beginDate != '' "> 
+                begin_date = #{beginDate,jdbcType=VARCHAR},
+            </if>
+            <if test="endDate != null and endDate != '' "> 
+                end_date = #{endDate,jdbcType=VARCHAR},
+            </if>
+            <if test="interestRateType != null and interestRateType != '' "> 
+                interest_rate_type = #{interestRateType,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountType != null and putoutAccountType != '' "> 
+                putout_account_type = #{putoutAccountType,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutBankCode != null and putoutBankCode != '' "> 
+                putout_bank_code = #{putoutBankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountName != null and putoutAccountName != '' "> 
+                putout_account_name = #{putoutAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountNo != null and putoutAccountNo != '' "> 
+                putout_account_no = #{putoutAccountNo,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountBank != null and putoutAccountBank != '' "> 
+                putout_account_bank = #{putoutAccountBank,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountProvince != null and putoutAccountProvince != '' "> 
+                putout_account_province = #{putoutAccountProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountCity != null and putoutAccountCity != '' "> 
+                putout_account_city = #{putoutAccountCity,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeNo != null and tradeNo != '' "> 
+                trade_no = #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null and auditStatus != '' "> 
+                audit_status = #{auditStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="auditMessages != null and auditMessages != '' "> 
+                audit_messages = #{auditMessages,jdbcType=VARCHAR},
+            </if>
+            <if test="sendStatus != null and sendStatus != '' "> 
+                send_status = #{sendStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="sendTime != null "> 
+                send_time = #{sendTime,jdbcType=DATETIME},
+            </if>
+            <if test="createdTime != null "> 
+                created_time = #{createdTime,jdbcType=DATETIME},
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                created_by = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null "> 
+                updated_time = #{updatedTime,jdbcType=DATETIME},
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                updated_by = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+         where id=#{id,jdbcType=BIGINT}
+	</update>	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from risk_loan_detail where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
+        update risk_loan_detail        
+        update_time = now(),
+        set yn = 0,
+        version = version + 1
+        where id = #{id,jdbcType=BIGINT}
+        and yn = 1
+    </update>
+    
+	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.RiskLoanDetail">
+		delete from risk_loan_detail
+		<where>
+			<if test="id != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+			<include refid="other-condition" />
+		</where>
+	</delete>	
+		
+</mapper>
+

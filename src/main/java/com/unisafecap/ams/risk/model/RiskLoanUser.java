@@ -1,7 +1,7 @@
 package com.unisafecap.ams.risk.model;
 
 import java.io.Serializable;
-import com.unisafecap.framework.dao.model.BaseModel;
+import com.unisafecap.framework.model.BaseModel;
 
 
 /**
@@ -10,14 +10,15 @@ import com.unisafecap.framework.dao.model.BaseModel;
  * </P>
  *  
  * @author zuotong
- * @since 2017年05月04日
+ * @since 2017年05月05日
  * @version V1.0  
  */
 public class RiskLoanUser extends BaseModel implements Serializable {
-    /**
+    private static final long serialVersionUID = 7735328416491433170L;
+	/**
      * 贷款单ID
      */
-    private Long loadApplyId;
+    private Long loanDetailId;
     /**
      * 信托项目简码
      */
@@ -155,12 +156,12 @@ public class RiskLoanUser extends BaseModel implements Serializable {
 		super();
 	}
 	
-    public Long getLoadApplyId() {
-        return loadApplyId;
+    public Long getLoanDetailId() {
+        return loanDetailId;
     }
 
-    public void setLoadApplyId(Long loadApplyId) {
-        this.loadApplyId = loadApplyId;
+    public void setLoanDetailId(Long loanDetailId) {
+        this.loanDetailId = loanDetailId;
     }
     public String getTrustProjectCode() {
         return trustProjectCode;

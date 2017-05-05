@@ -19,8 +19,8 @@ targetCompatibility = 1.8
 repositories {
 //    mavenCentral()
     maven {
-        url 'http://mirrors.ibiblio.org/pub/mirrors/maven2'
-        //url 'http://uk.maven.org/maven2'       
+        //url 'http://mirrors.ibiblio.org/pub/mirrors/maven2'
+        //url 'http://uk.maven.org/maven2'
         url 'http://nexus2.xiaoma.com/nexus/content/groups/public'
     }
 }
@@ -50,7 +50,6 @@ dependencies {
     def jaxbImplVersion = "2.2.11"
 
     // database
-    def oracleDriverVersion = "11.2.0.3"
     def mysqlDriverVersion = "5.1.38"
     def druidVersion = '1.0.19'
     // def c3p0Version = "0.9.1.2"
@@ -86,8 +85,6 @@ dependencies {
     def jodatimeJsptagsVersion = "1.1.1"
     def jodatimeVersion = "2.9.3"
     def jadiraUsertypeCoreVersion = "5.0.0.GA"
-    
-    
 
 
 
@@ -103,7 +100,7 @@ dependencies {
 
     // ------------------------------------------------------------------------------------------------------------------------
 
-  
+
 
 
     // ====== spring ======
@@ -124,9 +121,10 @@ dependencies {
     compile 'commons-dbcp:commons-dbcp:1.4'
    
    //json
-   compile group: 'com.google.code.gson', name: 'gson', version: '2.2.4'
+   compile group: 'org.json', name: 'json', version: '20160212'
    
-   //compile group: 'org.apache.commons', name: 'commons-compress', version: '1.13'
+   compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.49'
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.49'
    
    
     //compile "org.springframework.security:spring-security-web:$springSecurityVersion"
@@ -148,7 +146,7 @@ dependencies {
     providedCompile "com.sun.xml.bind:jaxb-impl:$jaxbImplVersion"
 
 
-    // ====== database ======   
+    // ====== database ======
     compile "mysql:mysql-connector-java:$mysqlDriverVersion"
     compile "com.alibaba:druid:$druidVersion"
     // compile "c3p0:c3p0:$c3p0Version"
@@ -157,7 +155,7 @@ dependencies {
 
     
      //spring json
-   compile group: 'org.json', name: 'json', version: '20160212'
+    compile group: 'org.json', name: 'json', version: '20160212'
 
 
     // ====== common ======
@@ -189,7 +187,7 @@ dependencies {
     compile "com.pentahohub.nexus:alipay-sdk-java:20150820220052"
     compile "com.google.zxing:core:3.1.0"
     
-   // compile  group: 'net.sf.json-lib', name:'json-lib', version:'2.4', classifier:'jdk15' 
+    compile  group: 'net.sf.json-lib', name:'json-lib', version:'2.4', classifier:'jdk15' 
     
     compile  group: 'org.apache.httpcomponents', name: 'httpclient', version: "$apacheCommonHttpVersion"
     compile  group: 'org.apache.httpcomponents', name: 'httpcore', version: "$apacheCommonHttpVersion"
@@ -204,8 +202,8 @@ dependencies {
     compile  group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.3.2'
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'
     
-    // compile group: 'org.apache.poi', name: 'poi', version: '3.13-beta1'
-     //compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.13-beta1'
+     compile group: 'org.apache.poi', name: 'poi', version: '3.13-beta1'
+     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.13-beta1'
      
     
     //compile group: 'com.google.zxing', name: 'core', version: '3.1.0'
@@ -276,7 +274,7 @@ flyway {
 //    ]
 }
 	war {
-	    from('src/main/java') {	        
+	    from('src/main/java') {	      
 	        include '**/*.xml'
 	        into 'WEB-INF/classes'
 	    }

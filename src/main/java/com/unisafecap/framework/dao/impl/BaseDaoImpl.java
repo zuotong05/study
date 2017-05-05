@@ -12,8 +12,8 @@ import org.springframework.util.Assert;
 
 import com.unisafecap.framework.common.enums.Order;
 import com.unisafecap.framework.common.utils.GenericsUtils;
+import com.unisafecap.framework.common.utils.PageBean;
 import com.unisafecap.framework.dao.BaseDao;
-import com.unisafecap.framework.dao.Page;
 
 public class BaseDaoImpl<T> implements BaseDao<T> {
 
@@ -248,12 +248,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	}
 
 	@Override
-	public void find4Page(Page<T> page, Map<String, Object> map) {
+	public void find4Page(PageBean<T> page, Map<String, Object> map) {
 		find4Page(page, map, false);
 	}
 
 	@Override
-	public void find4Page(Page<T> page, Map<String, Object> map, boolean isLike) {
+	public void find4Page(PageBean<T> page, Map<String, Object> map, boolean isLike) {
 		if (map == null)
 			map = new HashMap<String, Object>();
 		if (isLike) {
@@ -284,13 +284,13 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	}
 
 	@Override
-	public void find4Page(Page<T> page, String tblNameSuffix, Map<String, Object> map) {
+	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map) {
 		find4Page(page, tblNameSuffix, map, false);
 
 	}
 
 	@Override
-	public void find4Page(Page<T> page, String tblNameSuffix, Map<String, Object> map, boolean isLike) {
+	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map, boolean isLike) {
 		if (map == null) {
 			map = new HashMap<String, Object>();
 		}

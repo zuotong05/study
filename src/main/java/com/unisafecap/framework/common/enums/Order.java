@@ -2,7 +2,7 @@ package com.unisafecap.framework.common.enums;
 
 /**
  * <P>
- * 排序方式
+ * 排序方式枚举
  * </P>
  * 
  * @author zuotong

@@ -1,0 +1,30 @@
+package ${pkgPath};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.unisafecap.framework.service.BaseService;
+import com.unisafecap.framework.dao.BaseDao;
+import ${daoPath};
+import ${modelPath};
+
+/**
+ * <P>
+ * ${clzComment}Service
+ * </P>
+ * 
+ * @author ${clzAuthor}
+ * @since ${clzCreateDate}
+ * @version V1.0  
+ */
+@Service("${clzNameLC}Service")
+public class ${clzName}Service extends BaseService<${clzName}> {
+
+	@Autowired
+	private ${clzName}Dao ${clzNameLC}DaoImpl;
+	
+	@Override
+	public BaseDao<${clzName}> getBaseDao() {
+		return ${clzNameLC}DaoImpl;
+	}
+}

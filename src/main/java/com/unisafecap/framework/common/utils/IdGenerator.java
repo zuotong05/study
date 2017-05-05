@@ -41,30 +41,6 @@ public class IdGenerator {
 		return uuid.replaceAll("a", "1").replaceAll("b", "2").replaceAll("c", "3").replaceAll("d", "4").replaceAll("e", "5").replaceAll("f", "6");
 	}
 
-	/**
-	 * 获得长度16位数分布式自增ID,Snowflake算法
-	 * 
-	 * @param workerId
-	 *            机器编码
-	 * @return long
-	 */
-	public static long getIncrementId(long workerId) {
-		IdWorker16 id = new IdWorker16(workerId);
-		return id.nextId();
-	}
-
-	/**
-	 * 获得长度18位数分布式自增ID，Snowflake算法
-	 * 
-	 * @param workerId
-	 *            机器编码
-	 * @param datacenterId
-	 *            业务编码
-	 * @return long
-	 */
-	public static long getIncrementId(long workerId, long datacenterId) {
-		IdWorker18 id = new IdWorker18(workerId, datacenterId);
-		return id.nextId();
-	}
+	
 
 }

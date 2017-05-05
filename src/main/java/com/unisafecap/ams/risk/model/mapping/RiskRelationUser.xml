@@ -5,7 +5,7 @@
 
 	<resultMap id="result" type="com.unisafecap.ams.risk.model.RiskRelationUser">
             <id property="id" column="id" jdbcType="BIGINT" />
-            <result property="loadApplyId" column="load_apply_id" jdbcType="BIGINT" />
+            <result property="loanDetailId" column="loan_detail_id" jdbcType="BIGINT" />
             <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
             <result property="contractNo" column="contract_no" jdbcType="VARCHAR" />
             <result property="relationUserType" column="relation_user_type" jdbcType="VARCHAR" />
@@ -20,11 +20,11 @@
 	</resultMap>
 
 	<sql id="base_field">
-		id,load_apply_id,trust_project_code,contract_no,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,guarantee_mode,guarantee_sum
+		id,loan_detail_id,trust_project_code,contract_no,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,guarantee_mode,guarantee_sum
 	</sql>
 	
 	<sql id="other-condition">
-            <if test= "loadApplyId != null ">	and load_apply_id = #{loadApplyId,jdbcType=BIGINT }</if>
+            <if test= "loanDetailId != null ">	and loan_detail_id = #{loanDetailId,jdbcType=BIGINT }</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
             <if test= "contractNo != null and contractNo != '' ">	and contract_no = #{contractNo,jdbcType=VARCHAR }</if>
             <if test= "relationUserType != null and relationUserType != '' ">	and relation_user_type = #{relationUserType,jdbcType=VARCHAR }</if>
@@ -39,7 +39,7 @@
  	</sql>
  	
  	<sql id="like-condition">
-            <if test= "loadApplyId != null ">	and load_apply_id = #{loadApplyId,jdbcType=BIGINT }</if>
+            <if test= "loanDetailId != null ">	and loan_detail_id = #{loanDetailId,jdbcType=BIGINT }</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
             <if test= "contractNo != null and contractNo != '' ">	and contract_no like "%"#{contractNo}"%"</if>
             <if test= "relationUserType != null and relationUserType != '' ">	and relation_user_type like "%"#{relationUserType}"%"</if>
@@ -117,13 +117,13 @@
 	</select>		
 
 	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser" useGeneratedKeys="true" keyProperty="id">
-		insert into risk_relation_user( id,load_apply_id,trust_project_code,contract_no,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,guarantee_mode,guarantee_sum ) values (#{id,jdbcType=BIGINT},#{loadApplyId,jdbcType=BIGINT},#{trustProjectCode,jdbcType=VARCHAR},#{contractNo,jdbcType=VARCHAR},#{relationUserType,jdbcType=VARCHAR},#{relationType,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{certType,jdbcType=VARCHAR},#{certId,jdbcType=VARCHAR},#{handPhone,jdbcType=VARCHAR},#{guaranteeMode,jdbcType=VARCHAR},#{guaranteeSum,jdbcType=DECIMAL} )
+		insert into risk_relation_user( id,loan_detail_id,trust_project_code,contract_no,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,guarantee_mode,guarantee_sum ) values (#{id,jdbcType=BIGINT},#{loanDetailId,jdbcType=BIGINT},#{trustProjectCode,jdbcType=VARCHAR},#{contractNo,jdbcType=VARCHAR},#{relationUserType,jdbcType=VARCHAR},#{relationType,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{certType,jdbcType=VARCHAR},#{certId,jdbcType=VARCHAR},#{handPhone,jdbcType=VARCHAR},#{guaranteeMode,jdbcType=VARCHAR},#{guaranteeSum,jdbcType=DECIMAL} )
 	</insert>
 	
 	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser" useGeneratedKeys="true" keyProperty="id">
 		insert into risk_relation_user(
-            <if test="loadApplyId != null "> 
-                load_apply_id,
+            <if test="loanDetailId != null "> 
+                loan_detail_id,
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code,
@@ -156,8 +156,8 @@
                 guarantee_sum,
             </if>
                 id)values (
-            <if test="loadApplyId != null "> 
-                #{loadApplyId,jdbcType=BIGINT},
+            <if test="loanDetailId != null "> 
+                #{loanDetailId,jdbcType=BIGINT},
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 #{trustProjectCode,jdbcType=VARCHAR},
@@ -193,14 +193,14 @@
 	</insert>
 
 	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser">
-		update risk_relation_user set load_apply_id=#{loadApplyId,jdbcType=BIGINT},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},contract_no=#{contractNo,jdbcType=VARCHAR},relation_user_type=#{relationUserType,jdbcType=VARCHAR},relation_type=#{relationType,jdbcType=VARCHAR},name=#{name,jdbcType=VARCHAR},cert_type=#{certType,jdbcType=VARCHAR},cert_id=#{certId,jdbcType=VARCHAR},hand_phone=#{handPhone,jdbcType=VARCHAR},guarantee_mode=#{guaranteeMode,jdbcType=VARCHAR},guarantee_sum=#{guaranteeSum,jdbcType=DECIMAL} where id=#{id,jdbcType=BIGINT}
+		update risk_relation_user set loan_detail_id=#{loanDetailId,jdbcType=BIGINT},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},contract_no=#{contractNo,jdbcType=VARCHAR},relation_user_type=#{relationUserType,jdbcType=VARCHAR},relation_type=#{relationType,jdbcType=VARCHAR},name=#{name,jdbcType=VARCHAR},cert_type=#{certType,jdbcType=VARCHAR},cert_id=#{certId,jdbcType=VARCHAR},hand_phone=#{handPhone,jdbcType=VARCHAR},guarantee_mode=#{guaranteeMode,jdbcType=VARCHAR},guarantee_sum=#{guaranteeSum,jdbcType=DECIMAL} where id=#{id,jdbcType=BIGINT}
 	</update>	
 	
 	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser">
 		update risk_relation_user
         <set>
-            <if test="loadApplyId != null "> 
-                load_apply_id = #{loadApplyId,jdbcType=BIGINT},
+            <if test="loanDetailId != null "> 
+                loan_detail_id = #{loanDetailId,jdbcType=BIGINT},
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},

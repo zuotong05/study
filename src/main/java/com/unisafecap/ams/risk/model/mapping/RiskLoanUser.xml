@@ -5,7 +5,7 @@
 
 	<resultMap id="result" type="com.unisafecap.ams.risk.model.RiskLoanUser">
             <id property="id" column="id" jdbcType="BIGINT" />
-            <result property="loadApplyId" column="load_apply_id" jdbcType="BIGINT" />
+            <result property="loanDetailId" column="loan_detail_id" jdbcType="BIGINT" />
             <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
             <result property="contractNo" column="contract_no" jdbcType="VARCHAR" />
             <result property="customerName" column="customer_name" jdbcType="VARCHAR" />
@@ -43,11 +43,11 @@
 	</resultMap>
 
 	<sql id="base_field">
-		id,load_apply_id,trust_project_code,contract_no,customer_name,cert_type,cert_id,hand_phone,phone,postal_zip,comm_add,email,marriage,eduexperience,native_place,native_place_add,self_month_income,family_add,family_zip,family_tel,peroccupation,work_corp,unit_kind,work_add,work_zip,work_begin_date,occupation,position,user_net_assets,user_house_balue,user_house_area,real_estate_type,remark1,remark2,remark3
+		id,loan_detail_id,trust_project_code,contract_no,customer_name,cert_type,cert_id,hand_phone,phone,postal_zip,comm_add,email,marriage,eduexperience,native_place,native_place_add,self_month_income,family_add,family_zip,family_tel,peroccupation,work_corp,unit_kind,work_add,work_zip,work_begin_date,occupation,position,user_net_assets,user_house_balue,user_house_area,real_estate_type,remark1,remark2,remark3
 	</sql>
 	
 	<sql id="other-condition">
-            <if test= "loadApplyId != null ">	and load_apply_id = #{loadApplyId,jdbcType=BIGINT }</if>
+            <if test= "loanDetailId != null ">	and loan_detail_id = #{loanDetailId,jdbcType=BIGINT }</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
             <if test= "contractNo != null and contractNo != '' ">	and contract_no = #{contractNo,jdbcType=VARCHAR }</if>
             <if test= "customerName != null and customerName != '' ">	and customer_name = #{customerName,jdbcType=VARCHAR }</if>
@@ -85,7 +85,7 @@
  	</sql>
  	
  	<sql id="like-condition">
-            <if test= "loadApplyId != null ">	and load_apply_id = #{loadApplyId,jdbcType=BIGINT }</if>
+            <if test= "loanDetailId != null ">	and loan_detail_id = #{loanDetailId,jdbcType=BIGINT }</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
             <if test= "contractNo != null and contractNo != '' ">	and contract_no like "%"#{contractNo}"%"</if>
             <if test= "customerName != null and customerName != '' ">	and customer_name like "%"#{customerName}"%"</if>
@@ -186,13 +186,13 @@
 	</select>		
 
 	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser" useGeneratedKeys="true" keyProperty="id">
-		insert into risk_loan_user( id,load_apply_id,trust_project_code,contract_no,customer_name,cert_type,cert_id,hand_phone,phone,postal_zip,comm_add,email,marriage,eduexperience,native_place,native_place_add,self_month_income,family_add,family_zip,family_tel,peroccupation,work_corp,unit_kind,work_add,work_zip,work_begin_date,occupation,position,user_net_assets,user_house_balue,user_house_area,real_estate_type,remark1,remark2,remark3 ) values (#{id,jdbcType=BIGINT},#{loadApplyId,jdbcType=BIGINT},#{trustProjectCode,jdbcType=VARCHAR},#{contractNo,jdbcType=VARCHAR},#{customerName,jdbcType=VARCHAR},#{certType,jdbcType=VARCHAR},#{certId,jdbcType=VARCHAR},#{handPhone,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{postalZip,jdbcType=VARCHAR},#{commAdd,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{marriage,jdbcType=VARCHAR},#{eduexperience,jdbcType=VARCHAR},#{nativePlace,jdbcType=VARCHAR},#{nativePlaceAdd,jdbcType=VARCHAR},#{selfMonthIncome,jdbcType=DECIMAL},#{familyAdd,jdbcType=VARCHAR},#{familyZip,jdbcType=VARCHAR},#{familyTel,jdbcType=VARCHAR},#{peroccupation,jdbcType=VARCHAR},#{workCorp,jdbcType=VARCHAR},#{unitKind,jdbcType=VARCHAR},#{workAdd,jdbcType=VARCHAR},#{workZip,jdbcType=VARCHAR},#{workBeginDate,jdbcType=VARCHAR},#{occupation,jdbcType=VARCHAR},#{position,jdbcType=VARCHAR},#{userNetAssets,jdbcType=DECIMAL},#{userHouseBalue,jdbcType=DECIMAL},#{userHouseArea,jdbcType=DECIMAL},#{realEstateType,jdbcType=VARCHAR},#{remark1,jdbcType=VARCHAR},#{remark2,jdbcType=VARCHAR},#{remark3,jdbcType=VARCHAR} )
+		insert into risk_loan_user( id,loan_detail_id,trust_project_code,contract_no,customer_name,cert_type,cert_id,hand_phone,phone,postal_zip,comm_add,email,marriage,eduexperience,native_place,native_place_add,self_month_income,family_add,family_zip,family_tel,peroccupation,work_corp,unit_kind,work_add,work_zip,work_begin_date,occupation,position,user_net_assets,user_house_balue,user_house_area,real_estate_type,remark1,remark2,remark3 ) values (#{id,jdbcType=BIGINT},#{loanDetailId,jdbcType=BIGINT},#{trustProjectCode,jdbcType=VARCHAR},#{contractNo,jdbcType=VARCHAR},#{customerName,jdbcType=VARCHAR},#{certType,jdbcType=VARCHAR},#{certId,jdbcType=VARCHAR},#{handPhone,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{postalZip,jdbcType=VARCHAR},#{commAdd,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{marriage,jdbcType=VARCHAR},#{eduexperience,jdbcType=VARCHAR},#{nativePlace,jdbcType=VARCHAR},#{nativePlaceAdd,jdbcType=VARCHAR},#{selfMonthIncome,jdbcType=DECIMAL},#{familyAdd,jdbcType=VARCHAR},#{familyZip,jdbcType=VARCHAR},#{familyTel,jdbcType=VARCHAR},#{peroccupation,jdbcType=VARCHAR},#{workCorp,jdbcType=VARCHAR},#{unitKind,jdbcType=VARCHAR},#{workAdd,jdbcType=VARCHAR},#{workZip,jdbcType=VARCHAR},#{workBeginDate,jdbcType=VARCHAR},#{occupation,jdbcType=VARCHAR},#{position,jdbcType=VARCHAR},#{userNetAssets,jdbcType=DECIMAL},#{userHouseBalue,jdbcType=DECIMAL},#{userHouseArea,jdbcType=DECIMAL},#{realEstateType,jdbcType=VARCHAR},#{remark1,jdbcType=VARCHAR},#{remark2,jdbcType=VARCHAR},#{remark3,jdbcType=VARCHAR} )
 	</insert>
 	
 	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser" useGeneratedKeys="true" keyProperty="id">
 		insert into risk_loan_user(
-            <if test="loadApplyId != null "> 
-                load_apply_id,
+            <if test="loanDetailId != null "> 
+                loan_detail_id,
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code,
@@ -294,8 +294,8 @@
                 remark3,
             </if>
                 id)values (
-            <if test="loadApplyId != null "> 
-                #{loadApplyId,jdbcType=BIGINT},
+            <if test="loanDetailId != null "> 
+                #{loanDetailId,jdbcType=BIGINT},
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 #{trustProjectCode,jdbcType=VARCHAR},
@@ -400,14 +400,14 @@
 	</insert>
 
 	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser">
-		update risk_loan_user set load_apply_id=#{loadApplyId,jdbcType=BIGINT},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},contract_no=#{contractNo,jdbcType=VARCHAR},customer_name=#{customerName,jdbcType=VARCHAR},cert_type=#{certType,jdbcType=VARCHAR},cert_id=#{certId,jdbcType=VARCHAR},hand_phone=#{handPhone,jdbcType=VARCHAR},phone=#{phone,jdbcType=VARCHAR},postal_zip=#{postalZip,jdbcType=VARCHAR},comm_add=#{commAdd,jdbcType=VARCHAR},email=#{email,jdbcType=VARCHAR},marriage=#{marriage,jdbcType=VARCHAR},eduexperience=#{eduexperience,jdbcType=VARCHAR},native_place=#{nativePlace,jdbcType=VARCHAR},native_place_add=#{nativePlaceAdd,jdbcType=VARCHAR},self_month_income=#{selfMonthIncome,jdbcType=DECIMAL},family_add=#{familyAdd,jdbcType=VARCHAR},family_zip=#{familyZip,jdbcType=VARCHAR},family_tel=#{familyTel,jdbcType=VARCHAR},peroccupation=#{peroccupation,jdbcType=VARCHAR},work_corp=#{workCorp,jdbcType=VARCHAR},unit_kind=#{unitKind,jdbcType=VARCHAR},work_add=#{workAdd,jdbcType=VARCHAR},work_zip=#{workZip,jdbcType=VARCHAR},work_begin_date=#{workBeginDate,jdbcType=VARCHAR},occupation=#{occupation,jdbcType=VARCHAR},position=#{position,jdbcType=VARCHAR},user_net_assets=#{userNetAssets,jdbcType=DECIMAL},user_house_balue=#{userHouseBalue,jdbcType=DECIMAL},user_house_area=#{userHouseArea,jdbcType=DECIMAL},real_estate_type=#{realEstateType,jdbcType=VARCHAR},remark1=#{remark1,jdbcType=VARCHAR},remark2=#{remark2,jdbcType=VARCHAR},remark3=#{remark3,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+		update risk_loan_user set loan_detail_id=#{loanDetailId,jdbcType=BIGINT},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},contract_no=#{contractNo,jdbcType=VARCHAR},customer_name=#{customerName,jdbcType=VARCHAR},cert_type=#{certType,jdbcType=VARCHAR},cert_id=#{certId,jdbcType=VARCHAR},hand_phone=#{handPhone,jdbcType=VARCHAR},phone=#{phone,jdbcType=VARCHAR},postal_zip=#{postalZip,jdbcType=VARCHAR},comm_add=#{commAdd,jdbcType=VARCHAR},email=#{email,jdbcType=VARCHAR},marriage=#{marriage,jdbcType=VARCHAR},eduexperience=#{eduexperience,jdbcType=VARCHAR},native_place=#{nativePlace,jdbcType=VARCHAR},native_place_add=#{nativePlaceAdd,jdbcType=VARCHAR},self_month_income=#{selfMonthIncome,jdbcType=DECIMAL},family_add=#{familyAdd,jdbcType=VARCHAR},family_zip=#{familyZip,jdbcType=VARCHAR},family_tel=#{familyTel,jdbcType=VARCHAR},peroccupation=#{peroccupation,jdbcType=VARCHAR},work_corp=#{workCorp,jdbcType=VARCHAR},unit_kind=#{unitKind,jdbcType=VARCHAR},work_add=#{workAdd,jdbcType=VARCHAR},work_zip=#{workZip,jdbcType=VARCHAR},work_begin_date=#{workBeginDate,jdbcType=VARCHAR},occupation=#{occupation,jdbcType=VARCHAR},position=#{position,jdbcType=VARCHAR},user_net_assets=#{userNetAssets,jdbcType=DECIMAL},user_house_balue=#{userHouseBalue,jdbcType=DECIMAL},user_house_area=#{userHouseArea,jdbcType=DECIMAL},real_estate_type=#{realEstateType,jdbcType=VARCHAR},remark1=#{remark1,jdbcType=VARCHAR},remark2=#{remark2,jdbcType=VARCHAR},remark3=#{remark3,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
 	</update>	
 	
 	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanUser">
 		update risk_loan_user
         <set>
-            <if test="loadApplyId != null "> 
-                load_apply_id = #{loadApplyId,jdbcType=BIGINT},
+            <if test="loanDetailId != null "> 
+                loan_detail_id = #{loanDetailId,jdbcType=BIGINT},
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},

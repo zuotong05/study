@@ -9,7 +9,7 @@ import com.unisafecap.ams.risk.model.RiskLoanUser;
  * </P> 
  * 
  * @author zuotong
- * @since 2017年05月04日
+ * @since 2017年05月05日
  * @version V1.0  
  */
 public interface RiskLoanUserDao extends BaseDao<RiskLoanUser>{

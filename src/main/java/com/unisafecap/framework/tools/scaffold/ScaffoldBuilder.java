@@ -20,7 +20,7 @@ public class ScaffoldBuilder {
 	protected final static String PKG_PREFIX = "com.unisafecap.";
 	protected final static String PKG_SUFFIX_MODEL = ".model.";
 	protected final static String PKG_SUFFIX_DAO = ".dao.";
-	protected final static String PKG_SUFFIX_MANAGER = ".manager.";
+	protected final static String PKG_SUFFIX_SERVICE = ".service.";
 	protected final static String PKG_IMPL = "impl";
 
 	protected String pkgName;
@@ -85,7 +85,7 @@ public class ScaffoldBuilder {
 	}
 
 	public String getManagerPath() {
-		return pkgName + PKG_SUFFIX_MANAGER + clzName + "Manager";
+		return pkgName + PKG_SUFFIX_SERVICE + clzName + "Service";
 	}
 
 	public List<FileGenerator> buildGenerators() {
@@ -99,8 +99,8 @@ public class ScaffoldBuilder {
 		list.add(new FileGenerator(pkgName + ".dao.impl", clzName + "DaoImpl", "DaoImpl.txt", mapping));
 //
 //		// service
-		list.add(new FileGenerator(pkgName + ".manager", clzName + "Manager", "Manager.txt", mapping));
-		list.add(new FileGenerator(pkgName + ".manager", clzName + "ManagerTest", "ManagerTest.txt", mapping));
+		list.add(new FileGenerator(pkgName + ".service", clzName + "Service", "Service.txt", mapping));
+		list.add(new FileGenerator(pkgName + ".service", clzName + "ServiceTest", "ServiceTest.txt", mapping));
 //		// controller
 		list.add(new FileGenerator(pkgName + ".controller", clzName + "Controller", "Controller.txt", mapping));
 		return list;

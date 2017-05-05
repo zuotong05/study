@@ -16,7 +16,15 @@
   http://www.springframework.org/schema/tx 
   http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 	
+  <!-- context:component-scan base-package="com.unisafecap">
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />        
+    </context:component-scan -->
+    
+    <context:component-scan base-package="com.unisafecap.*" />
 
+	<!-- 获取spring上下文 的util类 -->
+	<bean id="springContextUtil" class="com.unisafecap.framework.common.utils.SpringContextUtil"/>
+	
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <!-- 基本属性 url、user、password -->
@@ -81,15 +89,14 @@
 			<tx:method name="search*" read-only="true" />
 			<tx:method name="find*" read-only="true" />
 			<tx:method name="check*" read-only="true" />
-			<!-- other methods use the default transaction settings  -->
-					
+			<!-- other methods use the default transaction settings  -->					
 			<tx:method name="*" rollback-for="Exception"/>	<!-- all exception rollback -->
     	</tx:attributes>
     </tx:advice>
 
 	<!-- set class -->
 	<aop:config>
-	    <aop:pointcut id="managerOperation" expression="execution(* com.unisafecap.*.manager.*Manager.*(..)) or execution (* com.unisafecap.*.*.manager.*Manager.*(..))"/>
+	    <aop:pointcut id="managerOperation" expression="execution(* com.unisafecap.*.service.*Service.*(..)) or execution (* com.unisafecap.*.*.service.*Service.*(..))"/>
 	    <aop:advisor pointcut-ref="managerOperation" advice-ref="txAdvice"/>
     </aop:config>
 	

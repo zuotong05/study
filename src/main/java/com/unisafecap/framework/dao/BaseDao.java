@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.unisafecap.framework.common.enums.Order;
+import com.unisafecap.framework.common.utils.PageBean;
 
 /**
  * <P>
@@ -283,7 +284,7 @@ public interface BaseDao<T> {
 	 * @param map
 	 *            key=属性名,value=属性值
 	 */
-	public void find4Page(Page<T> page, Map<String, Object> map);
+	public void find4Page(PageBean<T> page, Map<String, Object> map);
 
 	/**
 	 * 根据查询条件和分页信息,查询对象
@@ -293,7 +294,7 @@ public interface BaseDao<T> {
 	 *            表名后缀,用于历史备份表,如果yztf_order_payment_2016
 	 * @param map
 	 */
-	public void find4Page(Page<T> page, String tblNameSuffix, Map<String, Object> map);
+	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map);
 
 	/**
 	 * 根据查询条件和分页信息,查询对象
@@ -303,7 +304,7 @@ public interface BaseDao<T> {
 	 * @param isLike
 	 *            是否模糊匹配(只有属性类型为字符串,才生效)
 	 */
-	public void find4Page(Page<T> page, Map<String, Object> map, boolean isLike);
+	public void find4Page(PageBean<T> page, Map<String, Object> map, boolean isLike);
 
 	/**
 	 * 根据查询条件和分页信息,查询对象
@@ -315,7 +316,7 @@ public interface BaseDao<T> {
 	 * @param isLike
 	 *            是否模糊匹配(只有属性类型为字符串,才生效)
 	 */
-	public void find4Page(Page<T> page, String tblNameSuffix, Map<String, Object> map, boolean isLike);
+	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map, boolean isLike);
 
 	/**
 	 * 根据ids,查询对象
