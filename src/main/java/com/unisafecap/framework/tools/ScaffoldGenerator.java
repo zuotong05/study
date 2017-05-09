@@ -13,6 +13,11 @@ public class ScaffoldGenerator {
 
 		generator = new ScaffoldGen("ams.risk", "RiskRelationUser", "关系人信息", "risk_relation_user");
 		generator.execute();
+		
+		generator = new ScaffoldGen("ams.risk", "SecuritySignCert", "签名证书", "security_sign_cert");
+		generator.execute();
+		
+		
 
 	}
 

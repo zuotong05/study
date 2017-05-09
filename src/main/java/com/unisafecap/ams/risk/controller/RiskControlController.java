@@ -41,8 +41,8 @@ public class RiskControlController {
 	@ResponseBody
 	public ResponseData<?> riskControlAudit(@RequestBody RequestData requestData) {
 		try {
-			return riskControlService.riskControlAudit(requestData);
-		}
+			return riskControlService.riskControlAudit(requestData);		
+			}
 		catch (Exception e) {
 			logger.debug(e.getMessage());
 			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);

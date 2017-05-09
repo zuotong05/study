@@ -22,11 +22,6 @@ import com.unisafecap.ams.risk.model.dto.request.RiskRelationUserDto;
 import com.unisafecap.ams.risk.model.dto.response.RiskControlAuditResult;
 import com.unisafecap.ams.risk.model.dto.response.RiskLoanDetailResult;
 import com.unisafecap.ams.risk.model.enums.AuditStatus;
-import com.unisafecap.ams.security.sign.SignEnvelopService;
-import com.unisafecap.ams.security.sign.SignEnvelopServiceImpl;
-import com.unisafecap.ams.security.sign.util.Base64;
-import com.unisafecap.ams.security.sign.util.FileUtil;
-import com.unisafecap.framework.common.enums.Order;
 import com.unisafecap.framework.common.enums.ServiceErrorCode;
 import com.unisafecap.framework.common.utils.IdWorker18;
 import com.unisafecap.framework.common.utils.StringUtils;
@@ -53,6 +48,9 @@ public class RiskControlService {
 
 	@Autowired
 	private RiskRelationUserService riskRelationUserService;
+	
+	@Autowired
+	private SecuritySignCertService securitySignCertService;
 
 	public ResponseData<?> riskControlAudit(RequestData requestData) throws Exception {
 		ResponseData<Object> response = new ResponseData<Object>();
@@ -63,7 +61,7 @@ public class RiskControlService {
 			return response;
 		}
 
-		byte[] cleartxt = decryptData(requestData);
+		byte[] cleartxt = securitySignCertService.decryptData(requestData.getOrgCode(),requestData.getBizContent());
 		if (null == cleartxt) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			response.setMsg("签名信封数据有误");
@@ -97,7 +95,6 @@ public class RiskControlService {
 		}
 
 		AuditStatus auditStatus = AuditStatus.PASS;// 默认 通过
-
 		IdWorker18 idWorker = new IdWorker18(0, 0);
 		String tradeNo = requestData.getOrgCode() + idWorker.nextId();
 		RiskLoanDetail loanDetail = new RiskLoanDetail();
@@ -137,51 +134,32 @@ public class RiskControlService {
 
 		RiskControlAuditResult auditResult = new RiskControlAuditResult();
 		auditResult.setTradeNo(tradeNo);
-		if (auditStatus.getValue().equals(AuditStatus.PASS)) {// 判断审核是否通过，以后预留用
-
+		if (auditStatus.getValue().equals(AuditStatus.PASS.getValue())) {// 判断审核是否通过，以后预留用
 			response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
-
 			RiskLoanDetailResult loanDetailResult = new RiskLoanDetailResult();
 			BeanUtils.copyProperties(loanDetail, loanDetailResult);
+			auditResult.setLoanDetail(loanDetailResult);
 		} else {
 			response.setServiceErrorCode(ServiceErrorCode.HANDLING);
 		}
-		response.setBizContent(encryptData(JSON.toJSONString(auditResult), requestData.getOrgCode()));
+		response.setBizContent(securitySignCertService.encryptData(requestData.getOrgCode(),JSON.toJSONString(auditResult)));
 
 		return response;
 
 	}
-
-	private byte[] decryptData(RequestData requestData) {
-		String priFile = Order.class.getResource("/").getPath() + "cert/" + requestData.getOrgCode() + "/bhxt_001.pfx"; // 渤海信托公式
-		String priCert = Base64.encode(FileUtil.readFile(priFile));
-		String password = "123456"; // 合作方证书密码
-		SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
-		return signEnvelopService.verifyEnvelop(priCert, password, requestData.getBizContent());
-
-	}
-
-	private String encryptData(String srcData, String orgCode) {
-		String file1 = Order.class.getResource("/").getPath() + "cert/" + orgCode + "/bhxt_001.pfx"; // 京东金融公钥证书
-		String file2 = Order.class.getResource("/").getPath() + "cert/" + orgCode + "/test1.cer"; // 合作方签名证书
-		String priCert = Base64.encode(FileUtil.readFile(file1));
-		String pubCert = Base64.encode(FileUtil.readFile(file2));
-		String password = "123456"; // 合作方证书密码
-		SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
-		// 签名数字信封
-		String signedEvpDataB64FromWD = signEnvelopService.signEnvelop(priCert, password, pubCert, srcData.getBytes());
-		// System.out.println("加密后的数据：" + signedEvpDataB64FromWD);
-
-		return signedEvpDataB64FromWD;
-
-	}
+	
 
 	@Transactional(readOnly = true)
 	public ResponseData<?> riskControlAuditQuery(RequestData requestData) {
 		ResponseData<Object> response = new ResponseData<Object>();
 		try {
+			if (StringUtils.isBlank(requestData.getOrgCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
 
-			byte[] cleartxt = decryptData(requestData);
+				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+				return response;
+			}
+			
+			byte[] cleartxt = securitySignCertService.decryptData(requestData.getOrgCode(),requestData.getBizContent());
 			if (null == cleartxt) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				response.setMsg("签名信封数据有误");
@@ -207,7 +185,13 @@ public class RiskControlService {
 				return response;
 			} else {
 				response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
-				response.setBizContent(encryptData(JSON.toJSONString(list.get(0)), requestData.getOrgCode()));
+				RiskControlAuditResult auditResult = new RiskControlAuditResult();
+
+				RiskLoanDetailResult loanDetailResult = new RiskLoanDetailResult();
+				BeanUtils.copyProperties(list.get(0), loanDetailResult);
+				auditResult.setLoanDetail(loanDetailResult);
+
+				response.setBizContent(securitySignCertService.encryptData(requestData.getOrgCode(), JSON.toJSONString(auditResult)));
 				return response;
 			}
 		}

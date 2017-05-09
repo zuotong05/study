@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.unisafecap.ams.risk.model.SecuritySignCert">
+
+	<resultMap id="result" type="com.unisafecap.ams.risk.model.SecuritySignCert">
+            <id property="id" column="id" jdbcType="BIGINT" />
+            <result property="orgCode" column="org_code" jdbcType="VARCHAR" />
+            <result property="orgCertPath" column="org_cert_path" jdbcType="VARCHAR" />
+            <result property="orgCertPwd" column="org_cert_pwd" jdbcType="VARCHAR" />
+            <result property="bhxtCertPath" column="bhxt_cert_path" jdbcType="VARCHAR" />
+            <result property="bhxtCertPwd" column="bhxt_cert_pwd" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<sql id="base_field">
+		id,org_code,org_cert_path,org_cert_pwd,bhxt_cert_path,bhxt_cert_pwd
+	</sql>
+	
+	<sql id="other-condition">
+            <if test= "orgCode != null and orgCode != '' ">	and org_code = #{orgCode,jdbcType=VARCHAR }</if>
+            <if test= "orgCertPath != null and orgCertPath != '' ">	and org_cert_path = #{orgCertPath,jdbcType=VARCHAR }</if>
+            <if test= "orgCertPwd != null and orgCertPwd != '' ">	and org_cert_pwd = #{orgCertPwd,jdbcType=VARCHAR }</if>
+            <if test= "bhxtCertPath != null and bhxtCertPath != '' ">	and bhxt_cert_path = #{bhxtCertPath,jdbcType=VARCHAR }</if>
+            <if test= "bhxtCertPwd != null and bhxtCertPwd != '' ">	and bhxt_cert_pwd = #{bhxtCertPwd,jdbcType=VARCHAR }</if>
+
+ 	</sql>
+ 	
+ 	<sql id="like-condition">
+            <if test= "orgCode != null and orgCode != '' ">	and org_code like "%"#{orgCode}"%"</if>
+            <if test= "orgCertPath != null and orgCertPath != '' ">	and org_cert_path like "%"#{orgCertPath}"%"</if>
+            <if test= "orgCertPwd != null and orgCertPwd != '' ">	and org_cert_pwd like "%"#{orgCertPwd}"%"</if>
+            <if test= "bhxtCertPath != null and bhxtCertPath != '' ">	and bhxt_cert_path like "%"#{bhxtCertPath}"%"</if>
+            <if test= "bhxtCertPwd != null and bhxtCertPwd != '' ">	and bhxt_cert_pwd like "%"#{bhxtCertPwd}"%"</if>
+
+ 	</sql>
+	
+	<sql id="selectByMapSQL">
+		select
+		<include refid="base_field" />
+		from security_sign_cert
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+		<if test="sortName != null and sortName != '' and sortName != 'null'">
+			order by ${sortName} ${sortBy}
+		</if>
+	</sql>
+	
+	<select id="selectByMap" resultMap="result" >
+		<include refid="selectByMapSQL" />
+	</select>
+	
+	<select id="selectCount" resultType="int" >
+		select count(*) from security_sign_cert 
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+	</select>
+	
+	<select id="selectPage" resultMap="result" >
+		<include refid="selectByMapSQL" />
+		 limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="select" resultMap="result" parameterType="java.lang.Long">
+		select
+		<include refid="base_field" />
+		from security_sign_cert  
+		<where>
+			<if test="_parameter != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByIds" resultMap="result" >
+		select
+		<include refid="base_field" />
+		from security_sign_cert  where id in (${_parameter})
+	</select>		
+
+	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert" useGeneratedKeys="true" keyProperty="id">
+		insert into security_sign_cert( id,org_code,org_cert_path,org_cert_pwd,bhxt_cert_path,bhxt_cert_pwd ) values (#{id,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{orgCertPath,jdbcType=VARCHAR},#{orgCertPwd,jdbcType=VARCHAR},#{bhxtCertPath,jdbcType=VARCHAR},#{bhxtCertPwd,jdbcType=VARCHAR} )
+	</insert>
+	
+	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert" useGeneratedKeys="true" keyProperty="id">
+		insert into security_sign_cert(
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code,
+            </if>
+            <if test="orgCertPath != null and orgCertPath != '' "> 
+                org_cert_path,
+            </if>
+            <if test="orgCertPwd != null and orgCertPwd != '' "> 
+                org_cert_pwd,
+            </if>
+            <if test="bhxtCertPath != null and bhxtCertPath != '' "> 
+                bhxt_cert_path,
+            </if>
+            <if test="bhxtCertPwd != null and bhxtCertPwd != '' "> 
+                bhxt_cert_pwd,
+            </if>
+                id)values (
+            <if test="orgCode != null and orgCode != '' "> 
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCertPath != null and orgCertPath != '' "> 
+                #{orgCertPath,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCertPwd != null and orgCertPwd != '' "> 
+                #{orgCertPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="bhxtCertPath != null and bhxtCertPath != '' "> 
+                #{bhxtCertPath,jdbcType=VARCHAR},
+            </if>
+            <if test="bhxtCertPwd != null and bhxtCertPwd != '' "> 
+                #{bhxtCertPwd,jdbcType=VARCHAR},
+            </if>
+            #{id,jdbcType=BIGINT})
+	</insert>
+
+	<update id="update" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert">
+		update security_sign_cert set org_code=#{orgCode,jdbcType=VARCHAR},org_cert_path=#{orgCertPath,jdbcType=VARCHAR},org_cert_pwd=#{orgCertPwd,jdbcType=VARCHAR},bhxt_cert_path=#{bhxtCertPath,jdbcType=VARCHAR},bhxt_cert_pwd=#{bhxtCertPwd,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+	</update>	
+	
+	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert">
+		update security_sign_cert
+        <set>
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCertPath != null and orgCertPath != '' "> 
+                org_cert_path = #{orgCertPath,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCertPwd != null and orgCertPwd != '' "> 
+                org_cert_pwd = #{orgCertPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="bhxtCertPath != null and bhxtCertPath != '' "> 
+                bhxt_cert_path = #{bhxtCertPath,jdbcType=VARCHAR},
+            </if>
+            <if test="bhxtCertPwd != null and bhxtCertPwd != '' "> 
+                bhxt_cert_pwd = #{bhxtCertPwd,jdbcType=VARCHAR},
+            </if>
+        </set>
+         where id=#{id,jdbcType=BIGINT}
+	</update>	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from security_sign_cert where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
+        update security_sign_cert        
+        update_time = now(),
+        set yn = 0,
+        version = version + 1
+        where id = #{id,jdbcType=BIGINT}
+        and yn = 1
+    </update>
+    
+	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert">
+		delete from security_sign_cert
+		<where>
+			<if test="id != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+			<include refid="other-condition" />
+		</where>
+	</delete>	
+		
+</mapper>
+

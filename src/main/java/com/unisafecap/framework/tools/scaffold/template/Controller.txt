@@ -24,6 +24,6 @@ public class ${clzName}Controller {
 	private static final Logger logger = LoggerFactory.getLogger(${clzName}Controller.class);
 	
 	@Autowired
-	private ${clzName}Manager ${clzNameLC}Manager;
+	private ${clzName}Service ${clzNameLC}Service;
 
 }
