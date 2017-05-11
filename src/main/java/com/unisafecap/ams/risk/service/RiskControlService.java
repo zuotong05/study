@@ -73,17 +73,18 @@ public class RiskControlService {
 	 * @throws Exception
 	 */
 	public ResponseData<?> customerAudit(RequestData requestData) throws Exception {
-		ResponseData<Object> response = new ResponseData<Object>();
-		RiskControlAuditDto auditDto = new RiskControlAuditDto();
-		response = riskControlAudit(requestData, auditDto);
+
+		ResponseData<RiskControlAuditDto> response = riskControlAudit(requestData);
 
 		if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
+			response.setDatas(null);
 			return response;
 		}
-
+		RiskControlAuditDto auditDto = response.getDatas();
+		response.setDatas(null);
 		RiskLoanUser loanUser = auditDto.getLoanUser();
 		RiskLoanAccount loanAccount = auditDto.getLoanAccount();
-		if (StringUtils.isBlank(loanUser.getCustomerName()) || StringUtils.isBlank(loanUser.getCertType()) || StringUtils.isBlank(loanUser.getCertId()) || StringUtils.isBlank(loanUser.getPhone()) || StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
+		if (null== loanUser|| null == loanAccount ||StringUtils.isBlank(loanUser.getCustomerName()) || StringUtils.isBlank(loanUser.getCertType()) || StringUtils.isBlank(loanUser.getCertId()) || StringUtils.isBlank(loanUser.getPhone()) || StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
 		}
@@ -105,12 +106,17 @@ public class RiskControlService {
 
 		list = riskControlInfoService.findByMap(map);
 		if (list != null && list.size() > 0) {
-			response.setServiceErrorCode(ServiceErrorCode.CONTRACT_NO_REPEAT);
+			response.setServiceErrorCode(ServiceErrorCode.CERT_ID_NO_REPEAT);
 			return response;
 		}
 
-		BeanUtils.copyProperties(auditDto, riskControlInfo);
+		riskControlInfo.setOrgCode(auditDto.getOrgCode());
+		riskControlInfo.setTrustProjectCode(auditDto.getTrustProjectCode());
+		riskControlInfo.setTimestamp(auditDto.getTimestamp());
+		riskControlInfo.setOutTradeNo(auditDto.getOutTradeNo());
+		riskControlInfo.setCallbackUrl(auditDto.getCallbackUrl());
 		riskControlInfo.setRiskControlType(RiskControlType.CUSTOMER_AUDIT.ordinal());
+
 		IdWorker18 idWorker = new IdWorker18(0, 0);
 		String tradeNo = auditDto.getTrustProjectCode() + idWorker.nextId();
 		riskControlInfo.setTradeNo(tradeNo);
@@ -120,14 +126,19 @@ public class RiskControlService {
 		if (result < 1)
 			throw new RuntimeException("保存风控信息失败");
 
-		BeanUtils.copyProperties(riskControlInfo, loanUser);
 		loanUser.setRiskControlId(riskControlInfo.getId());
+		loanUser.setRiskControlType(riskControlInfo.getRiskControlType());
+		loanUser.setOrgCode(riskControlInfo.getOrgCode());
+		loanUser.setTrustProjectCode(riskControlInfo.getTrustProjectCode());
 		result = riskLoanUserService.create4Selective(loanUser);
 		if (result < 1)
 			throw new RuntimeException("个人用户信息失败");
 
-		BeanUtils.copyProperties(riskControlInfo, loanAccount);
 		loanAccount.setRiskControlId(riskControlInfo.getId());
+		loanAccount.setRiskControlType(riskControlInfo.getRiskControlType());
+		loanAccount.setOrgCode(riskControlInfo.getOrgCode());
+		loanAccount.setTrustProjectCode(riskControlInfo.getTrustProjectCode());
+		loanAccount.setPutoutAccountName(StringUtils.isNotBlank(loanAccount.getPutoutAccountName()) ? loanAccount.getPutoutAccountName() : loanUser.getCustomerName());
 		result = riskLoanAccountService.create4Selective(loanAccount);
 		if (result < 1)
 			throw new RuntimeException("放款账户信息失败");
@@ -166,19 +177,21 @@ public class RiskControlService {
 	 * @throws Exception
 	 */
 	public ResponseData<?> loadAudit(RequestData requestData) throws Exception {
-		ResponseData<Object> response = new ResponseData<Object>();
-		RiskControlAuditDto auditDto = new RiskControlAuditDto();
-		response = riskControlAudit(requestData, auditDto);
+		ResponseData<RiskControlAuditDto> response = riskControlAudit(requestData);
 
 		if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
+			response.setDatas(null);
 			return response;
 		}
-
+		
+		RiskControlAuditDto auditDto = response.getDatas();
+		response.setDatas(null);
+		
 		RiskLoanDetail loanDetail = auditDto.getLoanApply();
 		RiskLoanUser loanUser = auditDto.getLoanUser();
 		RiskLoanAccount loanAccount = auditDto.getLoanAccount();
 
-		if (StringUtils.isBlank(loanDetail.getContractNo()) || StringUtils.isBlank(loanUser.getCustomerName()) || StringUtils.isBlank(loanUser.getCertType()) || StringUtils.isBlank(loanUser.getCertId()) || StringUtils.isBlank(loanUser.getPhone()) || StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
+		if (null==loanDetail || null== loanUser|| null == loanAccount || StringUtils.isBlank(loanDetail.getContractNo()) || StringUtils.isBlank(loanUser.getCustomerName()) || StringUtils.isBlank(loanUser.getCertType()) || StringUtils.isBlank(loanUser.getCertId()) || StringUtils.isBlank(loanUser.getPhone()) || StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
 		}
@@ -206,8 +219,13 @@ public class RiskControlService {
 			return response;
 		}
 
-		BeanUtils.copyProperties(auditDto, riskControlInfo);
+		riskControlInfo.setOrgCode(auditDto.getOrgCode());
+		riskControlInfo.setTrustProjectCode(auditDto.getTrustProjectCode());
+		riskControlInfo.setTimestamp(auditDto.getTimestamp());
+		riskControlInfo.setOutTradeNo(auditDto.getOutTradeNo());
+		riskControlInfo.setCallbackUrl(auditDto.getCallbackUrl());
 		riskControlInfo.setRiskControlType(RiskControlType.LOAD_AUDIT.ordinal());
+
 		IdWorker18 idWorker = new IdWorker18(0, 0);
 		String tradeNo = auditDto.getTrustProjectCode() + idWorker.nextId();
 		riskControlInfo.setTradeNo(tradeNo);
@@ -218,33 +236,42 @@ public class RiskControlService {
 		if (result < 1)
 			throw new RuntimeException("保存风控信息失败");
 
-		BeanUtils.copyProperties(riskControlInfo, loanDetail);
 		loanDetail.setRiskControlId(riskControlInfo.getId());
-
+		loanDetail.setRiskControlType(riskControlInfo.getRiskControlType());
+		loanDetail.setOrgCode(riskControlInfo.getOrgCode());
+		loanDetail.setTrustProjectCode(riskControlInfo.getTrustProjectCode());
 		result = riskLoanDetailService.create4Selective(loanDetail);
 		if (result < 1)
 			throw new RuntimeException("保存贷款单信息失败");
 
-		BeanUtils.copyProperties(riskControlInfo, loanUser);
 		loanUser.setRiskControlId(riskControlInfo.getId());
-
+		loanUser.setRiskControlType(riskControlInfo.getRiskControlType());
+		loanUser.setOrgCode(riskControlInfo.getOrgCode());
+		loanUser.setTrustProjectCode(riskControlInfo.getTrustProjectCode());
 		result = riskLoanUserService.create4Selective(loanUser);
 		if (result < 1)
 			throw new RuntimeException("个人用户信息失败");
 
 		List<RiskRelationUser> relationUsers = auditDto.getRelationUsers();
-		for (Iterator<RiskRelationUser> iterator = relationUsers.iterator(); iterator.hasNext();) {
-			RiskRelationUser relationUser = new RiskRelationUser();
-			BeanUtils.copyProperties(riskControlInfo, relationUser);
-			relationUser.setRiskControlId(riskControlInfo.getId());
-
-			result = riskRelationUserService.create4Selective(relationUser);
-			if (result < 1)
-				throw new RuntimeException("关系人信息失败");
+		if(relationUsers!=null&&relationUsers.size()>0){
+			for (Iterator<RiskRelationUser> iterator = relationUsers.iterator(); iterator.hasNext();) {
+				RiskRelationUser relationUser = iterator.next();
+				relationUser.setRiskControlId(riskControlInfo.getId());
+				relationUser.setRiskControlType(riskControlInfo.getRiskControlType());
+				relationUser.setOrgCode(riskControlInfo.getOrgCode());
+				relationUser.setTrustProjectCode(riskControlInfo.getTrustProjectCode());
+				result = riskRelationUserService.create4Selective(relationUser);
+				if (result < 1)
+					throw new RuntimeException("关系人信息失败");
+			}
 		}
+		
 
-		BeanUtils.copyProperties(riskControlInfo, loanAccount);
 		loanAccount.setRiskControlId(riskControlInfo.getId());
+		loanAccount.setRiskControlType(riskControlInfo.getRiskControlType());
+		loanAccount.setOrgCode(riskControlInfo.getOrgCode());
+		loanAccount.setTrustProjectCode(riskControlInfo.getTrustProjectCode());
+		loanAccount.setPutoutAccountName(StringUtils.isNotBlank(loanAccount.getPutoutAccountName()) ? loanAccount.getPutoutAccountName() : loanUser.getCustomerName());
 		result = riskLoanAccountService.create4Selective(loanAccount);
 		if (result < 1)
 			throw new RuntimeException("放款账户信息失败");
@@ -274,8 +301,8 @@ public class RiskControlService {
 
 	}
 
-	private ResponseData<Object> riskControlAudit(RequestData requestData, RiskControlAuditDto auditDto) throws Exception {
-		ResponseData<Object> response = new ResponseData<Object>();
+	private ResponseData<RiskControlAuditDto> riskControlAudit(RequestData requestData) throws Exception {
+		ResponseData<RiskControlAuditDto> response = new ResponseData<RiskControlAuditDto>();
 		if (StringUtils.isBlank(requestData.getTrustProjectCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
@@ -288,7 +315,7 @@ public class RiskControlService {
 			return response;
 		}
 
-		auditDto = JSON.parseObject(new String(cleartxt), RiskControlAuditDto.class);
+		RiskControlAuditDto auditDto = JSON.parseObject(new String(cleartxt), RiskControlAuditDto.class);
 
 		if (StringUtils.isBlank(auditDto.getOutTradeNo())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
@@ -298,6 +325,7 @@ public class RiskControlService {
 		auditDto.setTimestamp(requestData.getTimestamp());
 
 		response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
+		response.setDatas(auditDto);
 		return response;
 
 	}
@@ -312,14 +340,17 @@ public class RiskControlService {
 	 */
 	@Transactional(readOnly = true)
 	public ResponseData<?> customerAuditQuery(RequestData requestData) {
-		ResponseData<Object> response = new ResponseData<Object>();
+		ResponseData<RiskControlAuditQueryDto> response = new ResponseData<RiskControlAuditQueryDto>();
 		try {
-			RiskControlAuditQueryDto auditQueryDto = new RiskControlAuditQueryDto();
-			response = queryRiskControlAudit(requestData, auditQueryDto);
+
+			response = queryRiskControlAudit(requestData);
 
 			if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
+				response.setDatas(null);
 				return response;
 			}
+			RiskControlAuditQueryDto auditQueryDto = response.getDatas();
+			response.setDatas(null);
 
 			if (StringUtils.isBlank(auditQueryDto.getCertType()) || StringUtils.isBlank(auditQueryDto.getCertId())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
@@ -368,16 +399,19 @@ public class RiskControlService {
 	 *            请求数据
 	 * @return ResponseData 响应数据
 	 */
-	
+
 	@Transactional(readOnly = true)
 	public ResponseData<?> loadAuditQuery(RequestData requestData) {
-		ResponseData<Object> response = new ResponseData<Object>();
+		ResponseData<RiskControlAuditQueryDto> response = new ResponseData<RiskControlAuditQueryDto>();
 		try {
-			RiskControlAuditQueryDto auditQueryDto = new RiskControlAuditQueryDto();
-			response = queryRiskControlAudit(requestData, auditQueryDto);
+
+			response = queryRiskControlAudit(requestData);
 			if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
+				response.setDatas(null);
 				return response;
 			}
+			RiskControlAuditQueryDto auditQueryDto = response.getDatas();
+			response.setDatas(null);
 
 			if (StringUtils.isBlank(auditQueryDto.getContractNo())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
@@ -417,8 +451,8 @@ public class RiskControlService {
 		}
 	}
 
-	private ResponseData<Object> queryRiskControlAudit(RequestData requestData, RiskControlAuditQueryDto auditQueryDto) {
-		ResponseData<Object> response = new ResponseData<Object>();
+	private ResponseData<RiskControlAuditQueryDto> queryRiskControlAudit(RequestData requestData) {
+		ResponseData<RiskControlAuditQueryDto> response = new ResponseData<RiskControlAuditQueryDto>();
 		try {
 			if (StringUtils.isBlank(requestData.getTrustProjectCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
@@ -432,12 +466,13 @@ public class RiskControlService {
 				return response;
 			}
 
-			auditQueryDto = JSON.parseObject(new String(cleartxt), RiskControlAuditQueryDto.class);
+			RiskControlAuditQueryDto auditQueryDto = JSON.parseObject(new String(cleartxt), RiskControlAuditQueryDto.class);
 			if (StringUtils.isBlank(auditQueryDto.getOutTradeNo())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				return response;
 			}
 			response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
+			response.setDatas(auditQueryDto);
 
 			return response;
 

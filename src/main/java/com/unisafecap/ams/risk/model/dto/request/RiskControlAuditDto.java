@@ -21,7 +21,10 @@ import com.unisafecap.ams.risk.model.RiskRelationUser;
 public class RiskControlAuditDto implements Serializable {
 
 	private static final long serialVersionUID = -8112786001511337239L;
-
+	/**
+	 * 合作机构编号
+	 */
+	private String orgCode;
 	/**
 	 * 信托项目简码
 	 */
@@ -60,6 +63,14 @@ public class RiskControlAuditDto implements Serializable {
 	 * 放款账户信息
 	 */
 	private RiskLoanAccount loanAccount;
+
+	public String getOrgCode() {
+		return orgCode;
+	}
+
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
+	}
 
 	public String getTrustProjectCode() {
 		return trustProjectCode;
