@@ -3,7 +3,6 @@ package com.unisafecap.ams.risk.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,16 +32,17 @@ public class RiskControlController {
 	private RiskControlService riskControlService;
 
 	/**
-	 * 风控审核
+	 * 客户审批
+	 * 
 	 * @param requestData
 	 * @return
 	 */
-	@RequestMapping(value = "/riskControlAudit", method = RequestMethod.POST)
+	@RequestMapping(value = "/customerAudit", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseData<?> riskControlAudit(@RequestBody RequestData requestData) {
+	public ResponseData<?> customerAudit(@RequestBody RequestData requestData) {
 		try {
-			return riskControlService.riskControlAudit(requestData);		
-			}
+			return riskControlService.customerAudit(requestData);
+		}
 		catch (Exception e) {
 			logger.debug(e.getMessage());
 			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
@@ -51,14 +51,58 @@ public class RiskControlController {
 	}
 
 	/**
-	 * 风控审核查询
+	 * 客户审批结果查询
+	 * 
 	 * @param requestData
 	 * @return
 	 */
-	@RequestMapping(value = "/riskControlAuditQuery", method = RequestMethod.POST)
+	@RequestMapping(value = "/customerAuditQuery", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> riskControlAuditQuery(@RequestBody RequestData requestData) {
-		return ResponseEntity.ok(riskControlService.riskControlAuditQuery(requestData));
+	public ResponseData<?> customerAuditQuery(@RequestBody RequestData requestData) {
+		try {
+			return riskControlService.customerAuditQuery(requestData);
+		}
+		catch (Exception e) {
+			logger.debug(e.getMessage());
+			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
+		}
+	}
+
+	/**
+	 * 放款审批
+	 * 
+	 * @param requestData
+	 * @return
+	 */
+	@RequestMapping(value = "/loadAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseData<?> loadAudit(@RequestBody RequestData requestData) {
+		try {
+			return riskControlService.loadAudit(requestData);
+		}
+		catch (Exception e) {
+			logger.debug(e.getMessage());
+			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
+		}
+
+	}
+
+	/**
+	 * 放款审批结果查询
+	 * 
+	 * @param requestData
+	 * @return
+	 */
+	@RequestMapping(value = "/loadAuditQuery", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseData<?> riskControlAuditQuery(@RequestBody RequestData requestData) {
+		try {
+			return riskControlService.loadAuditQuery(requestData);
+		}
+		catch (Exception e) {
+			logger.debug(e.getMessage());
+			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
+		}
 	}
 
 }

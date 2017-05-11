@@ -10,23 +10,27 @@ import com.unisafecap.framework.model.BaseModel;
  * </P>
  *  
  * @author zuotong
- * @since 2017年05月05日
+ * @since 2017年05月11日
  * @version V1.0  
  */
 public class RiskLoanUser extends BaseModel implements Serializable {
-    private static final long serialVersionUID = 7735328416491433170L;
+    private static final long serialVersionUID = -2769092851940764771L;
 	/**
-     * 贷款单ID
+     * 风控ID
      */
-    private Long loanDetailId;
+    private Long riskControlId;
+    /**
+     * 0=客户,1=贷款
+     */
+    private Integer riskControlType;
+    /**
+     * 合作机构编号
+     */
+    private String orgCode;
     /**
      * 信托项目简码
      */
     private String trustProjectCode;
-    /**
-     * 合同号
-     */
-    private String contractNo;
     /**
      * 姓名
      */
@@ -156,12 +160,26 @@ public class RiskLoanUser extends BaseModel implements Serializable {
 		super();
 	}
 	
-    public Long getLoanDetailId() {
-        return loanDetailId;
+    public Long getRiskControlId() {
+        return riskControlId;
     }
 
-    public void setLoanDetailId(Long loanDetailId) {
-        this.loanDetailId = loanDetailId;
+    public void setRiskControlId(Long riskControlId) {
+        this.riskControlId = riskControlId;
+    }
+    public Integer getRiskControlType() {
+        return riskControlType;
+    }
+
+    public void setRiskControlType(Integer riskControlType) {
+        this.riskControlType = riskControlType;
+    }
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
     public String getTrustProjectCode() {
         return trustProjectCode;
@@ -169,13 +187,6 @@ public class RiskLoanUser extends BaseModel implements Serializable {
 
     public void setTrustProjectCode(String trustProjectCode) {
         this.trustProjectCode = trustProjectCode;
-    }
-    public String getContractNo() {
-        return contractNo;
-    }
-
-    public void setContractNo(String contractNo) {
-        this.contractNo = contractNo;
     }
     public String getCustomerName() {
         return customerName;

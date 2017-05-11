@@ -10,22 +10,27 @@ import com.unisafecap.framework.model.BaseModel;
  * </P>
  *  
  * @author zuotong
- * @since 2017年05月05日
+ * @since 2017年05月11日
  * @version V1.0  
  */
 public class RiskRelationUser extends BaseModel implements Serializable {
-    /**
-     * 贷款单ID
+    private static final long serialVersionUID = 1864804844142858653L;
+	/**
+     * 风控ID
      */
-    private Long loanDetailId;
+    private Long riskControlId;
+    /**
+     * 风控类型
+     */
+    private Integer riskControlType;
+    /**
+     * 合作机构编号
+     */
+    private String orgCode;
     /**
      * 信托项目简码
      */
     private String trustProjectCode;
-    /**
-     * 合同号
-     */
-    private String contractNo;
     /**
      * 关系人类型
      */
@@ -51,6 +56,10 @@ public class RiskRelationUser extends BaseModel implements Serializable {
      */
     private String handPhone;
     /**
+     * 移动电话
+     */
+    private String phone;
+    /**
      * 担保方式
      */
     private String guaranteeMode;
@@ -63,12 +72,26 @@ public class RiskRelationUser extends BaseModel implements Serializable {
 		super();
 	}
 	
-    public Long getLoanDetailId() {
-        return loanDetailId;
+    public Long getRiskControlId() {
+        return riskControlId;
     }
 
-    public void setLoanDetailId(Long loanDetailId) {
-        this.loanDetailId = loanDetailId;
+    public void setRiskControlId(Long riskControlId) {
+        this.riskControlId = riskControlId;
+    }
+    public Integer getRiskControlType() {
+        return riskControlType;
+    }
+
+    public void setRiskControlType(Integer riskControlType) {
+        this.riskControlType = riskControlType;
+    }
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
     public String getTrustProjectCode() {
         return trustProjectCode;
@@ -76,13 +99,6 @@ public class RiskRelationUser extends BaseModel implements Serializable {
 
     public void setTrustProjectCode(String trustProjectCode) {
         this.trustProjectCode = trustProjectCode;
-    }
-    public String getContractNo() {
-        return contractNo;
-    }
-
-    public void setContractNo(String contractNo) {
-        this.contractNo = contractNo;
     }
     public String getRelationUserType() {
         return relationUserType;
@@ -125,6 +141,13 @@ public class RiskRelationUser extends BaseModel implements Serializable {
 
     public void setHandPhone(String handPhone) {
         this.handPhone = handPhone;
+    }
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
     public String getGuaranteeMode() {
         return guaranteeMode;

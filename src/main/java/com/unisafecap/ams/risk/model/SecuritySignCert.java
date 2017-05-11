@@ -10,22 +10,27 @@ import com.unisafecap.framework.model.BaseModel;
  * </P>
  *  
  * @author zuotong
- * @since 2017年05月09日
+ * @since 2017年05月11日
  * @version V1.0  
  */
 public class SecuritySignCert extends BaseModel implements Serializable {
-    /**
-     * 合作方代码
+    private static final long serialVersionUID = -1131304982486983193L;
+	/**
+     * 合作机构编号
      */
     private String orgCode;
     /**
-     * 合作方证书路径
+     * 信托项目简码
      */
-    private String orgCertPath;
+    private String trustProjectCode;
     /**
-     * 合作方证书密码
+     * 合作方信托项目证书路径
      */
-    private String orgCertPwd;
+    private String trustProjectCertPath;
+    /**
+     * 合作方信托项目证书密码
+     */
+    private String trustProjectCertPwd;
     /**
      * 渤海信托证书路径
      */
@@ -46,19 +51,26 @@ public class SecuritySignCert extends BaseModel implements Serializable {
     public void setOrgCode(String orgCode) {
         this.orgCode = orgCode;
     }
-    public String getOrgCertPath() {
-        return orgCertPath;
+    public String getTrustProjectCode() {
+        return trustProjectCode;
     }
 
-    public void setOrgCertPath(String orgCertPath) {
-        this.orgCertPath = orgCertPath;
+    public void setTrustProjectCode(String trustProjectCode) {
+        this.trustProjectCode = trustProjectCode;
     }
-    public String getOrgCertPwd() {
-        return orgCertPwd;
+    public String getTrustProjectCertPath() {
+        return trustProjectCertPath;
     }
 
-    public void setOrgCertPwd(String orgCertPwd) {
-        this.orgCertPwd = orgCertPwd;
+    public void setTrustProjectCertPath(String trustProjectCertPath) {
+        this.trustProjectCertPath = trustProjectCertPath;
+    }
+    public String getTrustProjectCertPwd() {
+        return trustProjectCertPwd;
+    }
+
+    public void setTrustProjectCertPwd(String trustProjectCertPwd) {
+        this.trustProjectCertPwd = trustProjectCertPwd;
     }
     public String getBhxtCertPath() {
         return bhxtCertPath;

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.unisafecap.ams.risk.model.RiskControlInfo">
+
+	<resultMap id="result" type="com.unisafecap.ams.risk.model.RiskControlInfo">
+            <id property="id" column="id" jdbcType="BIGINT" />
+            <result property="orgCode" column="org_code" jdbcType="VARCHAR" />
+            <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
+            <result property="timestamp" column="timestamp" jdbcType="VARCHAR" />
+            <result property="outTradeNo" column="out_trade_no" jdbcType="VARCHAR" />
+            <result property="callbackUrl" column="callback_url" jdbcType="VARCHAR" />
+            <result property="riskControlType" column="risk_control_type" jdbcType="TINYINT" />
+            <result property="tradeNo" column="trade_no" jdbcType="VARCHAR" />
+            <result property="auditStatus" column="audit_status" jdbcType="VARCHAR" />
+            <result property="auditMessages" column="audit_messages" jdbcType="VARCHAR" />
+            <result property="sendStatus" column="send_status" jdbcType="VARCHAR" />
+            <result property="sendTime" column="send_time" />
+            <result property="createdTime" column="created_time" />
+            <result property="createdBy" column="created_by" jdbcType="VARCHAR" />
+            <result property="updatedTime" column="updated_time" />
+            <result property="updatedBy" column="updated_by" jdbcType="VARCHAR" />
+            <result property="remark1" column="remark1" jdbcType="VARCHAR" />
+            <result property="remark2" column="remark2" jdbcType="VARCHAR" />
+            <result property="remark3" column="remark3" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<sql id="base_field">
+		id,org_code,trust_project_code,timestamp,out_trade_no,callback_url,risk_control_type,trade_no,audit_status,audit_messages,send_status,send_time,created_time,created_by,updated_time,updated_by,remark1,remark2,remark3
+	</sql>
+	
+	<sql id="other-condition">
+            <if test= "orgCode != null and orgCode != '' ">	and org_code = #{orgCode,jdbcType=VARCHAR }</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
+            <if test= "timestamp != null and timestamp != '' ">	and timestamp = #{timestamp,jdbcType=VARCHAR }</if>
+            <if test= "outTradeNo != null and outTradeNo != '' ">	and out_trade_no = #{outTradeNo,jdbcType=VARCHAR }</if>
+            <if test= "callbackUrl != null and callbackUrl != '' ">	and callback_url = #{callbackUrl,jdbcType=VARCHAR }</if>
+            <if test= "riskControlType != null ">	and risk_control_type = #{riskControlType,jdbcType=TINYINT }</if>
+            <if test= "tradeNo != null and tradeNo != '' ">	and trade_no = #{tradeNo,jdbcType=VARCHAR }</if>
+            <if test= "auditStatus != null and auditStatus != '' ">	and audit_status = #{auditStatus,jdbcType=VARCHAR }</if>
+            <if test= "auditMessages != null and auditMessages != '' ">	and audit_messages = #{auditMessages,jdbcType=VARCHAR }</if>
+            <if test= "sendStatus != null and sendStatus != '' ">	and send_status = #{sendStatus,jdbcType=VARCHAR }</if>
+            <if test= "sendTime != null ">	and send_time = #{sendTime }</if>
+            <if test= "createdTime != null ">	and created_time = #{createdTime }</if>
+            <if test= "createdBy != null and createdBy != '' ">	and created_by = #{createdBy,jdbcType=VARCHAR }</if>
+            <if test= "updatedTime != null ">	and updated_time = #{updatedTime }</if>
+            <if test= "updatedBy != null and updatedBy != '' ">	and updated_by = #{updatedBy,jdbcType=VARCHAR }</if>
+            <if test= "remark1 != null and remark1 != '' ">	and remark1 = #{remark1,jdbcType=VARCHAR }</if>
+            <if test= "remark2 != null and remark2 != '' ">	and remark2 = #{remark2,jdbcType=VARCHAR }</if>
+            <if test= "remark3 != null and remark3 != '' ">	and remark3 = #{remark3,jdbcType=VARCHAR }</if>
+
+ 	</sql>
+ 	
+ 	<sql id="like-condition">
+            <if test= "orgCode != null and orgCode != '' ">	and org_code like "%"#{orgCode}"%"</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
+            <if test= "timestamp != null and timestamp != '' ">	and timestamp like "%"#{timestamp}"%"</if>
+            <if test= "outTradeNo != null and outTradeNo != '' ">	and out_trade_no like "%"#{outTradeNo}"%"</if>
+            <if test= "callbackUrl != null and callbackUrl != '' ">	and callback_url like "%"#{callbackUrl}"%"</if>
+            <if test= "riskControlType != null ">	and risk_control_type = #{riskControlType,jdbcType=TINYINT }</if>
+            <if test= "tradeNo != null and tradeNo != '' ">	and trade_no like "%"#{tradeNo}"%"</if>
+            <if test= "auditStatus != null and auditStatus != '' ">	and audit_status like "%"#{auditStatus}"%"</if>
+            <if test= "auditMessages != null and auditMessages != '' ">	and audit_messages like "%"#{auditMessages}"%"</if>
+            <if test= "sendStatus != null and sendStatus != '' ">	and send_status like "%"#{sendStatus}"%"</if>
+            <if test= "sendTime != null ">	and send_time = #{sendTime,jdbcType=DATETIME }</if>
+            <if test= "createdTime != null ">	and created_time = #{createdTime,jdbcType=DATETIME }</if>
+            <if test= "createdBy != null and createdBy != '' ">	and created_by like "%"#{createdBy}"%"</if>
+            <if test= "updatedTime != null ">	and updated_time = #{updatedTime,jdbcType=DATETIME }</if>
+            <if test= "updatedBy != null and updatedBy != '' ">	and updated_by like "%"#{updatedBy}"%"</if>
+            <if test= "remark1 != null and remark1 != '' ">	and remark1 like "%"#{remark1}"%"</if>
+            <if test= "remark2 != null and remark2 != '' ">	and remark2 like "%"#{remark2}"%"</if>
+            <if test= "remark3 != null and remark3 != '' ">	and remark3 like "%"#{remark3}"%"</if>
+
+ 	</sql>
+	
+	<sql id="selectByMapSQL">
+		select
+		<include refid="base_field" />
+		from risk_control_info
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+		<if test="sortName != null and sortName != '' and sortName != 'null'">
+			order by ${sortName} ${sortBy}
+		</if>
+	</sql>
+	
+	<select id="selectByMap" resultMap="result" >
+		<include refid="selectByMapSQL" />
+	</select>
+	
+	<select id="selectCount" resultType="int" >
+		select count(*) from risk_control_info 
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+	</select>
+	
+	<select id="selectPage" resultMap="result" >
+		<include refid="selectByMapSQL" />
+		 limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="select" resultMap="result" parameterType="java.lang.Long">
+		select
+		<include refid="base_field" />
+		from risk_control_info  
+		<where>
+			<if test="_parameter != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByIds" resultMap="result" >
+		select
+		<include refid="base_field" />
+		from risk_control_info  where id in (${_parameter})
+	</select>		
+
+	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_control_info( id,org_code,trust_project_code,timestamp,out_trade_no,callback_url,risk_control_type,trade_no,audit_status,audit_messages,send_status,send_time,created_time,created_by,updated_time,updated_by,remark1,remark2,remark3 ) values (#{id,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{timestamp,jdbcType=VARCHAR},#{outTradeNo,jdbcType=VARCHAR},#{callbackUrl,jdbcType=VARCHAR},#{riskControlType,jdbcType=TINYINT},#{tradeNo,jdbcType=VARCHAR},#{auditStatus,jdbcType=VARCHAR},#{auditMessages,jdbcType=VARCHAR},#{sendStatus,jdbcType=VARCHAR},#{sendTime},#{createdTime},#{createdBy,jdbcType=VARCHAR},#{updatedTime},#{updatedBy,jdbcType=VARCHAR},#{remark1,jdbcType=VARCHAR},#{remark2,jdbcType=VARCHAR},#{remark3,jdbcType=VARCHAR} )
+	</insert>
+	
+	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_control_info(
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code,
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code,
+            </if>
+            <if test="timestamp != null and timestamp != '' "> 
+                timestamp,
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' "> 
+                out_trade_no,
+            </if>
+            <if test="callbackUrl != null and callbackUrl != '' "> 
+                callback_url,
+            </if>
+            <if test="riskControlType != null "> 
+                risk_control_type,
+            </if>
+            <if test="tradeNo != null and tradeNo != '' "> 
+                trade_no,
+            </if>
+            <if test="auditStatus != null and auditStatus != '' "> 
+                audit_status,
+            </if>
+            <if test="auditMessages != null and auditMessages != '' "> 
+                audit_messages,
+            </if>
+            <if test="sendStatus != null and sendStatus != '' "> 
+                send_status,
+            </if>
+            <if test="sendTime != null "> 
+                send_time,
+            </if>
+            <if test="createdTime != null "> 
+                created_time,
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                created_by,
+            </if>
+            <if test="updatedTime != null "> 
+                updated_time,
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                updated_by,
+            </if>
+            <if test="remark1 != null and remark1 != '' "> 
+                remark1,
+            </if>
+            <if test="remark2 != null and remark2 != '' "> 
+                remark2,
+            </if>
+            <if test="remark3 != null and remark3 != '' "> 
+                remark3,
+            </if>
+                id)values (
+            <if test="orgCode != null and orgCode != '' "> 
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="timestamp != null and timestamp != '' "> 
+                #{timestamp,jdbcType=VARCHAR},
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' "> 
+                #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="callbackUrl != null and callbackUrl != '' "> 
+                #{callbackUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="riskControlType != null "> 
+                #{riskControlType,jdbcType=TINYINT},
+            </if>
+            <if test="tradeNo != null and tradeNo != '' "> 
+                #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null and auditStatus != '' "> 
+                #{auditStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="auditMessages != null and auditMessages != '' "> 
+                #{auditMessages,jdbcType=VARCHAR},
+            </if>
+            <if test="sendStatus != null and sendStatus != '' "> 
+                #{sendStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="sendTime != null "> 
+                #{sendTime},
+            </if>
+            <if test="createdTime != null "> 
+                #{createdTime},
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null "> 
+                #{updatedTime},
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark1 != null and remark1 != '' "> 
+                #{remark1,jdbcType=VARCHAR},
+            </if>
+            <if test="remark2 != null and remark2 != '' "> 
+                #{remark2,jdbcType=VARCHAR},
+            </if>
+            <if test="remark3 != null and remark3 != '' "> 
+                #{remark3,jdbcType=VARCHAR},
+            </if>
+            #{id,jdbcType=BIGINT})
+	</insert>
+
+	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo">
+		update risk_control_info set org_code=#{orgCode,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},timestamp=#{timestamp,jdbcType=VARCHAR},out_trade_no=#{outTradeNo,jdbcType=VARCHAR},callback_url=#{callbackUrl,jdbcType=VARCHAR},risk_control_type=#{riskControlType,jdbcType=TINYINT},trade_no=#{tradeNo,jdbcType=VARCHAR},audit_status=#{auditStatus,jdbcType=VARCHAR},audit_messages=#{auditMessages,jdbcType=VARCHAR},send_status=#{sendStatus,jdbcType=VARCHAR},send_time=#{sendTime},created_time=#{createdTime},created_by=#{createdBy,jdbcType=VARCHAR},updated_time=#{updatedTime},updated_by=#{updatedBy,jdbcType=VARCHAR},remark1=#{remark1,jdbcType=VARCHAR},remark2=#{remark2,jdbcType=VARCHAR},remark3=#{remark3,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+	</update>	
+	
+	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo">
+		update risk_control_info
+        <set>
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="timestamp != null and timestamp != '' "> 
+                timestamp = #{timestamp,jdbcType=VARCHAR},
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' "> 
+                out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="callbackUrl != null and callbackUrl != '' "> 
+                callback_url = #{callbackUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="riskControlType != null "> 
+                risk_control_type = #{riskControlType,jdbcType=TINYINT},
+            </if>
+            <if test="tradeNo != null and tradeNo != '' "> 
+                trade_no = #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null and auditStatus != '' "> 
+                audit_status = #{auditStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="auditMessages != null and auditMessages != '' "> 
+                audit_messages = #{auditMessages,jdbcType=VARCHAR},
+            </if>
+            <if test="sendStatus != null and sendStatus != '' "> 
+                send_status = #{sendStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="sendTime != null "> 
+                send_time = #{sendTime,jdbcType=DATETIME},
+            </if>
+            <if test="createdTime != null "> 
+                created_time = #{createdTime,jdbcType=DATETIME},
+            </if>
+            <if test="createdBy != null and createdBy != '' "> 
+                created_by = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null "> 
+                updated_time = #{updatedTime,jdbcType=DATETIME},
+            </if>
+            <if test="updatedBy != null and updatedBy != '' "> 
+                updated_by = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark1 != null and remark1 != '' "> 
+                remark1 = #{remark1,jdbcType=VARCHAR},
+            </if>
+            <if test="remark2 != null and remark2 != '' "> 
+                remark2 = #{remark2,jdbcType=VARCHAR},
+            </if>
+            <if test="remark3 != null and remark3 != '' "> 
+                remark3 = #{remark3,jdbcType=VARCHAR},
+            </if>
+        </set>
+         where id=#{id,jdbcType=BIGINT}
+	</update>	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from risk_control_info where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
+        update risk_control_info        
+        update_time = now(),
+        set yn = 0,
+        version = version + 1
+        where id = #{id,jdbcType=BIGINT}
+        and yn = 1
+    </update>
+    
+	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo">
+		delete from risk_control_info
+		<where>
+			<if test="id != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+			<include refid="other-condition" />
+		</where>
+	</delete>	
+		
+</mapper>
+

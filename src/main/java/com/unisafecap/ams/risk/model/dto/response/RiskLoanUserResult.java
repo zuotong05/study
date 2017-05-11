@@ -2,19 +2,8 @@ package com.unisafecap.ams.risk.model.dto.response;
 
 import java.io.Serializable;
 
-/**
- * <P>
- * 风控审核返回结果-贷款单信息
- * </P>
- * 
- * @author zuotong
- * @since 2017年5月5日
- * @version V1.0
- */
-
-public class RiskLoanDetailResult implements Serializable {
-
-	private static final long serialVersionUID = -8146796141624830962L;
+public class RiskLoanUserResult implements Serializable {
+	private static final long serialVersionUID = 4682970402627062162L;
 
 	/**
 	 * 外部流水号
@@ -30,10 +19,17 @@ public class RiskLoanDetailResult implements Serializable {
 	 * 信托项目简码
 	 */
 	private String trustProjectCode;
+
 	/**
-	 * 合同号
+	 * 证件类型
 	 */
-	private String contractNo;
+	private String certType;
+
+	/**
+	 * 证件号码
+	 */
+	private String certId;
+
 	/**
 	 * 审核状态
 	 */
@@ -67,12 +63,20 @@ public class RiskLoanDetailResult implements Serializable {
 		this.trustProjectCode = trustProjectCode;
 	}
 
-	public String getContractNo() {
-		return contractNo;
+	public String getCertType() {
+		return certType;
 	}
 
-	public void setContractNo(String contractNo) {
-		this.contractNo = contractNo;
+	public void setCertType(String certType) {
+		this.certType = certType;
+	}
+
+	public String getCertId() {
+		return certId;
+	}
+
+	public void setCertId(String certId) {
+		this.certId = certId;
 	}
 
 	public String getAuditStatus() {

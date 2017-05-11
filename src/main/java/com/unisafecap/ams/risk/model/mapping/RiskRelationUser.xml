@@ -5,49 +5,55 @@
 
 	<resultMap id="result" type="com.unisafecap.ams.risk.model.RiskRelationUser">
             <id property="id" column="id" jdbcType="BIGINT" />
-            <result property="loanDetailId" column="loan_detail_id" jdbcType="BIGINT" />
+            <result property="riskControlId" column="risk_control_id" jdbcType="BIGINT" />
+            <result property="riskControlType" column="risk_control_type" jdbcType="TINYINT" />
+            <result property="orgCode" column="org_code" jdbcType="VARCHAR" />
             <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
-            <result property="contractNo" column="contract_no" jdbcType="VARCHAR" />
             <result property="relationUserType" column="relation_user_type" jdbcType="VARCHAR" />
             <result property="relationType" column="relation_type" jdbcType="VARCHAR" />
             <result property="name" column="name" jdbcType="VARCHAR" />
             <result property="certType" column="cert_type" jdbcType="VARCHAR" />
             <result property="certId" column="cert_id" jdbcType="VARCHAR" />
             <result property="handPhone" column="hand_phone" jdbcType="VARCHAR" />
+            <result property="phone" column="phone" jdbcType="VARCHAR" />
             <result property="guaranteeMode" column="guarantee_mode" jdbcType="VARCHAR" />
             <result property="guaranteeSum" column="guarantee_sum" jdbcType="DECIMAL" />
 
 	</resultMap>
 
 	<sql id="base_field">
-		id,loan_detail_id,trust_project_code,contract_no,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,guarantee_mode,guarantee_sum
+		id,risk_control_id,risk_control_type,org_code,trust_project_code,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,phone,guarantee_mode,guarantee_sum
 	</sql>
 	
 	<sql id="other-condition">
-            <if test= "loanDetailId != null ">	and loan_detail_id = #{loanDetailId,jdbcType=BIGINT }</if>
+            <if test= "riskControlId != null ">	and risk_control_id = #{riskControlId,jdbcType=BIGINT }</if>
+            <if test= "riskControlType != null ">	and risk_control_type = #{riskControlType,jdbcType=TINYINT }</if>
+            <if test= "orgCode != null and orgCode != '' ">	and org_code = #{orgCode,jdbcType=VARCHAR }</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
-            <if test= "contractNo != null and contractNo != '' ">	and contract_no = #{contractNo,jdbcType=VARCHAR }</if>
             <if test= "relationUserType != null and relationUserType != '' ">	and relation_user_type = #{relationUserType,jdbcType=VARCHAR }</if>
             <if test= "relationType != null and relationType != '' ">	and relation_type = #{relationType,jdbcType=VARCHAR }</if>
             <if test= "name != null and name != '' ">	and name = #{name,jdbcType=VARCHAR }</if>
             <if test= "certType != null and certType != '' ">	and cert_type = #{certType,jdbcType=VARCHAR }</if>
             <if test= "certId != null and certId != '' ">	and cert_id = #{certId,jdbcType=VARCHAR }</if>
             <if test= "handPhone != null and handPhone != '' ">	and hand_phone = #{handPhone,jdbcType=VARCHAR }</if>
+            <if test= "phone != null and phone != '' ">	and phone = #{phone,jdbcType=VARCHAR }</if>
             <if test= "guaranteeMode != null and guaranteeMode != '' ">	and guarantee_mode = #{guaranteeMode,jdbcType=VARCHAR }</if>
             <if test= "guaranteeSum != null ">	and guarantee_sum = #{guaranteeSum,jdbcType=DECIMAL }</if>
 
  	</sql>
  	
  	<sql id="like-condition">
-            <if test= "loanDetailId != null ">	and loan_detail_id = #{loanDetailId,jdbcType=BIGINT }</if>
+            <if test= "riskControlId != null ">	and risk_control_id = #{riskControlId,jdbcType=BIGINT }</if>
+            <if test= "riskControlType != null ">	and risk_control_type = #{riskControlType,jdbcType=TINYINT }</if>
+            <if test= "orgCode != null and orgCode != '' ">	and org_code like "%"#{orgCode}"%"</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
-            <if test= "contractNo != null and contractNo != '' ">	and contract_no like "%"#{contractNo}"%"</if>
             <if test= "relationUserType != null and relationUserType != '' ">	and relation_user_type like "%"#{relationUserType}"%"</if>
             <if test= "relationType != null and relationType != '' ">	and relation_type like "%"#{relationType}"%"</if>
             <if test= "name != null and name != '' ">	and name like "%"#{name}"%"</if>
             <if test= "certType != null and certType != '' ">	and cert_type like "%"#{certType}"%"</if>
             <if test= "certId != null and certId != '' ">	and cert_id like "%"#{certId}"%"</if>
             <if test= "handPhone != null and handPhone != '' ">	and hand_phone like "%"#{handPhone}"%"</if>
+            <if test= "phone != null and phone != '' ">	and phone like "%"#{phone}"%"</if>
             <if test= "guaranteeMode != null and guaranteeMode != '' ">	and guarantee_mode like "%"#{guaranteeMode}"%"</if>
             <if test= "guaranteeSum != null ">	and guarantee_sum = #{guaranteeSum,jdbcType=DECIMAL }</if>
 
@@ -117,19 +123,22 @@
 	</select>		
 
 	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser" useGeneratedKeys="true" keyProperty="id">
-		insert into risk_relation_user( id,loan_detail_id,trust_project_code,contract_no,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,guarantee_mode,guarantee_sum ) values (#{id,jdbcType=BIGINT},#{loanDetailId,jdbcType=BIGINT},#{trustProjectCode,jdbcType=VARCHAR},#{contractNo,jdbcType=VARCHAR},#{relationUserType,jdbcType=VARCHAR},#{relationType,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{certType,jdbcType=VARCHAR},#{certId,jdbcType=VARCHAR},#{handPhone,jdbcType=VARCHAR},#{guaranteeMode,jdbcType=VARCHAR},#{guaranteeSum,jdbcType=DECIMAL} )
+		insert into risk_relation_user( id,risk_control_id,risk_control_type,org_code,trust_project_code,relation_user_type,relation_type,name,cert_type,cert_id,hand_phone,phone,guarantee_mode,guarantee_sum ) values (#{id,jdbcType=BIGINT},#{riskControlId,jdbcType=BIGINT},#{riskControlType,jdbcType=TINYINT},#{orgCode,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{relationUserType,jdbcType=VARCHAR},#{relationType,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{certType,jdbcType=VARCHAR},#{certId,jdbcType=VARCHAR},#{handPhone,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{guaranteeMode,jdbcType=VARCHAR},#{guaranteeSum,jdbcType=DECIMAL} )
 	</insert>
 	
 	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser" useGeneratedKeys="true" keyProperty="id">
 		insert into risk_relation_user(
-            <if test="loanDetailId != null "> 
-                loan_detail_id,
+            <if test="riskControlId != null "> 
+                risk_control_id,
+            </if>
+            <if test="riskControlType != null "> 
+                risk_control_type,
+            </if>
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code,
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code,
-            </if>
-            <if test="contractNo != null and contractNo != '' "> 
-                contract_no,
             </if>
             <if test="relationUserType != null and relationUserType != '' "> 
                 relation_user_type,
@@ -149,6 +158,9 @@
             <if test="handPhone != null and handPhone != '' "> 
                 hand_phone,
             </if>
+            <if test="phone != null and phone != '' "> 
+                phone,
+            </if>
             <if test="guaranteeMode != null and guaranteeMode != '' "> 
                 guarantee_mode,
             </if>
@@ -156,14 +168,17 @@
                 guarantee_sum,
             </if>
                 id)values (
-            <if test="loanDetailId != null "> 
-                #{loanDetailId,jdbcType=BIGINT},
+            <if test="riskControlId != null "> 
+                #{riskControlId,jdbcType=BIGINT},
+            </if>
+            <if test="riskControlType != null "> 
+                #{riskControlType,jdbcType=TINYINT},
+            </if>
+            <if test="orgCode != null and orgCode != '' "> 
+                #{orgCode,jdbcType=VARCHAR},
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 #{trustProjectCode,jdbcType=VARCHAR},
-            </if>
-            <if test="contractNo != null and contractNo != '' "> 
-                #{contractNo,jdbcType=VARCHAR},
             </if>
             <if test="relationUserType != null and relationUserType != '' "> 
                 #{relationUserType,jdbcType=VARCHAR},
@@ -183,6 +198,9 @@
             <if test="handPhone != null and handPhone != '' "> 
                 #{handPhone,jdbcType=VARCHAR},
             </if>
+            <if test="phone != null and phone != '' "> 
+                #{phone,jdbcType=VARCHAR},
+            </if>
             <if test="guaranteeMode != null and guaranteeMode != '' "> 
                 #{guaranteeMode,jdbcType=VARCHAR},
             </if>
@@ -193,20 +211,23 @@
 	</insert>
 
 	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser">
-		update risk_relation_user set loan_detail_id=#{loanDetailId,jdbcType=BIGINT},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},contract_no=#{contractNo,jdbcType=VARCHAR},relation_user_type=#{relationUserType,jdbcType=VARCHAR},relation_type=#{relationType,jdbcType=VARCHAR},name=#{name,jdbcType=VARCHAR},cert_type=#{certType,jdbcType=VARCHAR},cert_id=#{certId,jdbcType=VARCHAR},hand_phone=#{handPhone,jdbcType=VARCHAR},guarantee_mode=#{guaranteeMode,jdbcType=VARCHAR},guarantee_sum=#{guaranteeSum,jdbcType=DECIMAL} where id=#{id,jdbcType=BIGINT}
+		update risk_relation_user set risk_control_id=#{riskControlId,jdbcType=BIGINT},risk_control_type=#{riskControlType,jdbcType=TINYINT},org_code=#{orgCode,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},relation_user_type=#{relationUserType,jdbcType=VARCHAR},relation_type=#{relationType,jdbcType=VARCHAR},name=#{name,jdbcType=VARCHAR},cert_type=#{certType,jdbcType=VARCHAR},cert_id=#{certId,jdbcType=VARCHAR},hand_phone=#{handPhone,jdbcType=VARCHAR},phone=#{phone,jdbcType=VARCHAR},guarantee_mode=#{guaranteeMode,jdbcType=VARCHAR},guarantee_sum=#{guaranteeSum,jdbcType=DECIMAL} where id=#{id,jdbcType=BIGINT}
 	</update>	
 	
 	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser">
 		update risk_relation_user
         <set>
-            <if test="loanDetailId != null "> 
-                loan_detail_id = #{loanDetailId,jdbcType=BIGINT},
+            <if test="riskControlId != null "> 
+                risk_control_id = #{riskControlId,jdbcType=BIGINT},
+            </if>
+            <if test="riskControlType != null "> 
+                risk_control_type = #{riskControlType,jdbcType=TINYINT},
+            </if>
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code = #{orgCode,jdbcType=VARCHAR},
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},
-            </if>
-            <if test="contractNo != null and contractNo != '' "> 
-                contract_no = #{contractNo,jdbcType=VARCHAR},
             </if>
             <if test="relationUserType != null and relationUserType != '' "> 
                 relation_user_type = #{relationUserType,jdbcType=VARCHAR},
@@ -225,6 +246,9 @@
             </if>
             <if test="handPhone != null and handPhone != '' "> 
                 hand_phone = #{handPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != '' "> 
+                phone = #{phone,jdbcType=VARCHAR},
             </if>
             <if test="guaranteeMode != null and guaranteeMode != '' "> 
                 guarantee_mode = #{guaranteeMode,jdbcType=VARCHAR},

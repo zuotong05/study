@@ -13,7 +13,7 @@ public enum ServiceErrorCode {
 
 	UNKNOWN_EXCEPTION("CF9999", "未知异常"), PARAMETER_ERROR("CF0002", "数据参数错误"), 
 	LOAN_NON_EXISTENT("CF0004", "贷款单不存在"), OUT_TRADE_NO_REPEAT("CF0006", "流水号重复"),
-	CONTRACT_NO_REPEAT("CF0105", "贷款单合同号重复"), FAIL("CF8888", "业务处理失败");
+	CONTRACT_NO_REPEAT("CF0105", "贷款单合同号重复"), SIGNATURE_EXPIRED("CF7777", "签名过期"),FAIL("CF8888", "业务处理失败");
 
 	private String code;
 

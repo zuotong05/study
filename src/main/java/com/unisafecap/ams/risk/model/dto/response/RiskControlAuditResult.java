@@ -12,8 +12,10 @@ import java.io.Serializable;
  * @version V1.0
  */
 
-public class RiskControlAuditResult implements Serializable {
+public class RiskControlAuditResult<T> implements Serializable {
+
 	private static final long serialVersionUID = -5528466187307850592L;
+
 	/**
 	 * 内部流水号
 	 */
@@ -24,9 +26,9 @@ public class RiskControlAuditResult implements Serializable {
 	private String errorMessages;
 
 	/**
-	 * 贷款单信息
+	 * 审批信息
 	 */
-	private RiskLoanDetailResult loanDetail;
+	private T auditDetail;
 
 	public String getTradeNo() {
 		return tradeNo;
@@ -44,14 +46,12 @@ public class RiskControlAuditResult implements Serializable {
 		this.errorMessages = errorMessages;
 	}
 
-	public RiskLoanDetailResult getLoanDetail() {
-		return loanDetail;
+	public T getAuditDetail() {
+		return auditDetail;
 	}
 
-	public void setLoanDetail(RiskLoanDetailResult loanDetail) {
-		this.loanDetail = loanDetail;
+	public void setAuditDetail(T auditDetail) {
+		this.auditDetail = auditDetail;
 	}
 
-	
-	
 }

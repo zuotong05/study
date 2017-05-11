@@ -1,7 +1,10 @@
 package com.unisafecap.ams.risk.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.unisafecap.ams.risk.dao.SecuritySignCertDao;
 import com.unisafecap.ams.risk.model.SecuritySignCert;
@@ -23,7 +26,7 @@ import com.unisafecap.framework.service.BaseService;
  */
 @Service("securitySignCertService")
 public class SecuritySignCertService extends BaseService<SecuritySignCert> {
-
+	private static final Logger logger = LoggerFactory.getLogger(SecuritySignCertService.class);
 	@Autowired
 	private SecuritySignCertDao securitySignCertDaoImpl;
 
@@ -33,42 +36,58 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 	}
 
 	/**
-	 * 加密	 
-	 * @param orgCode 合作方
-	 * @param srcData 加密数据
+	 * 加密
+	 * 
+	 * @param orgCode
+	 *            合作方
+	 * @param srcData
+	 *            加密数据
 	 * @return String
 	 */
-	public String encryptData( String orgCode ,String srcData) {
-		SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("orgCode", orgCode);
-		if (null == signcert) {
+	@Transactional(readOnly = true)
+	public String encryptData(String trustProjectCode, String srcData) {
+		try {
+			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("trustProjectCode", trustProjectCode);
+			if (null == signcert) {
+				return null;
+			}
+
+			String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
+			String pubCert = Base64.encode(FileUtil.readFile(signcert.getTrustProjectCertPath()));
+			SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
+			return signEnvelopService.signEnvelop(priCert, signcert.getTrustProjectCertPwd(), pubCert, srcData.getBytes());
+		}
+		catch (Exception e) {
+			logger.debug(e.getMessage());
 			return null;
 		}
-		
-		String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
-		String pubCert = Base64.encode(FileUtil.readFile(signcert.getOrgCertPath()));
-			
-		String password = signcert.getOrgCertPwd();
-		SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
-		return signEnvelopService.signEnvelop(priCert, password, pubCert, srcData.getBytes());
 
 	}
-	
 
-	/** 
-	 * 加密	 
-	 * @param orgCode 合作方
-	 * @param envelopData 解密数据
+	/**
+	 * 加密
+	 * 
+	 * @param orgCode
+	 *            合作方
+	 * @param envelopData
+	 *            解密数据
 	 * @return byte[]
 	 */
-	public byte[] decryptData(String orgCode, String envelopData) {
-		SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("orgCode", orgCode);
-		if (null == signcert) {
+	@Transactional(readOnly = true)
+	public byte[] decryptData(String trustProjectCode, String envelopData) {
+		try {
+			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("trustProjectCode", trustProjectCode);
+			if (null == signcert) {
+				return null;
+			}
+			SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
+			String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
+			return signEnvelopService.verifyEnvelop(priCert, signcert.getBhxtCertPwd(), envelopData);
+		}
+		catch (Exception e) {
+			logger.debug(e.getMessage());
 			return null;
 		}
-		SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
-		String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
-		return signEnvelopService.verifyEnvelop(priCert, signcert.getBhxtCertPwd(), envelopData);
 	}
-	
-	
+
 }

@@ -20,13 +20,24 @@ public class RiskControlAuditQueryDto implements Serializable {
 	private String outTradeNo;
 
 	/**
-	 * 信托项目简码
+	 *
 	 */
-	  private String trustProjectCode;
+	private String trustProjectCode;
+	
 	/**
 	 * 合同号
 	 */
 	private String contractNo;
+
+	/**
+	 * 证件类型
+	 */
+	private String certType;
+
+	/**
+	 * 证件号码
+	 */
+	private String certId;
 
 	public String getOutTradeNo() {
 		return outTradeNo;
@@ -35,8 +46,6 @@ public class RiskControlAuditQueryDto implements Serializable {
 	public void setOutTradeNo(String outTradeNo) {
 		this.outTradeNo = outTradeNo;
 	}
-
-	
 
 	public String getTrustProjectCode() {
 		return trustProjectCode;
@@ -54,4 +63,22 @@ public class RiskControlAuditQueryDto implements Serializable {
 		this.contractNo = contractNo;
 	}
 
+	public String getCertType() {
+		return certType;
+	}
+
+	public void setCertType(String certType) {
+		this.certType = certType;
+	}
+
+	public String getCertId() {
+		return certId;
+	}
+
+	public void setCertId(String certId) {
+		this.certId = certId;
+	}
+
+
+	
 }

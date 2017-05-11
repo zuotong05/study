@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.unisafecap.ams.risk.model.RiskLoanAccount">
+
+	<resultMap id="result" type="com.unisafecap.ams.risk.model.RiskLoanAccount">
+            <id property="id" column="id" jdbcType="BIGINT" />
+            <result property="riskControlId" column="risk_control_id" jdbcType="BIGINT" />
+            <result property="riskControlType" column="risk_control_type" jdbcType="TINYINT" />
+            <result property="orgCode" column="org_code" jdbcType="VARCHAR" />
+            <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
+            <result property="putoutAccountType" column="putout_account_type" jdbcType="VARCHAR" />
+            <result property="putoutBankCode" column="putout_bank_code" jdbcType="VARCHAR" />
+            <result property="putoutAccountName" column="putout_account_name" jdbcType="VARCHAR" />
+            <result property="putoutAccountNo" column="putout_account_no" jdbcType="VARCHAR" />
+            <result property="putoutAccountBank" column="putout_account_bank" jdbcType="VARCHAR" />
+            <result property="putoutAccountProvince" column="putout_account_province" jdbcType="VARCHAR" />
+            <result property="putoutAccountCity" column="putout_account_city" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<sql id="base_field">
+		id,risk_control_id,risk_control_type,org_code,trust_project_code,putout_account_type,putout_bank_code,putout_account_name,putout_account_no,putout_account_bank,putout_account_province,putout_account_city
+	</sql>
+	
+	<sql id="other-condition">
+            <if test= "riskControlId != null ">	and risk_control_id = #{riskControlId,jdbcType=BIGINT }</if>
+            <if test= "riskControlType != null ">	and risk_control_type = #{riskControlType,jdbcType=TINYINT }</if>
+            <if test= "orgCode != null and orgCode != '' ">	and org_code = #{orgCode,jdbcType=VARCHAR }</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountType != null and putoutAccountType != '' ">	and putout_account_type = #{putoutAccountType,jdbcType=VARCHAR }</if>
+            <if test= "putoutBankCode != null and putoutBankCode != '' ">	and putout_bank_code = #{putoutBankCode,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountName != null and putoutAccountName != '' ">	and putout_account_name = #{putoutAccountName,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountNo != null and putoutAccountNo != '' ">	and putout_account_no = #{putoutAccountNo,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountBank != null and putoutAccountBank != '' ">	and putout_account_bank = #{putoutAccountBank,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountProvince != null and putoutAccountProvince != '' ">	and putout_account_province = #{putoutAccountProvince,jdbcType=VARCHAR }</if>
+            <if test= "putoutAccountCity != null and putoutAccountCity != '' ">	and putout_account_city = #{putoutAccountCity,jdbcType=VARCHAR }</if>
+
+ 	</sql>
+ 	
+ 	<sql id="like-condition">
+            <if test= "riskControlId != null ">	and risk_control_id = #{riskControlId,jdbcType=BIGINT }</if>
+            <if test= "riskControlType != null ">	and risk_control_type = #{riskControlType,jdbcType=TINYINT }</if>
+            <if test= "orgCode != null and orgCode != '' ">	and org_code like "%"#{orgCode}"%"</if>
+            <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
+            <if test= "putoutAccountType != null and putoutAccountType != '' ">	and putout_account_type like "%"#{putoutAccountType}"%"</if>
+            <if test= "putoutBankCode != null and putoutBankCode != '' ">	and putout_bank_code like "%"#{putoutBankCode}"%"</if>
+            <if test= "putoutAccountName != null and putoutAccountName != '' ">	and putout_account_name like "%"#{putoutAccountName}"%"</if>
+            <if test= "putoutAccountNo != null and putoutAccountNo != '' ">	and putout_account_no like "%"#{putoutAccountNo}"%"</if>
+            <if test= "putoutAccountBank != null and putoutAccountBank != '' ">	and putout_account_bank like "%"#{putoutAccountBank}"%"</if>
+            <if test= "putoutAccountProvince != null and putoutAccountProvince != '' ">	and putout_account_province like "%"#{putoutAccountProvince}"%"</if>
+            <if test= "putoutAccountCity != null and putoutAccountCity != '' ">	and putout_account_city like "%"#{putoutAccountCity}"%"</if>
+
+ 	</sql>
+	
+	<sql id="selectByMapSQL">
+		select
+		<include refid="base_field" />
+		from risk_loan_account
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+		<if test="sortName != null and sortName != '' and sortName != 'null'">
+			order by ${sortName} ${sortBy}
+		</if>
+	</sql>
+	
+	<select id="selectByMap" resultMap="result" >
+		<include refid="selectByMapSQL" />
+	</select>
+	
+	<select id="selectCount" resultType="int" >
+		select count(*) from risk_loan_account 
+		<choose>
+		    <when test="findBy != null">
+		      	<where>
+					<include refid="other-condition" />
+				</where>
+		    </when>
+		    <when test="findByLike != null">
+		      	<where>
+					<include refid="like-condition" />
+				</where>
+		    </when>
+		</choose>
+	</select>
+	
+	<select id="selectPage" resultMap="result" >
+		<include refid="selectByMapSQL" />
+		 limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="select" resultMap="result" parameterType="java.lang.Long">
+		select
+		<include refid="base_field" />
+		from risk_loan_account  
+		<where>
+			<if test="_parameter != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByIds" resultMap="result" >
+		select
+		<include refid="base_field" />
+		from risk_loan_account  where id in (${_parameter})
+	</select>		
+
+	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskLoanAccount" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_loan_account( id,risk_control_id,risk_control_type,org_code,trust_project_code,putout_account_type,putout_bank_code,putout_account_name,putout_account_no,putout_account_bank,putout_account_province,putout_account_city ) values (#{id,jdbcType=BIGINT},#{riskControlId,jdbcType=BIGINT},#{riskControlType,jdbcType=TINYINT},#{orgCode,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{putoutAccountType,jdbcType=VARCHAR},#{putoutBankCode,jdbcType=VARCHAR},#{putoutAccountName,jdbcType=VARCHAR},#{putoutAccountNo,jdbcType=VARCHAR},#{putoutAccountBank,jdbcType=VARCHAR},#{putoutAccountProvince,jdbcType=VARCHAR},#{putoutAccountCity,jdbcType=VARCHAR} )
+	</insert>
+	
+	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanAccount" useGeneratedKeys="true" keyProperty="id">
+		insert into risk_loan_account(
+            <if test="riskControlId != null "> 
+                risk_control_id,
+            </if>
+            <if test="riskControlType != null "> 
+                risk_control_type,
+            </if>
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code,
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code,
+            </if>
+            <if test="putoutAccountType != null and putoutAccountType != '' "> 
+                putout_account_type,
+            </if>
+            <if test="putoutBankCode != null and putoutBankCode != '' "> 
+                putout_bank_code,
+            </if>
+            <if test="putoutAccountName != null and putoutAccountName != '' "> 
+                putout_account_name,
+            </if>
+            <if test="putoutAccountNo != null and putoutAccountNo != '' "> 
+                putout_account_no,
+            </if>
+            <if test="putoutAccountBank != null and putoutAccountBank != '' "> 
+                putout_account_bank,
+            </if>
+            <if test="putoutAccountProvince != null and putoutAccountProvince != '' "> 
+                putout_account_province,
+            </if>
+            <if test="putoutAccountCity != null and putoutAccountCity != '' "> 
+                putout_account_city,
+            </if>
+                id)values (
+            <if test="riskControlId != null "> 
+                #{riskControlId,jdbcType=BIGINT},
+            </if>
+            <if test="riskControlType != null "> 
+                #{riskControlType,jdbcType=TINYINT},
+            </if>
+            <if test="orgCode != null and orgCode != '' "> 
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountType != null and putoutAccountType != '' "> 
+                #{putoutAccountType,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutBankCode != null and putoutBankCode != '' "> 
+                #{putoutBankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountName != null and putoutAccountName != '' "> 
+                #{putoutAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountNo != null and putoutAccountNo != '' "> 
+                #{putoutAccountNo,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountBank != null and putoutAccountBank != '' "> 
+                #{putoutAccountBank,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountProvince != null and putoutAccountProvince != '' "> 
+                #{putoutAccountProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountCity != null and putoutAccountCity != '' "> 
+                #{putoutAccountCity,jdbcType=VARCHAR},
+            </if>
+            #{id,jdbcType=BIGINT})
+	</insert>
+
+	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskLoanAccount">
+		update risk_loan_account set risk_control_id=#{riskControlId,jdbcType=BIGINT},risk_control_type=#{riskControlType,jdbcType=TINYINT},org_code=#{orgCode,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},putout_account_type=#{putoutAccountType,jdbcType=VARCHAR},putout_bank_code=#{putoutBankCode,jdbcType=VARCHAR},putout_account_name=#{putoutAccountName,jdbcType=VARCHAR},putout_account_no=#{putoutAccountNo,jdbcType=VARCHAR},putout_account_bank=#{putoutAccountBank,jdbcType=VARCHAR},putout_account_province=#{putoutAccountProvince,jdbcType=VARCHAR},putout_account_city=#{putoutAccountCity,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+	</update>	
+	
+	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskLoanAccount">
+		update risk_loan_account
+        <set>
+            <if test="riskControlId != null "> 
+                risk_control_id = #{riskControlId,jdbcType=BIGINT},
+            </if>
+            <if test="riskControlType != null "> 
+                risk_control_type = #{riskControlType,jdbcType=TINYINT},
+            </if>
+            <if test="orgCode != null and orgCode != '' "> 
+                org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="trustProjectCode != null and trustProjectCode != '' "> 
+                trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountType != null and putoutAccountType != '' "> 
+                putout_account_type = #{putoutAccountType,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutBankCode != null and putoutBankCode != '' "> 
+                putout_bank_code = #{putoutBankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountName != null and putoutAccountName != '' "> 
+                putout_account_name = #{putoutAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountNo != null and putoutAccountNo != '' "> 
+                putout_account_no = #{putoutAccountNo,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountBank != null and putoutAccountBank != '' "> 
+                putout_account_bank = #{putoutAccountBank,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountProvince != null and putoutAccountProvince != '' "> 
+                putout_account_province = #{putoutAccountProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="putoutAccountCity != null and putoutAccountCity != '' "> 
+                putout_account_city = #{putoutAccountCity,jdbcType=VARCHAR},
+            </if>
+        </set>
+         where id=#{id,jdbcType=BIGINT}
+	</update>	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from risk_loan_account where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
+        update risk_loan_account        
+        update_time = now(),
+        set yn = 0,
+        version = version + 1
+        where id = #{id,jdbcType=BIGINT}
+        and yn = 1
+    </update>
+    
+	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.RiskLoanAccount">
+		delete from risk_loan_account
+		<where>
+			<if test="id != null">
+				id = #{id,jdbcType=BIGINT}
+			</if>
+			<include refid="other-condition" />
+		</where>
+	</delete>	
+		
+</mapper>
+

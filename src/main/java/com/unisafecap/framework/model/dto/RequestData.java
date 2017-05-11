@@ -2,20 +2,22 @@ package com.unisafecap.framework.model.dto;
 
 import java.io.Serializable;
 
-/** 
+/**
  * <P>
- *	请求数据
- * </P> 
+ * 请求数据
+ * </P>
+ * 
  * @author zuotong
  * @since 2017年5月4日
- * @version V1.0 
+ * @version V1.0
  */
 public class RequestData implements Serializable {
 	private static final long serialVersionUID = -3372911626170445418L;
 	/**
-	 * 合作机构编号
+	 * 信托项目简码
 	 */
-	private String orgCode;
+	private String trustProjectCode;
+
 	/**
 	 * 请求发送时间
 	 */
@@ -25,12 +27,12 @@ public class RequestData implements Serializable {
 	 */
 	private String bizContent;
 
-	public String getOrgCode() {
-		return orgCode;
+	public String getTrustProjectCode() {
+		return trustProjectCode;
 	}
 
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
+	public void setTrustProjectCode(String trustProjectCode) {
+		this.trustProjectCode = trustProjectCode;
 	}
 
 	public String getTimestamp() {
