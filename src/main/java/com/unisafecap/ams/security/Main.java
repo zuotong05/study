@@ -1,28 +1,26 @@
 package com.unisafecap.ams.security;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.unisafecap.ams.risk.model.RiskLoanAccount;
 import com.unisafecap.ams.risk.model.RiskLoanDetail;
 import com.unisafecap.ams.risk.model.RiskLoanUser;
-import com.unisafecap.ams.risk.model.RiskRelationUser;
 import com.unisafecap.ams.risk.model.dto.request.RiskControlAuditDto;
 import com.unisafecap.ams.security.sign.SignEnvelopService;
 import com.unisafecap.ams.security.sign.SignEnvelopServiceImpl;
 import com.unisafecap.ams.security.sign.util.Base64;
 import com.unisafecap.ams.security.sign.util.FileUtil;
-import com.unisafecap.framework.common.utils.GsonUtil;
 
 public class Main {
 
 	public static void main(String[] args) {
-		byte[] srcData = "{\"outTradeNo\":\"******\",\"contractNo\":\"CP1273917239\"}".getBytes(); // 源数据串
-		// srcData = "{\"outTradeNo\":\"xxxxxx\",\"certType\":\"0\",\"certId\":\"411381198302177118\"}".getBytes(); // 源数据串
-		/*RiskControlAuditDto audit = new RiskControlAuditDto();
+		//byte[] srcData = "{\"outTradeNo\":\"******\",\"trustProjectCode\":\"10050\",\"contractNo\":\"CP1273917239\"}".getBytes(); // 源数据串
+		//byte[] srcData = "{\"outTradeNo\":\"xxxxxx\",\"trustProjectCode\":\"10050\",\"certType\":\"0\",\"certId\":\"411381198302177118\"}".getBytes(); // 源数据串
+		RiskControlAuditDto audit = new RiskControlAuditDto();
 		audit.setCallbackUrl("http://domain.com/loan/resultNotify");
 		audit.setOutTradeNo("******");
+		audit.setTrustProjectCode("10050");
 		
 		RiskLoanDetail loanApply = new RiskLoanDetail();
 		loanApply.setContractNo("CP1273917239");
@@ -32,22 +30,22 @@ public class Main {
 		RiskLoanUser loanUser = new RiskLoanUser();
 		loanUser.setCustomerName("测试账号");
 		loanUser.setCertType("0");
-		loanUser.setCertId("411381198302177118");
+		loanUser.setCertId("411381198202177118");
 		loanUser.setPhone("134263480956");
-		audit.setLoanUser(loanUser);*/
+		audit.setLoanUser(loanUser);
 
 		/*List<RiskRelationUser> relationUsers = new ArrayList<RiskRelationUser>();
 		RiskRelationUser relationUser = new RiskRelationUser();
 		relationUser.setCertId("411381198602177118");
 		relationUsers.add(relationUser);		
 		audit.setRelationUsers(relationUsers);*/
-	/*	
+
 		RiskLoanAccount loanAccount = new RiskLoanAccount();
 		loanAccount.setPutoutAccountNo("6225881008780249");
 		audit.setLoanAccount(loanAccount);
 		
-		srcData =	GsonUtil.toJson(audit).getBytes();
-*/
+		byte[] srcData =	JSON.toJSONString(audit).getBytes();
+
 		// String userDir = System.getProperty("user.dir");
 		String file1 = "D:/project/asm-frame/cert/test1.pfx"; // 合作机构信贷系统方证书
 		String file2 = "D:/project/asm-frame/cert/bhxt_001.cer"; // 渤海信托小微贷证书

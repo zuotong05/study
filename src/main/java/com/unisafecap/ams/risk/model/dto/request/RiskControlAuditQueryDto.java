@@ -14,13 +14,14 @@ import java.io.Serializable;
 
 public class RiskControlAuditQueryDto implements Serializable {
 	private static final long serialVersionUID = -9180766985889359114L;
+	
 	/**
 	 * 外部流水号
 	 */
 	private String outTradeNo;
 
 	/**
-	 *
+	 *信托项目简码
 	 */
 	private String trustProjectCode;
 	

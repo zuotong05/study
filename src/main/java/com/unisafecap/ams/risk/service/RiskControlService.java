@@ -84,7 +84,13 @@ public class RiskControlService {
 		response.setDatas(null);
 		RiskLoanUser loanUser = auditDto.getLoanUser();
 		RiskLoanAccount loanAccount = auditDto.getLoanAccount();
-		if (null== loanUser|| null == loanAccount ||StringUtils.isBlank(loanUser.getCustomerName()) || StringUtils.isBlank(loanUser.getCertType()) || StringUtils.isBlank(loanUser.getCertId()) || StringUtils.isBlank(loanUser.getPhone()) || StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
+		if (null== loanUser|| null == loanAccount 
+				|| StringUtils.isBlank(auditDto.getTrustProjectCode()) 
+				|| StringUtils.isBlank(loanUser.getCustomerName()) 
+				|| StringUtils.isBlank(loanUser.getCertType()) 
+				|| StringUtils.isBlank(loanUser.getCertId()) 
+				|| StringUtils.isBlank(loanUser.getPhone()) 
+				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
 		}
@@ -157,10 +163,9 @@ public class RiskControlService {
 			response.setServiceErrorCode(ServiceErrorCode.HANDLING);
 		}
 
-		String bizContent = securitySignCertService.encryptData(auditDto.getTrustProjectCode(), JSON.toJSONString(auditResult));
+		String bizContent = securitySignCertService.encryptData(auditDto.getOrgCode(), JSON.toJSONString(auditResult));
 		if (null == bizContent) {
-			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
-			response.setMsg("签名证书过期");
+			response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_EXPIRED);			
 			return response;
 		}
 		response.setBizContent(bizContent);
@@ -191,7 +196,14 @@ public class RiskControlService {
 		RiskLoanUser loanUser = auditDto.getLoanUser();
 		RiskLoanAccount loanAccount = auditDto.getLoanAccount();
 
-		if (null==loanDetail || null== loanUser|| null == loanAccount || StringUtils.isBlank(loanDetail.getContractNo()) || StringUtils.isBlank(loanUser.getCustomerName()) || StringUtils.isBlank(loanUser.getCertType()) || StringUtils.isBlank(loanUser.getCertId()) || StringUtils.isBlank(loanUser.getPhone()) || StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
+		if (null==loanDetail || null== loanUser|| null == loanAccount 
+				|| StringUtils.isBlank(auditDto.getTrustProjectCode())
+				|| StringUtils.isBlank(loanDetail.getContractNo()) 
+				|| StringUtils.isBlank(loanUser.getCustomerName()) 
+				|| StringUtils.isBlank(loanUser.getCertType()) 
+				|| StringUtils.isBlank(loanUser.getCertId()) 
+				|| StringUtils.isBlank(loanUser.getPhone()) 
+				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
 		}
@@ -289,10 +301,9 @@ public class RiskControlService {
 			response.setServiceErrorCode(ServiceErrorCode.HANDLING);
 		}
 
-		String bizContent = securitySignCertService.encryptData(auditDto.getTrustProjectCode(), JSON.toJSONString(auditResult));
+		String bizContent = securitySignCertService.encryptData(auditDto.getOrgCode(), JSON.toJSONString(auditResult));
 		if (null == bizContent) {
-			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
-			response.setMsg("签名证书过期");
+			response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_EXPIRED);		
 			return response;
 		}
 		response.setBizContent(bizContent);
@@ -303,12 +314,14 @@ public class RiskControlService {
 
 	private ResponseData<RiskControlAuditDto> riskControlAudit(RequestData requestData) throws Exception {
 		ResponseData<RiskControlAuditDto> response = new ResponseData<RiskControlAuditDto>();
-		if (StringUtils.isBlank(requestData.getTrustProjectCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
+		if (StringUtils.isBlank(requestData.getOrgCode()) 
+				|| StringUtils.isBlank(requestData.getTimestamp()) 
+				|| StringUtils.isBlank(requestData.getBizContent())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
 		}
 
-		byte[] cleartxt = securitySignCertService.decryptData(requestData.getTrustProjectCode(), requestData.getBizContent());
+		byte[] cleartxt = securitySignCertService.decryptData(requestData.getOrgCode(), requestData.getBizContent());
 		if (null == cleartxt) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			response.setMsg("签名信封数据有误");
@@ -316,14 +329,13 @@ public class RiskControlService {
 		}
 
 		RiskControlAuditDto auditDto = JSON.parseObject(new String(cleartxt), RiskControlAuditDto.class);
-
+		
 		if (StringUtils.isBlank(auditDto.getOutTradeNo())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
-		}
-		auditDto.setTrustProjectCode(requestData.getTrustProjectCode());
+		}				
+		auditDto.setOrgCode(requestData.getOrgCode());
 		auditDto.setTimestamp(requestData.getTimestamp());
-
 		response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
 		response.setDatas(auditDto);
 		return response;
@@ -352,7 +364,10 @@ public class RiskControlService {
 			RiskControlAuditQueryDto auditQueryDto = response.getDatas();
 			response.setDatas(null);
 
-			if (StringUtils.isBlank(auditQueryDto.getCertType()) || StringUtils.isBlank(auditQueryDto.getCertId())) {
+			if (StringUtils.isBlank(auditQueryDto.getOutTradeNo()) 
+					||StringUtils.isBlank(auditQueryDto.getTrustProjectCode()) 
+					||StringUtils.isBlank(auditQueryDto.getCertType()) 
+					|| StringUtils.isBlank(auditQueryDto.getCertId())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				return response;
 			}
@@ -375,10 +390,9 @@ public class RiskControlService {
 				loanUserResult.setCertId(riskControlInfo.getRemark2());
 				auditResult.setAuditDetail(loanUserResult);
 
-				String bizContent = securitySignCertService.encryptData(auditQueryDto.getTrustProjectCode(), JSON.toJSONString(auditResult));
+				String bizContent = securitySignCertService.encryptData(requestData.getOrgCode(), JSON.toJSONString(auditResult));
 				if (null == bizContent) {
-					response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
-					response.setMsg("签名证书过期");
+					response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_EXPIRED);				
 					return response;
 				}
 				response.setBizContent(bizContent);
@@ -413,7 +427,9 @@ public class RiskControlService {
 			RiskControlAuditQueryDto auditQueryDto = response.getDatas();
 			response.setDatas(null);
 
-			if (StringUtils.isBlank(auditQueryDto.getContractNo())) {
+			if (StringUtils.isBlank(auditQueryDto.getOutTradeNo()) 
+					||StringUtils.isBlank(auditQueryDto.getTrustProjectCode()) 
+					||StringUtils.isBlank(auditQueryDto.getContractNo())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				return response;
 			}
@@ -434,7 +450,7 @@ public class RiskControlService {
 				BeanUtils.copyProperties(riskControlInfo, loanDetailResult);
 				loanDetailResult.setContractNo(riskControlInfo.getRemark2());
 				auditResult.setAuditDetail(loanDetailResult);
-				String bizContent = securitySignCertService.encryptData(auditQueryDto.getTrustProjectCode(), JSON.toJSONString(auditResult));
+				String bizContent = securitySignCertService.encryptData(requestData.getOrgCode(), JSON.toJSONString(auditResult));
 				if (null == bizContent) {
 					response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 					response.setMsg("签名证书过期");
@@ -454,19 +470,19 @@ public class RiskControlService {
 	private ResponseData<RiskControlAuditQueryDto> queryRiskControlAudit(RequestData requestData) {
 		ResponseData<RiskControlAuditQueryDto> response = new ResponseData<RiskControlAuditQueryDto>();
 		try {
-			if (StringUtils.isBlank(requestData.getTrustProjectCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
+			if (StringUtils.isBlank(requestData.getOrgCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				return response;
 			}
 
-			byte[] cleartxt = securitySignCertService.decryptData(requestData.getTrustProjectCode(), requestData.getBizContent());
+			byte[] cleartxt = securitySignCertService.decryptData(requestData.getOrgCode(), requestData.getBizContent());
 			if (null == cleartxt) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				response.setMsg("签名证书过期");
 				return response;
 			}
 
-			RiskControlAuditQueryDto auditQueryDto = JSON.parseObject(new String(cleartxt), RiskControlAuditQueryDto.class);
+			RiskControlAuditQueryDto auditQueryDto = JSON.parseObject(new String(cleartxt), RiskControlAuditQueryDto.class);			
 			if (StringUtils.isBlank(auditQueryDto.getOutTradeNo())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				return response;

@@ -16,7 +16,7 @@ public class RequestData implements Serializable {
 	/**
 	 * 信托项目简码
 	 */
-	private String trustProjectCode;
+	private String orgCode;
 
 	/**
 	 * 请求发送时间
@@ -26,29 +26,25 @@ public class RequestData implements Serializable {
 	 * 业务数据
 	 */
 	private String bizContent;
-
-	public String getTrustProjectCode() {
-		return trustProjectCode;
+	public String getOrgCode() {
+		return orgCode;
 	}
-
-	public void setTrustProjectCode(String trustProjectCode) {
-		this.trustProjectCode = trustProjectCode;
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
 	}
-
 	public String getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
-
 	public String getBizContent() {
 		return bizContent;
 	}
-
 	public void setBizContent(String bizContent) {
 		this.bizContent = bizContent;
 	}
+
+	
 
 }

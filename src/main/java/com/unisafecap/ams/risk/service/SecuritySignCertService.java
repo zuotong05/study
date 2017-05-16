@@ -45,17 +45,17 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 	 * @return String
 	 */
 	@Transactional(readOnly = true)
-	public String encryptData(String trustProjectCode, String srcData) {
+	public String encryptData(String orgCode, String srcData) {
 		try {
 			logger.debug("加密前的数据 ：" + srcData);
-			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("trustProjectCode", trustProjectCode);
+			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("orgCode", orgCode);
 			if (null == signcert) {
 				return null;
 			}
 			String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
-			String pubCert = Base64.encode(FileUtil.readFile(signcert.getTrustProjectCertPath()));
+			String pubCert = Base64.encode(FileUtil.readFile(signcert.getOrgCodeCertPath()));
 			SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
-			String signedEvpData = signEnvelopService.signEnvelop(priCert, signcert.getTrustProjectCertPwd(), pubCert, srcData.getBytes());
+			String signedEvpData = signEnvelopService.signEnvelop(priCert, signcert.getBhxtCertPwd(), pubCert, srcData.getBytes());
 
 			logger.debug("加密后的数据：" + signedEvpData);
 			return signedEvpData;
@@ -68,7 +68,7 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 	}
 
 	/**
-	 * 加密
+	 * 解密
 	 * 
 	 * @param orgCode
 	 *            合作方
@@ -77,10 +77,10 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 	 * @return byte[]
 	 */
 	@Transactional(readOnly = true)
-	public byte[] decryptData(String trustProjectCode, String envelopData) {
+	public byte[] decryptData(String orgCode, String envelopData) {
 		try {
 			logger.debug("加密前的数据 ：" + envelopData);
-			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("trustProjectCode", trustProjectCode);
+			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("orgCode", orgCode);
 			if (null == signcert) {
 				return null;
 			}
