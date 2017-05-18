@@ -27,6 +27,22 @@ public class BaseModel implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	/**
+	 * 表后缀
+	 */
+	private String tableNameSuffix;
+	
+
+	public String getTableNameSuffix() {
+		return tableNameSuffix;
+	}
+
+	public void setTableNameSuffix(String tableNameSuffix) {
+		this.tableNameSuffix = tableNameSuffix;
+	}
+	
+	
 
 
 

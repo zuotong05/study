@@ -52,6 +52,8 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 			if (null == signcert) {
 				return null;
 			}
+			logger.debug("渤海信托证书路径：" + signcert.getBhxtCertPath());
+			logger.debug("合作方证书路径：" + signcert.getOrgCodeCertPath());
 			String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
 			String pubCert = Base64.encode(FileUtil.readFile(signcert.getOrgCodeCertPath()));
 			SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
@@ -61,7 +63,7 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 			return signedEvpData;
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("证书加密"+e.getMessage());
 			return null;
 		}
 
@@ -84,15 +86,15 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 			if (null == signcert) {
 				return null;
 			}
+			logger.debug("渤海信托证书路径：" + signcert.getBhxtCertPath());			
 			SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
 			String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
-
 			byte[] cleartxt = signEnvelopService.verifyEnvelop(priCert, signcert.getBhxtCertPwd(), envelopData);
 			logger.debug("解密后的数据：" + (null == cleartxt ? null : new String(cleartxt)));
 			return cleartxt;
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("证书解密"+e.getMessage());
 			return null;
 		}
 	}

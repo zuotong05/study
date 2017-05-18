@@ -1,6 +1,7 @@
 package com.unisafecap.framework.spring.support;
 
 public class CustomerContextHolder {
+
 	private static final ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 
 	public static void setCustomerType(String customerType) {

@@ -105,7 +105,7 @@
 		 limit #{startRow},#{pageSize}
 	</select>
 	
-	<select id="select" resultMap="result" parameterType="java.lang.Long">
+	<select id="select" resultMap="result">
 		select
 		<include refid="base_field" />
 		from risk_relation_user  
@@ -119,7 +119,7 @@
 	<select id="selectByIds" resultMap="result" >
 		select
 		<include refid="base_field" />
-		from risk_relation_user  where id in (${_parameter})
+		from risk_relation_user  where id in (${idlist})
 	</select>		
 
 	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser" useGeneratedKeys="true" keyProperty="id">
@@ -258,20 +258,11 @@
             </if>
         </set>
          where id=#{id,jdbcType=BIGINT}
-	</update>	
+	</update>
 
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+	<delete id="deleteByPrimaryKey">
 		delete from risk_relation_user where id = #{id,jdbcType=BIGINT}
 	</delete>
-	
-	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
-        update risk_relation_user        
-        update_time = now(),
-        set yn = 0,
-        version = version + 1
-        where id = #{id,jdbcType=BIGINT}
-        and yn = 1
-    </update>
     
 	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.RiskRelationUser">
 		delete from risk_relation_user

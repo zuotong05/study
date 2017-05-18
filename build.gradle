@@ -125,6 +125,7 @@ dependencies {
    
    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.49'
     compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.49'
+    //compile group: 'org.shardbatis', name: 'shardbatis', version: '2.0.0B'
    
    
     //compile "org.springframework.security:spring-security-web:$springSecurityVersion"
@@ -210,6 +211,8 @@ dependencies {
      
     // ====== Aop ======
     compile "org.aspectj:aspectjrt:$aspectjVersion"
+    
+    compile "net.sf.jsqlparser:jsqlparser:0.8.0"
 
 
     // ====== logging ======
@@ -260,23 +263,14 @@ jettyRun {
 }
 
 flyway {
-    user = 'u_download_user'
-    password = 'u_download_pass'
-    url='jdbc:mysql://localhost:3306/u_download_db?characterEncoding=utf8'
-	 
-    //user = 'demojrs_user'
-    //password = 'demojrs_pass'
-    //url='jdbc:mysql://192.168.1.85:3306/dev_demojrs_db?characterEncoding=utf8'
-//    schemas = ['schema1', 'schema2', 'schema3']
-//    placeholders = [
-//            'keyABC': 'valueXYZ',
-//            'otherplaceholder': 'value123'
-//    ]
+    user = 'bhxt_ams_user'
+    password = 'bhxt_ams_pass0512'
+    url='jdbc:mysql://localhost:3306/bhxt_ams_db?characterEncoding=utf8'
 }
-	war {
-	    from('src/main/java') {	      
-	        include '**/*.xml'
-	        into 'WEB-INF/classes'
-	    }
-	}
 
+war {
+    from('src/main/java') {	      
+        include '**/*.xml'
+        into 'WEB-INF/classes'
+    }
+}

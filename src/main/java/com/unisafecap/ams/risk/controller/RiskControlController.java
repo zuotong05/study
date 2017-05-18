@@ -41,10 +41,13 @@ public class RiskControlController {
 	@ResponseBody
 	public ResponseData<?> customerAudit(@RequestBody RequestData requestData) {
 		try {
-			return riskControlService.customerAudit(requestData);
+			logger.debug("*****************客户审批 start*******************");
+			ResponseData<?> response = riskControlService.customerAudit(requestData);
+			logger.debug("*****************客户审批 end *******************");
+			return response;
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("客户审批:" + e.getMessage());
 			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
 		}
 
@@ -60,10 +63,13 @@ public class RiskControlController {
 	@ResponseBody
 	public ResponseData<?> customerAuditQuery(@RequestBody RequestData requestData) {
 		try {
-			return riskControlService.customerAuditQuery(requestData);
+			logger.debug("*****************客户审批结果查询 start*******************");
+			ResponseData<?> respone = riskControlService.customerAuditQuery(requestData);
+			logger.debug("*****************客户审批结果查询 end*******************");
+			return respone;
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("客户审批结果查询:" + e.getMessage());
 			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
 		}
 	}
@@ -78,10 +84,13 @@ public class RiskControlController {
 	@ResponseBody
 	public ResponseData<?> loadAudit(@RequestBody RequestData requestData) {
 		try {
-			return riskControlService.loadAudit(requestData);
+			logger.debug("*****************放款审批 start*******************");
+			ResponseData<?> respone = riskControlService.loadAudit(requestData);
+			logger.debug("*****************放款审批 end*******************");
+			return respone;
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("放款审批:" + e.getMessage());
 			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
 		}
 
@@ -97,10 +106,13 @@ public class RiskControlController {
 	@ResponseBody
 	public ResponseData<?> riskControlAuditQuery(@RequestBody RequestData requestData) {
 		try {
-			return riskControlService.loadAuditQuery(requestData);
+			logger.debug("*****************放款审批结果查询 start*******************");
+			ResponseData<?> respone = riskControlService.loadAuditQuery(requestData);
+			logger.debug("*****************放款审批结果查询 end*******************");
+			return respone;
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("放款审批结果查询:" + e.getMessage());
 			return new ResponseData<Object>().serviceErrorCode(ServiceErrorCode.FAIL);
 		}
 	}

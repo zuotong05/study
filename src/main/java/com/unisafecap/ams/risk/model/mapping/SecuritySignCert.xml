@@ -84,7 +84,7 @@
 		 limit #{startRow},#{pageSize}
 	</select>
 	
-	<select id="select" resultMap="result" parameterType="java.lang.Long">
+	<select id="select" resultMap="result">
 		select
 		<include refid="base_field" />
 		from security_sign_cert  
@@ -98,7 +98,7 @@
 	<select id="selectByIds" resultMap="result" >
 		select
 		<include refid="base_field" />
-		from security_sign_cert  where id in (${_parameter})
+		from security_sign_cert  where id in (${idlist})
 	</select>		
 
 	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert" useGeneratedKeys="true" keyProperty="id">
@@ -174,20 +174,11 @@
             </if>
         </set>
          where id=#{id,jdbcType=BIGINT}
-	</update>	
+	</update>
 
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+	<delete id="deleteByPrimaryKey">
 		delete from security_sign_cert where id = #{id,jdbcType=BIGINT}
 	</delete>
-	
-	 <update id="deleteByPrimaryKeyLogical" parameterType="java.lang.Long">
-        update security_sign_cert        
-        update_time = now(),
-        set yn = 0,
-        version = version + 1
-        where id = #{id,jdbcType=BIGINT}
-        and yn = 1
-    </update>
     
 	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert">
 		delete from security_sign_cert

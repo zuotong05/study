@@ -8,14 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 
 
 public class ScaffoldBuilder {
-	protected final Log logger = LogFactory.getLog(getClass());
+
 
 	protected final static String PKG_PREFIX = "com.unisafecap.";
 	protected final static String PKG_SUFFIX_MODEL = ".model.";

@@ -11,8 +11,8 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ScaffoldGen {
 
@@ -28,7 +28,7 @@ public class ScaffoldGen {
 	private static final String JDBC_DRIVER = "jdbc.driverClassName";
 	private static final String JDBC_SCHEMA = "schema";
 	private static final String CONFIG_PROPERTIES = "spring/jdbc.properties"; // 默认从src下开始找
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(ScaffoldGen.class);
 	private Connection conn;
 	private String schema;
 	private DatabaseMetaData metaData;
@@ -103,12 +103,12 @@ public class ScaffoldGen {
 		}
 		catch (ConfigurationException e1) {
 			e1.printStackTrace();
-			log.fatal("Jdbc connection config file not found - " + CONFIG_PROPERTIES);
+			logger.error("Jdbc connection config file not found - " + CONFIG_PROPERTIES);
 			return false;
 		}
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			log.fatal("Jdbc driver not found - " + driver);
+			logger.error("Jdbc driver not found - " + driver);
 			return false;
 		}
 
@@ -116,17 +116,17 @@ public class ScaffoldGen {
 			conn = DriverManager.getConnection(url, user, password);
 			// conn = DriverManager.getConnection(url);
 			if (conn == null) {
-				log.fatal("Database connection is null");
+				logger.error("Database connection is null");
 				return false;
 			}
 			metaData = conn.getMetaData();
 			if (metaData == null) {
-				log.fatal("Database MetaData is null");
+				logger.error("Database MetaData is null");
 				return false;
 			}
 		}
 		catch (SQLException e) {
-			log.fatal("Database connect failed");
+			logger.error("Database connect failed");
 			e.printStackTrace();
 		}
 		return true;
@@ -135,7 +135,7 @@ public class ScaffoldGen {
 	private TableInfo parseDbTable(String tableName) {
 		TableInfo tableInfo = new TableInfo(tableName);
 		ResultSet rs = null;
-		log.trace("parseDbTable begin");
+		logger.debug("parseDbTable begin");
 		try {
 			rs = metaData.getPrimaryKeys(null, schema, tableName);
 			if (rs.next()) {
@@ -147,16 +147,16 @@ public class ScaffoldGen {
 			}
 		}
 		catch (SQLException e) {
-			log.error("Table " + tableName + " parse error.");
+			logger.error("Table " + tableName + " parse error.");
 			e.printStackTrace();
 			return null;
 		}
-		log.info("PrimaryKey : " + tableInfo.getPrimaryKey());
+		logger.info("PrimaryKey : " + tableInfo.getPrimaryKey());
 
 		try {
 			rs = metaData.getColumns(conn.getCatalog(), schema, tableName, null);
 			if (!rs.next()) {
-				log.fatal("Table " + schema + "." + tableName + " not found.");
+				logger.error("Table " + schema + "." + tableName + " not found.");
 				return null;
 			}
 		}
@@ -172,16 +172,16 @@ public class ScaffoldGen {
 				int nullable = rs.getInt(NULLABLE);
 				String comment = rs.getString("REMARKS");
 				ColumnInfo colInfo = new ColumnInfo(columnName, columnType, datasize, digits, nullable, comment);
-				log.info("DB column : " + colInfo);
-				log.info("Java field : " + colInfo.parseFieldName() + " / " + colInfo.getJavaType());
+				logger.info("DB column : " + colInfo);
+				logger.info("Java field : " + colInfo.parseFieldName() + " / " + colInfo.getJavaType());
 				tableInfo.addColumn(colInfo);
 			}
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
-			log.error("Table " + tableName + " parse error.");
+			logger.error("Table " + tableName + " parse error.");
 		}
-		log.trace("parseDbTable end");
+		logger.debug("parseDbTable end");
 		return tableInfo;
 	}
 

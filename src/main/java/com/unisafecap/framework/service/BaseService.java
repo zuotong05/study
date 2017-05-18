@@ -29,6 +29,18 @@ public abstract class BaseService<T> {
 	}
 
 	/**
+	 * 按id获取对象
+	 * 
+	 * @param id
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @return T 对象
+	 */
+	public T get(Long id, String tableNameSuffix) {
+		return getBaseDao().get(id, tableNameSuffix);
+	}
+
+	/**
 	 * 插入单个对象
 	 * 
 	 * @param model
@@ -78,8 +90,16 @@ public abstract class BaseService<T> {
 		return getBaseDao().delete(id);
 	}
 
-	public int deleteLogical(Long id) {
-		return getBaseDao().deleteLogical(id);
+	/**
+	 * 根据主键删除
+	 * 
+	 * @param id
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @return
+	 */
+	public int delete(Long id, String tableNameSuffix) {
+		return getBaseDao().delete(id, tableNameSuffix);
 	}
 
 	/**
@@ -102,6 +122,17 @@ public abstract class BaseService<T> {
 	}
 
 	/**
+	 * 查询所有记录
+	 * 
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @return List 对象列表
+	 */
+	public List<T> findAll(String tableNameSuffix) {
+		return getBaseDao().findAll(tableNameSuffix);
+	}
+
+	/**
 	 * 根据属性名和属性值查询对象
 	 * 
 	 * @param name
@@ -121,12 +152,44 @@ public abstract class BaseService<T> {
 	 *            属性名
 	 * @param value
 	 *            属性值
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @return List 符合条件的对象列表
+	 */
+	public List<T> findBy(String name, Object value, String tableNameSuffix) {
+		return getBaseDao().findBy(name, value, tableNameSuffix);
+	}
+
+	/**
+	 * 根据属性名和属性值查询对象
+	 * 
+	 * @param name
+	 *            属性名
+	 * @param value
+	 *            属性值
 	 * @param isLike
 	 *            是否模糊匹配(只有属性类型为字符串,才生效)
 	 * @return 符合条件的对象列表
 	 */
 	public List<T> findBy(String name, Object value, boolean isLike) {
 		return getBaseDao().findBy(name, value, isLike);
+	}
+
+	/**
+	 * 根据属性名和属性值查询对象
+	 * 
+	 * @param name
+	 *            属性名
+	 * @param value
+	 *            属性值
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @param isLike
+	 *            是否模糊匹配(只有属性类型为字符串,才生效)
+	 * @return 符合条件的对象列表
+	 */
+	public List<T> findBy(String name, Object value, String tableNameSuffix, boolean isLike) {
+		return getBaseDao().findBy(name, value, tableNameSuffix, isLike);
 	}
 
 	/**
@@ -153,6 +216,25 @@ public abstract class BaseService<T> {
 	 *            属性名
 	 * @param value
 	 *            属性值
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @param orderBy
+	 *            排序的字段(默认正序)
+	 * @param order
+	 *            正序 or 倒序
+	 * @return 符合条件的对象列表
+	 */
+	public List<T> findBy(String name, Object value, String tableNameSuffix, String orderBy, Order order) {
+		return getBaseDao().findBy(name, value, tableNameSuffix, orderBy, order);
+	}
+
+	/**
+	 * 根据属性名和属性值查询对象
+	 * 
+	 * @param name
+	 *            属性名
+	 * @param value
+	 *            属性值
 	 * @param isLike
 	 *            是否模糊匹配(只有属性类型为字符串,才生效)
 	 * @param orderBy
@@ -163,6 +245,27 @@ public abstract class BaseService<T> {
 	 */
 	public List<T> findBy(String name, Object value, boolean isLike, String orderBy, Order order) {
 		return getBaseDao().findBy(name, value, isLike, orderBy, order);
+	}
+
+	/**
+	 * 根据属性名和属性值查询对象
+	 * 
+	 * @param name
+	 *            属性名
+	 * @param value
+	 *            属性值
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @param isLike
+	 *            是否模糊匹配(只有属性类型为字符串,才生效)
+	 * @param orderBy
+	 *            排序的字段(默认正序)
+	 * @param order
+	 *            正序 or 倒序
+	 * @return 符合条件的对象列表
+	 */
+	public List<T> findBy(String name, Object value, String tableNameSuffix, boolean isLike, String orderBy, Order order) {
+		return getBaseDao().findBy(name, value, tableNameSuffix, isLike, orderBy, order);
 	}
 
 	/**
@@ -232,6 +335,21 @@ public abstract class BaseService<T> {
 	 */
 	public T findUniqueBy(String name, Object value) {
 		return getBaseDao().findUniqueBy(name, value);
+	}
+
+	/**
+	 * 根据属性名和属性值查询单个对象
+	 * 
+	 * @param name
+	 *            属性名
+	 * @param value
+	 *            属性值
+	 * @param tableNameSuffix
+	 *            表名后缀
+	 * @return
+	 */
+	public T findUniqueBy(String name, Object value, String tableNameSuffix) {
+		return getBaseDao().findUniqueBy(name, value, tableNameSuffix);
 	}
 
 	/**
@@ -324,18 +442,6 @@ public abstract class BaseService<T> {
 	/**
 	 * 根据查询条件和分页信息,查询对象
 	 * 
-	 * @param page
-	 * @param tblNameSuffix
-	 *            表名后缀,用于历史备份表,如果yztf_order_payment_2016
-	 * @param map
-	 */
-	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map) {
-		getBaseDao().find4Page(page, tblNameSuffix, map);
-	}
-
-	/**
-	 * 根据查询条件和分页信息,查询对象
-	 * 
 	 * @param pageBean
 	 * @param map
 	 * @param isLike
@@ -346,20 +452,6 @@ public abstract class BaseService<T> {
 	}
 
 	/**
-	 * 根据查询条件和分页信息,查询对象
-	 * 
-	 * @param page
-	 * @param tblNameSuffix
-	 *            表名后缀,用于历史备份表,如果yztf_order_payment_2016
-	 * @param map
-	 * @param isLike
-	 *            是否模糊匹配(只有属性类型为字符串,才生效)
-	 */
-	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map, boolean isLike) {
-		getBaseDao().find4Page(page, tblNameSuffix, map, isLike);
-	}
-
-	/**
 	 * 根据ids,查询对象
 	 * 
 	 * @param ids
@@ -367,5 +459,28 @@ public abstract class BaseService<T> {
 	 */
 	public List<T> findByIds(String ids) {
 		return getBaseDao().findByIds(ids);
+	}
+
+	/**
+	 * 根据ids,查询对象
+	 * 
+	 * @param ids
+	 *            ids字符串
+	 * @param tableNameSuffix
+	 *            标名后缀
+	 * @return
+	 */
+	public List<T> findByIds(String ids, String tableNameSuffix) {
+		return getBaseDao().findByIds(ids, tableNameSuffix);
+	}
+
+	/**
+	 * 批量插入
+	 * 
+	 * @param list
+	 *            对象列表
+	 */
+	public void insertBatch(List<T> list) {
+		getBaseDao().insertBatch(list);
 	}
 }

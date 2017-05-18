@@ -26,6 +26,7 @@ import com.unisafecap.ams.risk.model.dto.response.RiskLoanUserResult;
 import com.unisafecap.ams.risk.model.enums.AuditStatus;
 import com.unisafecap.ams.risk.model.enums.RiskControlType;
 import com.unisafecap.framework.common.enums.ServiceErrorCode;
+import com.unisafecap.framework.common.utils.IDCardUtils;
 import com.unisafecap.framework.common.utils.IdWorker18;
 import com.unisafecap.framework.common.utils.StringUtils;
 import com.unisafecap.framework.model.dto.RequestData;
@@ -84,14 +85,18 @@ public class RiskControlService {
 		response.setDatas(null);
 		RiskLoanUser loanUser = auditDto.getLoanUser();
 		RiskLoanAccount loanAccount = auditDto.getLoanAccount();
-		if (null== loanUser|| null == loanAccount 
+		if (null == loanUser 
+				|| null == loanAccount 
 				|| StringUtils.isBlank(auditDto.getTrustProjectCode()) 
 				|| StringUtils.isBlank(loanUser.getCustomerName()) 
 				|| StringUtils.isBlank(loanUser.getCertType()) 
-				|| StringUtils.isBlank(loanUser.getCertId()) 
+				|| StringUtils.isBlank(loanUser.getCertId())
 				|| StringUtils.isBlank(loanUser.getPhone()) 
-				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
-			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())
+				||IDCardUtils.isIDCard(loanUser.getCertId())
+				||StringUtils.isMobile(loanUser.getPhone())) {
+			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);			
+			logger.debug("客户审批:"+response.getMsg());
 			return response;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -99,13 +104,14 @@ public class RiskControlService {
 		List<RiskControlInfo> list = riskControlInfoService.findByMap(map);
 		if (list != null && list.size() > 0) {
 			response.setServiceErrorCode(ServiceErrorCode.OUT_TRADE_NO_REPEAT);
+			logger.debug("客户审批:"+response.getMsg());
 			return response;
 		}
 
 		RiskControlInfo riskControlInfo = new RiskControlInfo();
 		riskControlInfo.setRemark1(loanUser.getCertType());
 		riskControlInfo.setRemark2(loanUser.getCertId());
-		map = new HashMap<String, Object>();
+		/*map = new HashMap<String, Object>();
 		map.put("trustProjectCode", auditDto.getTrustProjectCode());
 		map.put("remark1", riskControlInfo.getRemark1());
 		map.put("remark2", riskControlInfo.getRemark2());
@@ -113,8 +119,9 @@ public class RiskControlService {
 		list = riskControlInfoService.findByMap(map);
 		if (list != null && list.size() > 0) {
 			response.setServiceErrorCode(ServiceErrorCode.CERT_ID_NO_REPEAT);
+			logger.debug("客户审批:"+response.getMsg());
 			return response;
-		}
+		}*/
 
 		riskControlInfo.setOrgCode(auditDto.getOrgCode());
 		riskControlInfo.setTrustProjectCode(auditDto.getTrustProjectCode());
@@ -124,13 +131,15 @@ public class RiskControlService {
 		riskControlInfo.setRiskControlType(RiskControlType.CUSTOMER_AUDIT.ordinal());
 
 		IdWorker18 idWorker = new IdWorker18(0, 0);
-		String tradeNo = auditDto.getTrustProjectCode() + idWorker.nextId();
+		String tradeNo = auditDto.getTrustProjectCode() + "-"+idWorker.nextId();		
 		riskControlInfo.setTradeNo(tradeNo);
+
 		AuditStatus auditStatus = AuditStatus.PASS;// 默认 通过
 		riskControlInfo.setAuditStatus(String.valueOf(auditStatus.getValue()));
 		int result = riskControlInfoService.create4Selective(riskControlInfo);
 		if (result < 1)
 			throw new RuntimeException("保存风控信息失败");
+		
 
 		loanUser.setRiskControlId(riskControlInfo.getId());
 		loanUser.setRiskControlType(riskControlInfo.getRiskControlType());
@@ -138,7 +147,8 @@ public class RiskControlService {
 		loanUser.setTrustProjectCode(riskControlInfo.getTrustProjectCode());
 		result = riskLoanUserService.create4Selective(loanUser);
 		if (result < 1)
-			throw new RuntimeException("个人用户信息失败");
+			throw new RuntimeException("保存个人用户信息失败");
+		
 
 		loanAccount.setRiskControlId(riskControlInfo.getId());
 		loanAccount.setRiskControlType(riskControlInfo.getRiskControlType());
@@ -148,6 +158,7 @@ public class RiskControlService {
 		result = riskLoanAccountService.create4Selective(loanAccount);
 		if (result < 1)
 			throw new RuntimeException("放款账户信息失败");
+		
 
 		RiskControlAuditResult<RiskLoanUserResult> auditResult = new RiskControlAuditResult<RiskLoanUserResult>();
 		auditResult.setTradeNo(tradeNo);
@@ -164,8 +175,9 @@ public class RiskControlService {
 		}
 
 		String bizContent = securitySignCertService.encryptData(auditDto.getOrgCode(), JSON.toJSONString(auditResult));
-		if (null == bizContent) {
-			response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_EXPIRED);			
+		if (StringUtils.isBlank(bizContent)) {
+			response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_PROBLEM);
+			logger.debug("客户审批:"+response.getMsg());
 			return response;
 		}
 		response.setBizContent(bizContent);
@@ -186,25 +198,29 @@ public class RiskControlService {
 
 		if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
 			response.setDatas(null);
+			logger.debug("放款审批:"+response.getMsg());
 			return response;
 		}
-		
+
 		RiskControlAuditDto auditDto = response.getDatas();
 		response.setDatas(null);
-		
+
 		RiskLoanDetail loanDetail = auditDto.getLoanApply();
 		RiskLoanUser loanUser = auditDto.getLoanUser();
 		RiskLoanAccount loanAccount = auditDto.getLoanAccount();
 
-		if (null==loanDetail || null== loanUser|| null == loanAccount 
-				|| StringUtils.isBlank(auditDto.getTrustProjectCode())
+		if (null == loanDetail || null == loanUser || null == loanAccount 
+				|| StringUtils.isBlank(auditDto.getTrustProjectCode()) 
 				|| StringUtils.isBlank(loanDetail.getContractNo()) 
-				|| StringUtils.isBlank(loanUser.getCustomerName()) 
+				|| StringUtils.isBlank(loanUser.getCustomerName())
 				|| StringUtils.isBlank(loanUser.getCertType()) 
 				|| StringUtils.isBlank(loanUser.getCertId()) 
 				|| StringUtils.isBlank(loanUser.getPhone()) 
-				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())) {
+				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())
+				||IDCardUtils.isIDCard(loanUser.getCertId())
+				||StringUtils.isMobile(loanUser.getPhone())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+			logger.debug("放款审批:"+response.getMsg());
 			return response;
 		}
 
@@ -213,6 +229,7 @@ public class RiskControlService {
 		List<RiskControlInfo> list = riskControlInfoService.findByMap(map);
 		if (list != null && list.size() > 0) {
 			response.setServiceErrorCode(ServiceErrorCode.OUT_TRADE_NO_REPEAT);
+			logger.debug("放款审批:"+response.getMsg());
 			return response;
 		}
 
@@ -228,6 +245,7 @@ public class RiskControlService {
 		list = riskControlInfoService.findByMap(map);
 		if (list != null && list.size() > 0) {
 			response.setServiceErrorCode(ServiceErrorCode.CONTRACT_NO_REPEAT);
+			logger.debug("放款审批:"+response.getMsg());
 			return response;
 		}
 
@@ -247,6 +265,7 @@ public class RiskControlService {
 		int result = riskControlInfoService.create4Selective(riskControlInfo);
 		if (result < 1)
 			throw new RuntimeException("保存风控信息失败");
+		
 
 		loanDetail.setRiskControlId(riskControlInfo.getId());
 		loanDetail.setRiskControlType(riskControlInfo.getRiskControlType());
@@ -265,7 +284,7 @@ public class RiskControlService {
 			throw new RuntimeException("个人用户信息失败");
 
 		List<RiskRelationUser> relationUsers = auditDto.getRelationUsers();
-		if(relationUsers!=null&&relationUsers.size()>0){
+		if (relationUsers != null && relationUsers.size() > 0) {
 			for (Iterator<RiskRelationUser> iterator = relationUsers.iterator(); iterator.hasNext();) {
 				RiskRelationUser relationUser = iterator.next();
 				relationUser.setRiskControlId(riskControlInfo.getId());
@@ -277,7 +296,6 @@ public class RiskControlService {
 					throw new RuntimeException("关系人信息失败");
 			}
 		}
-		
 
 		loanAccount.setRiskControlId(riskControlInfo.getId());
 		loanAccount.setRiskControlType(riskControlInfo.getRiskControlType());
@@ -302,8 +320,9 @@ public class RiskControlService {
 		}
 
 		String bizContent = securitySignCertService.encryptData(auditDto.getOrgCode(), JSON.toJSONString(auditResult));
-		if (null == bizContent) {
-			response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_EXPIRED);		
+		if (StringUtils.isBlank(bizContent)) {
+			response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_PROBLEM);
+			logger.debug("客户审批:"+response.getMsg());
 			return response;
 		}
 		response.setBizContent(bizContent);
@@ -314,9 +333,7 @@ public class RiskControlService {
 
 	private ResponseData<RiskControlAuditDto> riskControlAudit(RequestData requestData) throws Exception {
 		ResponseData<RiskControlAuditDto> response = new ResponseData<RiskControlAuditDto>();
-		if (StringUtils.isBlank(requestData.getOrgCode()) 
-				|| StringUtils.isBlank(requestData.getTimestamp()) 
-				|| StringUtils.isBlank(requestData.getBizContent())) {
+		if (StringUtils.isBlank(requestData.getOrgCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
 		}
@@ -325,15 +342,17 @@ public class RiskControlService {
 		if (null == cleartxt) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			response.setMsg("签名信封数据有误");
+			logger.debug("审批:"+response.getMsg());
 			return response;
 		}
 
 		RiskControlAuditDto auditDto = JSON.parseObject(new String(cleartxt), RiskControlAuditDto.class);
-		
-		if (StringUtils.isBlank(auditDto.getOutTradeNo())) {
+
+		if (null == auditDto || StringUtils.isBlank(auditDto.getOutTradeNo())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+			logger.debug("审批:"+response.getMsg());
 			return response;
-		}				
+		}
 		auditDto.setOrgCode(requestData.getOrgCode());
 		auditDto.setTimestamp(requestData.getTimestamp());
 		response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
@@ -359,16 +378,19 @@ public class RiskControlService {
 
 			if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
 				response.setDatas(null);
+				logger.debug("客户审批結果查询:"+response.getMsg());
 				return response;
 			}
 			RiskControlAuditQueryDto auditQueryDto = response.getDatas();
 			response.setDatas(null);
 
 			if (StringUtils.isBlank(auditQueryDto.getOutTradeNo()) 
-					||StringUtils.isBlank(auditQueryDto.getTrustProjectCode()) 
-					||StringUtils.isBlank(auditQueryDto.getCertType()) 
-					|| StringUtils.isBlank(auditQueryDto.getCertId())) {
+					|| StringUtils.isBlank(auditQueryDto.getTrustProjectCode()) 
+					|| StringUtils.isBlank(auditQueryDto.getCertType()) 
+					|| StringUtils.isBlank(auditQueryDto.getCertId())
+					||IDCardUtils.isIDCard(auditQueryDto.getCertId())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+				logger.debug("客户审批結果查询:"+response.getMsg());
 				return response;
 			}
 
@@ -379,7 +401,8 @@ public class RiskControlService {
 			map.put("remark2", auditQueryDto.getCertId());
 			RiskControlInfo riskControlInfo = riskControlInfoService.findUniqueByMap(map);
 			if (null == riskControlInfo || null == riskControlInfo.getId()) {
-				response.setServiceErrorCode(ServiceErrorCode.LOAN_NON_EXISTENT);
+				response.setServiceErrorCode(ServiceErrorCode.CERT_ID_NON_EXISTENT);
+				logger.debug("客户审批結果查询:"+response.getMsg());
 				return response;
 			} else {
 				response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
@@ -391,8 +414,9 @@ public class RiskControlService {
 				auditResult.setAuditDetail(loanUserResult);
 
 				String bizContent = securitySignCertService.encryptData(requestData.getOrgCode(), JSON.toJSONString(auditResult));
-				if (null == bizContent) {
-					response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_EXPIRED);				
+				if (StringUtils.isBlank(bizContent)) {
+					response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_PROBLEM);
+					logger.debug("客户审批結果查询:"+response.getMsg());
 					return response;
 				}
 				response.setBizContent(bizContent);
@@ -400,7 +424,7 @@ public class RiskControlService {
 			}
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("客户审批結果查询:" + e.getMessage());
 			response.setServiceErrorCode(ServiceErrorCode.UNKNOWN_EXCEPTION);
 			return response;
 		}
@@ -422,15 +446,17 @@ public class RiskControlService {
 			response = queryRiskControlAudit(requestData);
 			if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
 				response.setDatas(null);
+				logger.debug("放款审批結果查询:"+response.getMsg());
 				return response;
 			}
 			RiskControlAuditQueryDto auditQueryDto = response.getDatas();
 			response.setDatas(null);
 
 			if (StringUtils.isBlank(auditQueryDto.getOutTradeNo()) 
-					||StringUtils.isBlank(auditQueryDto.getTrustProjectCode()) 
-					||StringUtils.isBlank(auditQueryDto.getContractNo())) {
+					|| StringUtils.isBlank(auditQueryDto.getTrustProjectCode()) 
+					|| StringUtils.isBlank(auditQueryDto.getContractNo())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+				logger.debug("放款审批結果查询:"+response.getMsg());
 				return response;
 			}
 
@@ -442,6 +468,7 @@ public class RiskControlService {
 			RiskControlInfo riskControlInfo = riskControlInfoService.findUniqueByMap(map);
 			if (null == riskControlInfo || null == riskControlInfo.getId()) {
 				response.setServiceErrorCode(ServiceErrorCode.LOAN_NON_EXISTENT);
+				logger.debug("放款审批結果查询:"+response.getMsg());
 				return response;
 			} else {
 				response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
@@ -451,9 +478,9 @@ public class RiskControlService {
 				loanDetailResult.setContractNo(riskControlInfo.getRemark2());
 				auditResult.setAuditDetail(loanDetailResult);
 				String bizContent = securitySignCertService.encryptData(requestData.getOrgCode(), JSON.toJSONString(auditResult));
-				if (null == bizContent) {
-					response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
-					response.setMsg("签名证书过期");
+				if (StringUtils.isBlank(bizContent)) {
+					response.setServiceErrorCode(ServiceErrorCode.SIGNATURE_PROBLEM);
+					logger.debug("放款审批結果查询:"+response.getMsg());
 					return response;
 				}
 				response.setBizContent(bizContent);
@@ -461,7 +488,7 @@ public class RiskControlService {
 			}
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("放款审批結果查询" + e.getMessage());
 			response.setServiceErrorCode(ServiceErrorCode.UNKNOWN_EXCEPTION);
 			return response;
 		}
@@ -470,21 +497,26 @@ public class RiskControlService {
 	private ResponseData<RiskControlAuditQueryDto> queryRiskControlAudit(RequestData requestData) {
 		ResponseData<RiskControlAuditQueryDto> response = new ResponseData<RiskControlAuditQueryDto>();
 		try {
-			if (StringUtils.isBlank(requestData.getOrgCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
+			if (StringUtils.isBlank(requestData.getOrgCode()) 
+					|| StringUtils.isBlank(requestData.getTimestamp()) 
+					|| StringUtils.isBlank(requestData.getBizContent())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+				logger.debug("审批結果查询:"+response.getMsg());
 				return response;
 			}
 
 			byte[] cleartxt = securitySignCertService.decryptData(requestData.getOrgCode(), requestData.getBizContent());
 			if (null == cleartxt) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
-				response.setMsg("签名证书过期");
+				response.setMsg("签名信封数据有误或证书有误");
+				logger.debug("审批結果查询:"+response.getMsg());
 				return response;
 			}
 
-			RiskControlAuditQueryDto auditQueryDto = JSON.parseObject(new String(cleartxt), RiskControlAuditQueryDto.class);			
+			RiskControlAuditQueryDto auditQueryDto = JSON.parseObject(new String(cleartxt), RiskControlAuditQueryDto.class);
 			if (StringUtils.isBlank(auditQueryDto.getOutTradeNo())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
+				logger.debug("审批結果查询:"+response.getMsg());
 				return response;
 			}
 			response.setServiceErrorCode(ServiceErrorCode.SUCCESS);
@@ -494,7 +526,7 @@ public class RiskControlService {
 
 		}
 		catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error("审批結果查询:"+e.getMessage());
 			response.setServiceErrorCode(ServiceErrorCode.UNKNOWN_EXCEPTION);
 			return response;
 		}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN"  
+  "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
+<shardingConfig>
+
+	<ignoreList>
+		<value>com.unisafecap.ams.risk.model.RiskControlInfo.selectPage</value>
+		<value>com.unisafecap.ams.risk.model.RiskControlInfo.selectCount</value>
+	</ignoreList>
+	<!--  strategy tableName="risk_control_info" strategyClass="com.unisafecap.framework.dao.impl.ShardStrategyImpl"/-->
+	
+</shardingConfig> 

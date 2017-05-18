@@ -105,16 +105,17 @@ public class PageBean<T> {
 	}
 
 	/**
-	 * 根据pageNo和pageSize计算当前页第一条记录在总结果集中的位置,序号从1开始.
+	 * 根据pageNo和pageSize计算当前页第一条记录在总结果集中的位置,序号从0开始.
 	 */
 	public int getStartRow(boolean totalPage) {
-		if (totalPage && pageNo > getTotalPages()) {
-			pageNo = getTotalPages();
-		}
 		if (pageNo <= 0) {
 			pageNo = 1;
+		} else if (totalPage && pageNo > getTotalPages()) {
+			pageNo = getTotalPages();
 		}
-		return ((pageNo - 1) * pageSize) + 1;
+
+		return (pageNo - 1) * pageSize;
+
 	}
 
 	/**

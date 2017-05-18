@@ -75,4 +75,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 		}
 	}
 
+	public static boolean isNotBlankStr(String str) {
+		return StringUtils.isNotBlankStr(str) && !"null".equals(str);
+	}
+
 }

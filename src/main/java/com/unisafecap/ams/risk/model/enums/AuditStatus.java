@@ -10,7 +10,7 @@ package com.unisafecap.ams.risk.model.enums;
  */
 public enum AuditStatus {
 
-	PASS(10, "通过"), MANUAL_AUDIT(15, "建议人工审核"), VETO(20, "否决");
+	PASS(10, "通过"), MANUAL_AUDIT(15, "人工审核中"), VETO(20, "否决");
 
 	private Integer value;
 	private String name;

@@ -30,7 +30,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	public static final String POSTFIX_UPDATE = ".update";
 	public static final String POSTFIX_UPDATE_SELECTIVE = ".update4Selective";
 	public static final String POSTFIX_DELETE_PK = ".deleteByPrimaryKey";
-	public static final String POSTFIX_DELETE_PK_LG = ".deleteByPrimaryKeyLogical";
 
 	public static final String POSTFIX_DELETE = ".delete";
 	public static final String POSTFIX_SELECT_MAP = ".selectByMap";
@@ -58,9 +57,26 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
 	@Override
 	public T get(Serializable id) {
+		return get(id, null);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T get(Serializable id, String tableNameSuffix) {
 		if (id == null)
 			return null;// 如果id为空,不再查询
-		return sqlSession.selectOne(sqlMapNamespace + POSTFIX_SELECT, id);
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			if (StringUtils.isNotBlank(tableNameSuffix)) {
+				map.put("tableNameSuffix", tableNameSuffix);
+			}
+			return (T) sqlSession.selectOne(sqlMapNamespace + POSTFIX_SELECT, map);
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -97,12 +113,25 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
 	@Override
 	public int delete(Serializable id) {
-		return sqlSession.delete(sqlMapNamespace + POSTFIX_DELETE_PK, id);
+		return delete(id, null);
 	}
 
 	@Override
-	public int deleteLogical(Serializable id) {
-		return sqlSession.update(sqlMapNamespace + POSTFIX_DELETE_PK_LG, id);
+	public int delete(Serializable id, String tableNameSuffix) {
+		if (id == null)
+			return 0;// 如果id为空,不再查询
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			if (StringUtils.isNotBlank(tableNameSuffix)) {
+				map.put("tableNameSuffix", tableNameSuffix);
+			}
+			return sqlSession.delete(sqlMapNamespace + POSTFIX_DELETE_PK, map);
+		}
+		catch (Exception e) {
+			return 0;
+		}
+
 	}
 
 	@Override
@@ -113,61 +142,78 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
 	@Override
 	public List<T> findAll() {
+		return findAll(null);
+	}
+
+	@Override
+	public List<T> findAll(String tableNameSuffix) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (StringUtils.isNotBlank(tableNameSuffix)) {
+			map.put("tableNameSuffix", tableNameSuffix);
+		}
 		return sqlSession.selectList(sqlMapNamespace + POSTFIX_SELECT);
 	}
 
 	@Override
 	public List<T> findBy(String name, Object value) {
-		Assert.hasText(name);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(name, value);
-		return findByMap(map);
+		return findBy(name, value, null, false, null, null);
 	}
 
 	@Override
-	public List<T> findBy(String name, Object value, boolean isLike, String orderBy, Order order) {
+	public List<T> findBy(String name, Object value, String tableNameSuffix) {
+		return findBy(name, value, tableNameSuffix, false, null, null);
+	}
+
+	@Override
+	public List<T> findBy(String name, Object value, String tableNameSuffix, boolean isLike, String orderBy, Order order) {
 		Assert.hasText(name);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(name, value);
+		if (StringUtils.isNotBlank(tableNameSuffix)) {
+			map.put("tableNameSuffix", tableNameSuffix);
+		}
 		return findByMap(map, isLike, orderBy, order);
 	}
 
 	@Override
+	public List<T> findBy(String name, Object value, boolean isLike, String orderBy, Order order) {
+		return findBy(name, value, null, isLike, orderBy, order);
+	}
+
+	@Override
+	public List<T> findBy(String name, Object value, String tableNameSuffix, boolean isLike) {
+		return findBy(name, value, tableNameSuffix, isLike, null, null);
+	}
+
+	@Override
 	public List<T> findBy(String name, Object value, boolean isLike) {
-		Assert.hasText(name);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(name, value);
-		return findByMap(map, isLike, null, null);
+		return findBy(name, value, null, isLike, null, null);
+	}
+
+	@Override
+	public List<T> findBy(String name, Object value, String tableNameSuffix, String orderBy, Order order) {
+		return findBy(name, value, tableNameSuffix, false, orderBy, order);
 	}
 
 	@Override
 	public List<T> findBy(String name, Object value, String orderBy, Order order) {
+		return findBy(name, value, null, false, orderBy, order);
+	}
+
+	@Override
+	public T findUniqueBy(String name, Object value) {
+		return findUniqueBy(name, value, null);
+	}
+
+	@Override
+	public T findUniqueBy(String name, Object value, String tableNameSuffix) {
 		Assert.hasText(name);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(name, value);
-		return findByMap(map, false, orderBy, order);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public T findUniqueBy(String name, Object value) {
-		Assert.hasText(name);
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			map.put(name, value);
-			map.put("findBy", "True");
-			return (T) sqlSession.selectOne(sqlMapNamespace + POSTFIX_SELECT_MAP, map);
+		if (StringUtils.isNotBlank(tableNameSuffix)) {
+			map.put("tableNameSuffix", tableNameSuffix);
 		}
-		catch (Exception e) {
-			return null;
-		}
-	}
-
-	@Override
-	public List<T> findByMap(Map<String, Object> map) {
-		if (map == null)
-			return findAll();
-		return findByMap(map, false, null, null);
+		return findUniqueByMap(map);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -191,7 +237,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		} else {
 			map.put("findBy", "true");
 		}
-
 		map.put("startRow", 0);
 		map.put("pageSize", top);
 		if (StringUtils.isNotBlank(orderBy)) {
@@ -248,6 +293,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	}
 
 	@Override
+	public List<T> findByMap(Map<String, Object> map) {
+		return findByMap(map, false, null, null);
+	}
+
+	@Override
 	public void find4Page(PageBean<T> page, Map<String, Object> map) {
 		find4Page(page, map, false);
 	}
@@ -279,24 +329,23 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
 	@Override
 	public List<T> findByIds(String ids) {
+		return findByIds(ids, null);
+	}
+
+	@Override
+	public List<T> findByIds(String ids, String tableNameSuffix) {
 		ids = checkSqlParam(ids);
-		return sqlSession.selectList(sqlMapNamespace + POSTFIX_SELECT_IDS, ids);
-	}
-
-	@Override
-	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map) {
-		find4Page(page, tblNameSuffix, map, false);
-
-	}
-
-	@Override
-	public void find4Page(PageBean<T> page, String tblNameSuffix, Map<String, Object> map, boolean isLike) {
-		if (map == null) {
-			map = new HashMap<String, Object>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("idlist", ids);
+			if (StringUtils.isNotBlank(tableNameSuffix)) {
+				map.put("tableNameSuffix", tableNameSuffix);
+			}
+			return sqlSession.selectList(sqlMapNamespace + POSTFIX_SELECT_IDS, map);
 		}
-		map.put("tblNameSuffix", tblNameSuffix);
-		find4Page(page, map, isLike);
-
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
