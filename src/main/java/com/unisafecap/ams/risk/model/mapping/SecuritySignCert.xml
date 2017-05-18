@@ -6,6 +6,7 @@
 	<resultMap id="result" type="com.unisafecap.ams.risk.model.SecuritySignCert">
             <id property="id" column="id" jdbcType="BIGINT" />
             <result property="orgCode" column="org_code" jdbcType="VARCHAR" />
+            <result property="orgName" column="org_name" jdbcType="VARCHAR" />
             <result property="trustProjectCode" column="trust_project_code" jdbcType="VARCHAR" />
             <result property="orgCodeCertPath" column="org_code_cert_path" jdbcType="VARCHAR" />
             <result property="orgCodeCertPwd" column="org_code_cert_pwd" jdbcType="VARCHAR" />
@@ -15,11 +16,12 @@
 	</resultMap>
 
 	<sql id="base_field">
-		id,org_code,trust_project_code,org_code_cert_path,org_code_cert_pwd,bhxt_cert_path,bhxt_cert_pwd
+		id,org_code,org_name,trust_project_code,org_code_cert_path,org_code_cert_pwd,bhxt_cert_path,bhxt_cert_pwd
 	</sql>
 	
 	<sql id="other-condition">
             <if test= "orgCode != null and orgCode != '' ">	and org_code = #{orgCode,jdbcType=VARCHAR }</if>
+            <if test= "orgName != null and orgName != '' ">	and org_name = #{orgName,jdbcType=VARCHAR }</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code = #{trustProjectCode,jdbcType=VARCHAR }</if>
             <if test= "orgCodeCertPath != null and orgCodeCertPath != '' ">	and org_code_cert_path = #{orgCodeCertPath,jdbcType=VARCHAR }</if>
             <if test= "orgCodeCertPwd != null and orgCodeCertPwd != '' ">	and org_code_cert_pwd = #{orgCodeCertPwd,jdbcType=VARCHAR }</if>
@@ -30,6 +32,7 @@
  	
  	<sql id="like-condition">
             <if test= "orgCode != null and orgCode != '' ">	and org_code like "%"#{orgCode}"%"</if>
+            <if test= "orgName != null and orgName != '' ">	and org_name like "%"#{orgName}"%"</if>
             <if test= "trustProjectCode != null and trustProjectCode != '' ">	and trust_project_code like "%"#{trustProjectCode}"%"</if>
             <if test= "orgCodeCertPath != null and orgCodeCertPath != '' ">	and org_code_cert_path like "%"#{orgCodeCertPath}"%"</if>
             <if test= "orgCodeCertPwd != null and orgCodeCertPwd != '' ">	and org_code_cert_pwd like "%"#{orgCodeCertPwd}"%"</if>
@@ -102,13 +105,16 @@
 	</select>		
 
 	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert" useGeneratedKeys="true" keyProperty="id">
-		insert into security_sign_cert( id,org_code,trust_project_code,org_code_cert_path,org_code_cert_pwd,bhxt_cert_path,bhxt_cert_pwd ) values (#{id,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{orgCodeCertPath,jdbcType=VARCHAR},#{orgCodeCertPwd,jdbcType=VARCHAR},#{bhxtCertPath,jdbcType=VARCHAR},#{bhxtCertPwd,jdbcType=VARCHAR} )
+		insert into security_sign_cert( id,org_code,org_name,trust_project_code,org_code_cert_path,org_code_cert_pwd,bhxt_cert_path,bhxt_cert_pwd ) values (#{id,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{orgName,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{orgCodeCertPath,jdbcType=VARCHAR},#{orgCodeCertPwd,jdbcType=VARCHAR},#{bhxtCertPath,jdbcType=VARCHAR},#{bhxtCertPwd,jdbcType=VARCHAR} )
 	</insert>
 	
 	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert" useGeneratedKeys="true" keyProperty="id">
 		insert into security_sign_cert(
             <if test="orgCode != null and orgCode != '' "> 
                 org_code,
+            </if>
+            <if test="orgName != null and orgName != '' "> 
+                org_name,
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code,
@@ -129,6 +135,9 @@
             <if test="orgCode != null and orgCode != '' "> 
                 #{orgCode,jdbcType=VARCHAR},
             </if>
+            <if test="orgName != null and orgName != '' "> 
+                #{orgName,jdbcType=VARCHAR},
+            </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 #{trustProjectCode,jdbcType=VARCHAR},
             </if>
@@ -148,7 +157,7 @@
 	</insert>
 
 	<update id="update" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert">
-		update security_sign_cert set org_code=#{orgCode,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},org_code_cert_path=#{orgCodeCertPath,jdbcType=VARCHAR},org_code_cert_pwd=#{orgCodeCertPwd,jdbcType=VARCHAR},bhxt_cert_path=#{bhxtCertPath,jdbcType=VARCHAR},bhxt_cert_pwd=#{bhxtCertPwd,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+		update security_sign_cert set org_code=#{orgCode,jdbcType=VARCHAR},org_name=#{orgName,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},org_code_cert_path=#{orgCodeCertPath,jdbcType=VARCHAR},org_code_cert_pwd=#{orgCodeCertPwd,jdbcType=VARCHAR},bhxt_cert_path=#{bhxtCertPath,jdbcType=VARCHAR},bhxt_cert_pwd=#{bhxtCertPwd,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
 	</update>	
 	
 	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.SecuritySignCert">
@@ -156,6 +165,9 @@
         <set>
             <if test="orgCode != null and orgCode != '' "> 
                 org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgName != null and orgName != '' "> 
+                org_name = #{orgName,jdbcType=VARCHAR},
             </if>
             <if test="trustProjectCode != null and trustProjectCode != '' "> 
                 trust_project_code = #{trustProjectCode,jdbcType=VARCHAR},

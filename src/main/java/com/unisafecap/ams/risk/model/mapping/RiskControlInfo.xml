@@ -77,7 +77,7 @@
 	<sql id="selectByMapSQL">
 		select
 		<include refid="base_field" />
-		from risk_control_info${tableNameSuffix}
+		from risk_control_info
 		<choose>
 		    <when test="findBy != null">
 		      	<where>
@@ -100,7 +100,7 @@
 	</select>
 	
 	<select id="selectCount" resultType="int" >
-		select count(*) from risk_control_info${tableNameSuffix} 
+		select count(*) from risk_control_info 
 		<choose>
 		    <when test="findBy != null">
 		      	<where>
@@ -123,7 +123,7 @@
 	<select id="select" resultMap="result">
 		select
 		<include refid="base_field" />
-		from risk_control_info${tableNameSuffix}  
+		from risk_control_info  
 		<where>
 			<if test="_parameter != null">
 				id = #{id,jdbcType=BIGINT}
@@ -134,15 +134,15 @@
 	<select id="selectByIds" resultMap="result" >
 		select
 		<include refid="base_field" />
-		from risk_control_info${tableNameSuffix}  where id in (${idlist})
+		from risk_control_info  where id in (${idlist})
 	</select>		
 
 	<insert id="insert" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo" useGeneratedKeys="true" keyProperty="id">
-		insert into risk_control_info${tableNameSuffix}( id,org_code,trust_project_code,timestamp,out_trade_no,callback_url,risk_control_type,trade_no,audit_status,audit_messages,send_status,send_time,created_time,created_by,updated_time,updated_by,remark1,remark2,remark3 ) values (#{id,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{timestamp,jdbcType=VARCHAR},#{outTradeNo,jdbcType=VARCHAR},#{callbackUrl,jdbcType=VARCHAR},#{riskControlType,jdbcType=TINYINT},#{tradeNo,jdbcType=VARCHAR},#{auditStatus,jdbcType=VARCHAR},#{auditMessages,jdbcType=VARCHAR},#{sendStatus,jdbcType=VARCHAR},#{sendTime},#{createdTime},#{createdBy,jdbcType=VARCHAR},#{updatedTime},#{updatedBy,jdbcType=VARCHAR},#{remark1,jdbcType=VARCHAR},#{remark2,jdbcType=VARCHAR},#{remark3,jdbcType=VARCHAR} )
+		insert into risk_control_info( id,org_code,trust_project_code,timestamp,out_trade_no,callback_url,risk_control_type,trade_no,audit_status,audit_messages,send_status,send_time,created_time,created_by,updated_time,updated_by,remark1,remark2,remark3 ) values (#{id,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{trustProjectCode,jdbcType=VARCHAR},#{timestamp,jdbcType=VARCHAR},#{outTradeNo,jdbcType=VARCHAR},#{callbackUrl,jdbcType=VARCHAR},#{riskControlType,jdbcType=TINYINT},#{tradeNo,jdbcType=VARCHAR},#{auditStatus,jdbcType=VARCHAR},#{auditMessages,jdbcType=VARCHAR},#{sendStatus,jdbcType=VARCHAR},#{sendTime},#{createdTime},#{createdBy,jdbcType=VARCHAR},#{updatedTime},#{updatedBy,jdbcType=VARCHAR},#{remark1,jdbcType=VARCHAR},#{remark2,jdbcType=VARCHAR},#{remark3,jdbcType=VARCHAR} )
 	</insert>
 	
 	<insert id="insert4Selective" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo" useGeneratedKeys="true" keyProperty="id">
-		insert into risk_control_info${tableNameSuffix}(
+		insert into risk_control_info(
             <if test="orgCode != null and orgCode != '' "> 
                 org_code,
             </if>
@@ -256,11 +256,11 @@
 	</insert>
 
 	<update id="update" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo">
-		update risk_control_info${tableNameSuffix} set org_code=#{orgCode,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},timestamp=#{timestamp,jdbcType=VARCHAR},out_trade_no=#{outTradeNo,jdbcType=VARCHAR},callback_url=#{callbackUrl,jdbcType=VARCHAR},risk_control_type=#{riskControlType,jdbcType=TINYINT},trade_no=#{tradeNo,jdbcType=VARCHAR},audit_status=#{auditStatus,jdbcType=VARCHAR},audit_messages=#{auditMessages,jdbcType=VARCHAR},send_status=#{sendStatus,jdbcType=VARCHAR},send_time=#{sendTime},created_time=#{createdTime},created_by=#{createdBy,jdbcType=VARCHAR},updated_time=#{updatedTime},updated_by=#{updatedBy,jdbcType=VARCHAR},remark1=#{remark1,jdbcType=VARCHAR},remark2=#{remark2,jdbcType=VARCHAR},remark3=#{remark3,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
+		update risk_control_info set org_code=#{orgCode,jdbcType=VARCHAR},trust_project_code=#{trustProjectCode,jdbcType=VARCHAR},timestamp=#{timestamp,jdbcType=VARCHAR},out_trade_no=#{outTradeNo,jdbcType=VARCHAR},callback_url=#{callbackUrl,jdbcType=VARCHAR},risk_control_type=#{riskControlType,jdbcType=TINYINT},trade_no=#{tradeNo,jdbcType=VARCHAR},audit_status=#{auditStatus,jdbcType=VARCHAR},audit_messages=#{auditMessages,jdbcType=VARCHAR},send_status=#{sendStatus,jdbcType=VARCHAR},send_time=#{sendTime},created_time=#{createdTime},created_by=#{createdBy,jdbcType=VARCHAR},updated_time=#{updatedTime},updated_by=#{updatedBy,jdbcType=VARCHAR},remark1=#{remark1,jdbcType=VARCHAR},remark2=#{remark2,jdbcType=VARCHAR},remark3=#{remark3,jdbcType=VARCHAR} where id=#{id,jdbcType=BIGINT}
 	</update>	
 	
 	<update id="update4Selective" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo">
-		update risk_control_info${tableNameSuffix}
+		update risk_control_info
         <set>
             <if test="orgCode != null and orgCode != '' "> 
                 org_code = #{orgCode,jdbcType=VARCHAR},
@@ -321,11 +321,11 @@
 	</update>
 
 	<delete id="deleteByPrimaryKey">
-		delete from risk_control_info${tableNameSuffix} where id = #{id,jdbcType=BIGINT}
+		delete from risk_control_info where id = #{id,jdbcType=BIGINT}
 	</delete>
     
 	<delete id="delete" parameterType="com.unisafecap.ams.risk.model.RiskControlInfo">
-		delete from risk_control_info${tableNameSuffix}
+		delete from risk_control_info
 		<where>
 			<if test="id != null">
 				id = #{id,jdbcType=BIGINT}

@@ -10,15 +10,18 @@ import com.unisafecap.framework.model.BaseModel;
  * </P>
  *  
  * @author zuotong
- * @since 2017年05月12日
+ * @since 2017年05月18日
  * @version V1.0  
  */
 public class SecuritySignCert extends BaseModel implements Serializable {
-    private static final long serialVersionUID = -1208122945355829923L;
-	/**
+    /**
      * 合作机构编号
      */
     private String orgCode;
+    /**
+     * 合作机构名称
+     */
+    private String orgName;
     /**
      * 信托项目简码
      */
@@ -50,6 +53,13 @@ public class SecuritySignCert extends BaseModel implements Serializable {
 
     public void setOrgCode(String orgCode) {
         this.orgCode = orgCode;
+    }
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
     public String getTrustProjectCode() {
         return trustProjectCode;

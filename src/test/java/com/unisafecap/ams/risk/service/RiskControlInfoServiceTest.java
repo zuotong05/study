@@ -142,7 +142,7 @@ public class RiskControlInfoServiceTest {
 		org.junit.Assert.assertNotNull(result);
 	}
 
-	// @Test
+	 @Test
 	public void testFindByMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orgCode", "10050");
@@ -157,7 +157,7 @@ public class RiskControlInfoServiceTest {
 		org.junit.Assert.assertNotNull(result);
 	}
 
-	 @Test
+	 //@Test
 	public void testFindByMapTopN() {
 		CustomerContextHolder.setCustomerType(EmDataSource.DATA_SOURCE_02.getName());   
 		Map<String, Object> map = new HashMap<String, Object>();

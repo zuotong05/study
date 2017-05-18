@@ -47,9 +47,10 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 	@Transactional(readOnly = true)
 	public String encryptData(String orgCode, String srcData) {
 		try {
-			logger.debug("加密前的数据 ：" + srcData);
+			logger.debug("合作方[" + orgCode + "]加密前的数据 ：" + srcData);
 			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("orgCode", orgCode);
 			if (null == signcert) {
+				logger.info("合作方[" + orgCode + "]加密证书不存在!");
 				return null;
 			}
 			logger.debug("渤海信托证书路径：" + signcert.getBhxtCertPath());
@@ -59,11 +60,11 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 			SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
 			String signedEvpData = signEnvelopService.signEnvelop(priCert, signcert.getBhxtCertPwd(), pubCert, srcData.getBytes());
 
-			logger.debug("加密后的数据：" + signedEvpData);
+			logger.debug("合作方[" + orgCode + "]加密后的数据：" + signedEvpData);
 			return signedEvpData;
 		}
 		catch (Exception e) {
-			logger.error("证书加密"+e.getMessage());
+			logger.error("合作方[" + orgCode + "]证书加密" + e.getMessage());
 			return null;
 		}
 
@@ -81,20 +82,21 @@ public class SecuritySignCertService extends BaseService<SecuritySignCert> {
 	@Transactional(readOnly = true)
 	public byte[] decryptData(String orgCode, String envelopData) {
 		try {
-			logger.debug("加密前的数据 ：" + envelopData);
+			logger.debug("合作方[" + orgCode + "]加密前的数据 ：" + envelopData);
 			SecuritySignCert signcert = securitySignCertDaoImpl.findUniqueBy("orgCode", orgCode);
 			if (null == signcert) {
+				logger.info("合作方[" + orgCode + "]加密证书不存在!");
 				return null;
 			}
-			logger.debug("渤海信托证书路径：" + signcert.getBhxtCertPath());			
+			logger.debug("渤海信托证书路径：" + signcert.getBhxtCertPath());
 			SignEnvelopService signEnvelopService = new SignEnvelopServiceImpl();
 			String priCert = Base64.encode(FileUtil.readFile(signcert.getBhxtCertPath()));
 			byte[] cleartxt = signEnvelopService.verifyEnvelop(priCert, signcert.getBhxtCertPwd(), envelopData);
-			logger.debug("解密后的数据：" + (null == cleartxt ? null : new String(cleartxt)));
+			logger.debug("合作方[" + orgCode + "]解密后的数据：" + (null == cleartxt ? null : new String(cleartxt)));
 			return cleartxt;
 		}
 		catch (Exception e) {
-			logger.error("证书解密"+e.getMessage());
+			logger.error("合作方[" + orgCode + "]证书解密" + e.getMessage());
 			return null;
 		}
 	}

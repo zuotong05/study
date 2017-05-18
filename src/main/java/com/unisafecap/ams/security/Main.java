@@ -16,22 +16,22 @@ public class Main {
 
 	public static void main(String[] args) {
 		//byte[] srcData = "{\"outTradeNo\":\"******\",\"trustProjectCode\":\"10050\",\"contractNo\":\"CP1273917239\"}".getBytes(); // 源数据串
-		//byte[] srcData = "{\"outTradeNo\":\"xxxxxx\",\"trustProjectCode\":\"10050\",\"certType\":\"0\",\"certId\":\"411381198302177118\"}".getBytes(); // 源数据串
+		byte[] srcData = "{\"outTradeNo\":\"879a2315-65fd-4e45-b3e8-6c07c5d96c22\",\"trustProjectCode\":\"MDX02\",\"certType\":\"0\",\"certId\":\"411526198709206423\"}".getBytes(); // 源数据串
 		RiskControlAuditDto audit = new RiskControlAuditDto();
-		audit.setCallbackUrl("http://domain.com/loan/resultNotify");
-		audit.setOutTradeNo("******");
-		audit.setTrustProjectCode("10050");
+		audit.setCallbackUrl("");
+		audit.setOutTradeNo("879a2315-65fd-4e45-b3e8-6c07c5d96c22");
+		audit.setTrustProjectCode("MDX02");
 		
-		RiskLoanDetail loanApply = new RiskLoanDetail();
+		/*RiskLoanDetail loanApply = new RiskLoanDetail();
 		loanApply.setContractNo("CP1273917239");
 		loanApply.setAssureFee(BigDecimal.valueOf(100.01));			
-		audit.setLoanApply(loanApply);	
+		audit.setLoanApply(loanApply);*/	
 		
 		RiskLoanUser loanUser = new RiskLoanUser();
-		loanUser.setCustomerName("测试账号");
+		loanUser.setCustomerName("陈晶晶");
 		loanUser.setCertType("0");
-		loanUser.setCertId("411381198202177118");
-		loanUser.setPhone("134263480956");
+		loanUser.setCertId("411526198709206423");
+		loanUser.setPhone("18601680291");
 		audit.setLoanUser(loanUser);
 
 		/*List<RiskRelationUser> relationUsers = new ArrayList<RiskRelationUser>();
@@ -41,10 +41,10 @@ public class Main {
 		audit.setRelationUsers(relationUsers);*/
 
 		RiskLoanAccount loanAccount = new RiskLoanAccount();
-		loanAccount.setPutoutAccountNo("6225881008780249");
+		loanAccount.setPutoutAccountNo("6212261202005964680");
 		audit.setLoanAccount(loanAccount);
 		
-		byte[] srcData =	JSON.toJSONString(audit).getBytes();
+		//byte[] srcData =	JSON.toJSONString(audit).getBytes();
 
 		// String userDir = System.getProperty("user.dir");
 		String file1 = "D:/project/asm-frame/cert/test1.pfx"; // 合作机构信贷系统方证书

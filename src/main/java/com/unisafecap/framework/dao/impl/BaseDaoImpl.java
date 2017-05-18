@@ -43,6 +43,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	}
 
 	protected SqlSessionTemplate getSqlSession() {
+	System.out.println(sqlSession.getConfiguration().getDatabaseId());	
 		return sqlSession;
 	}
 

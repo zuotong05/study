@@ -73,8 +73,7 @@ public class RiskControlService {
 	 * @return ResponseData 响应数据
 	 * @throws Exception
 	 */
-	public ResponseData<?> customerAudit(RequestData requestData) throws Exception {
-
+	public ResponseData<?> customerAudit(RequestData requestData) throws Exception {		
 		ResponseData<RiskControlAuditDto> response = riskControlAudit(requestData);
 
 		if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
@@ -93,12 +92,13 @@ public class RiskControlService {
 				|| StringUtils.isBlank(loanUser.getCertId())
 				|| StringUtils.isBlank(loanUser.getPhone()) 
 				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())
-				||IDCardUtils.isIDCard(loanUser.getCertId())
-				||StringUtils.isMobile(loanUser.getPhone())) {
+				||!IDCardUtils.isIDCard(loanUser.getCertId())
+				||!StringUtils.isMobile(loanUser.getPhone())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);			
 			logger.debug("客户审批:"+response.getMsg());
 			return response;
 		}
+	
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("outTradeNo", auditDto.getOutTradeNo());
 		List<RiskControlInfo> list = riskControlInfoService.findByMap(map);
@@ -194,6 +194,8 @@ public class RiskControlService {
 	 * @throws Exception
 	 */
 	public ResponseData<?> loadAudit(RequestData requestData) throws Exception {
+		
+		
 		ResponseData<RiskControlAuditDto> response = riskControlAudit(requestData);
 
 		if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
@@ -217,13 +219,13 @@ public class RiskControlService {
 				|| StringUtils.isBlank(loanUser.getCertId()) 
 				|| StringUtils.isBlank(loanUser.getPhone()) 
 				|| StringUtils.isBlank(loanAccount.getPutoutAccountNo())
-				||IDCardUtils.isIDCard(loanUser.getCertId())
-				||StringUtils.isMobile(loanUser.getPhone())) {
+				||!IDCardUtils.isIDCard(loanUser.getCertId())
+				||!StringUtils.isMobile(loanUser.getPhone())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			logger.debug("放款审批:"+response.getMsg());
 			return response;
 		}
-
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("outTradeNo", auditDto.getOutTradeNo());
 		List<RiskControlInfo> list = riskControlInfoService.findByMap(map);
@@ -331,13 +333,15 @@ public class RiskControlService {
 
 	}
 
-	private ResponseData<RiskControlAuditDto> riskControlAudit(RequestData requestData) throws Exception {
+	private ResponseData<RiskControlAuditDto> riskControlAudit(RequestData requestData) throws Exception {		
 		ResponseData<RiskControlAuditDto> response = new ResponseData<RiskControlAuditDto>();
-		if (StringUtils.isBlank(requestData.getOrgCode()) || StringUtils.isBlank(requestData.getTimestamp()) || StringUtils.isBlank(requestData.getBizContent())) {
+		if (StringUtils.isBlank(requestData.getOrgCode()) 
+				|| StringUtils.isBlank(requestData.getTimestamp()) 
+				|| StringUtils.isBlank(requestData.getBizContent())) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 			return response;
 		}
-
+		
 		byte[] cleartxt = securitySignCertService.decryptData(requestData.getOrgCode(), requestData.getBizContent());
 		if (null == cleartxt) {
 			response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
@@ -373,7 +377,7 @@ public class RiskControlService {
 	public ResponseData<?> customerAuditQuery(RequestData requestData) {
 		ResponseData<RiskControlAuditQueryDto> response = new ResponseData<RiskControlAuditQueryDto>();
 		try {
-
+			
 			response = queryRiskControlAudit(requestData);
 
 			if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
@@ -388,12 +392,12 @@ public class RiskControlService {
 					|| StringUtils.isBlank(auditQueryDto.getTrustProjectCode()) 
 					|| StringUtils.isBlank(auditQueryDto.getCertType()) 
 					|| StringUtils.isBlank(auditQueryDto.getCertId())
-					||IDCardUtils.isIDCard(auditQueryDto.getCertId())) {
+					|| !IDCardUtils.isIDCard(auditQueryDto.getCertId())) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
 				logger.debug("客户审批結果查询:"+response.getMsg());
 				return response;
 			}
-
+			
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("outTradeNo", auditQueryDto.getOutTradeNo());
 			map.put("trustProjectCode", auditQueryDto.getTrustProjectCode());
@@ -442,7 +446,7 @@ public class RiskControlService {
 	public ResponseData<?> loadAuditQuery(RequestData requestData) {
 		ResponseData<RiskControlAuditQueryDto> response = new ResponseData<RiskControlAuditQueryDto>();
 		try {
-
+			
 			response = queryRiskControlAudit(requestData);
 			if (!ServiceErrorCode.SUCCESS.getCode().equals(response.getCode())) {
 				response.setDatas(null);
@@ -459,7 +463,7 @@ public class RiskControlService {
 				logger.debug("放款审批結果查询:"+response.getMsg());
 				return response;
 			}
-
+			
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("outTradeNo", auditQueryDto.getOutTradeNo());
 			map.put("trustProjectCode", auditQueryDto.getTrustProjectCode());
@@ -504,7 +508,7 @@ public class RiskControlService {
 				logger.debug("审批結果查询:"+response.getMsg());
 				return response;
 			}
-
+			
 			byte[] cleartxt = securitySignCertService.decryptData(requestData.getOrgCode(), requestData.getBizContent());
 			if (null == cleartxt) {
 				response.setServiceErrorCode(ServiceErrorCode.PARAMETER_ERROR);
