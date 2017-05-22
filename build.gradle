@@ -213,6 +213,7 @@ dependencies {
     compile "org.aspectj:aspectjrt:$aspectjVersion"
     
     compile "net.sf.jsqlparser:jsqlparser:0.8.0"
+    compile "org.shardbatis:shardbatis:2.0.0B"
 
 
     // ====== logging ======

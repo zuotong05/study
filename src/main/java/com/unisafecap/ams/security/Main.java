@@ -15,17 +15,17 @@ import com.unisafecap.ams.security.sign.util.FileUtil;
 public class Main {
 
 	public static void main(String[] args) {
-		//byte[] srcData = "{\"outTradeNo\":\"******\",\"trustProjectCode\":\"10050\",\"contractNo\":\"CP1273917239\"}".getBytes(); // 源数据串
-		byte[] srcData = "{\"outTradeNo\":\"879a2315-65fd-4e45-b3e8-6c07c5d96c22\",\"trustProjectCode\":\"MDX02\",\"certType\":\"0\",\"certId\":\"411526198709206423\"}".getBytes(); // 源数据串
+		byte[] srcData = "{\"outTradeNo\":\"1879a23151-65fd-4e45-b3e8-6c07c5d96c22\",\"trustProjectCode\":\"MDX02\",\"contractNo\":\"CP1273917239\"}".getBytes(); // 源数据串
+		//byte[] srcData = "{\"outTradeNo\":\"1879a23151-65fd-4e45-b3e8-6c07c5d96c22\",\"trustProjectCode\":\"MDX02\",\"certType\":\"0\",\"certId\":\"411526198709206423\"}".getBytes(); // 源数据串
 		RiskControlAuditDto audit = new RiskControlAuditDto();
 		audit.setCallbackUrl("");
-		audit.setOutTradeNo("879a2315-65fd-4e45-b3e8-6c07c5d96c22");
+		audit.setOutTradeNo("1879a23151-65fd-4e45-b3e8-6c07c5d96c22");
 		audit.setTrustProjectCode("MDX02");
 		
-		/*RiskLoanDetail loanApply = new RiskLoanDetail();
+		RiskLoanDetail loanApply = new RiskLoanDetail();
 		loanApply.setContractNo("CP1273917239");
 		loanApply.setAssureFee(BigDecimal.valueOf(100.01));			
-		audit.setLoanApply(loanApply);*/	
+		audit.setLoanApply(loanApply);	
 		
 		RiskLoanUser loanUser = new RiskLoanUser();
 		loanUser.setCustomerName("陈晶晶");

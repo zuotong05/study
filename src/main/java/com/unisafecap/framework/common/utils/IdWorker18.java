@@ -147,9 +147,9 @@ public class IdWorker18 {
     /** 测试 */
     public static void main(String[] args) {
     	IdWorker18 idWorker = new IdWorker18(0, 0);
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             long id = idWorker.nextId();
-           // System.out.println(Long.toBinaryString(id));
+          System.out.println(Long.toBinaryString(id));
             System.out.println(id);
         }
     }
